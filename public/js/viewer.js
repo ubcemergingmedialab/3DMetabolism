@@ -1,10 +1,9 @@
 var View = (function() {
 
   class Node {
-    constructor(xPos, yPos, zPos, name, modelSource) {
-      this.xPosition = xPos;
-      this.yPosition = yPos;
-      this.zPosition = zPos;
+    //position is a THREE.Vector3
+    constructor(position, name, modelSource) {
+      this.position = position
       this.name = name;
       this.modelSource = modelSource;
     };
@@ -25,9 +24,9 @@ var View = (function() {
   }
 
   var nodes = {
-    glucose: new Node(0, 0, 0, "glucose", ""),
-    glucose_6_phosphate: new Node(0, -1, 0, "glucose 6-phosphate", ""),
-    fructose_6_phosphate: new Node(0, -2, 0, "fructose 6-phosphate", "")
+    glucose: new Node(new THREE.Vector3(0, 3, 0), "glucose", ""),
+    glucose_6_phosphate: new Node(new THREE.Vector3(0, -1, 0), "glucose 6-phosphate", ""),
+    fructose_6_phosphate: new Node(new THREE.Vector3(2, -4, 0), "fructose 6-phosphate", "")
   };
 
 
@@ -37,7 +36,7 @@ var View = (function() {
   ];
 
   var init = function() {
-    console.log(JSON.stringify(nodes));
+    //console.log(JSON.stringify(nodes));
   }
 
   return {
@@ -47,7 +46,9 @@ var View = (function() {
   };
 })();
 
-View.init();
+document.addEventListener("DOMContentLoaded", () => {
+  View.init();
+})
 // ----------------------------------
 
 
