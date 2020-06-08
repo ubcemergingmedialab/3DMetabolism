@@ -12,6 +12,10 @@ AFRAME.registerComponent('presenter', {
       });
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
       entityEl.setAttribute('material', 'color', 'blue');
+      console.log(curNode.name);
+      let textEl = document.createElement('a-entity');
+      textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'left', xOffset: 1});
+      entityEl.appendChild(textEl);
       sceneEl.appendChild(entityEl);
     }
 
