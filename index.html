@@ -1,10 +1,11 @@
 <html>
 
 <head>
-  <title>Spookums</title>
+  <title>3DMetabolism</title>
   <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
   <script src="/js/viewer.js"></script>
   <script src="/js/presenter.js"></script>
+  <script src="/js/drag-rotate-component.js"></script>
 
 </head>
 
@@ -12,10 +13,9 @@
   <a-scene>
     <a-assets>
     </a-assets>
-    <a-entity presenter></a-entity>
-    <a-entity id="player" wasd-controls>
-      <a-camera active="true" user-height="0" position="1 -1.2 4" look-controls>
-        </a-ring>
+      <a-entity presenter></a-entity>
+      <a-camera user-height="0" position="1 -1.2 4" look-controls="enabled:false">
+        <a-cursor></a-cursor>
       </a-camera>
     </a-entity>
   </a-scene>
