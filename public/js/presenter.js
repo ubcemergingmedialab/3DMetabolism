@@ -8,13 +8,13 @@ AFRAME.registerComponent('presenter', {
       let curNode = View.nodes[node];
       entityEl.setAttribute('geometry', {
         primitive: 'sphere',
-        radius: 0.5
+        radius: 0.2
       });
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
       entityEl.setAttribute('material', 'color', 'blue');
       console.log(curNode.name);
       let textEl = document.createElement('a-entity');
-      textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'left', xOffset: 1});
+      textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'left', xOffset: 0.2});
       entityEl.appendChild(textEl);
       sceneEl.appendChild(entityEl);
     }
@@ -44,7 +44,7 @@ AFRAME.registerComponent('presenter', {
         entityEl.setAttribute('geometry', {
           primitive: 'cylinder',
           height: height, //will need to maket his variable
-          radius: 0.3
+          radius: 0.1
         });
         entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
         entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
