@@ -17,6 +17,7 @@ AFRAME.registerComponent('presenter', {
       let textEl = document.createElement('a-entity');
       textEl.setAttribute('look-at', 'a-camera');
       console.log(curNode);
+      textEl.setAttribute('look-at', 'a-camera');
       if(curNode.flippedText)
       {
         console.log('flipped text');
