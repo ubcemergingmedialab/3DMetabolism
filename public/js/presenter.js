@@ -14,7 +14,15 @@ AFRAME.registerComponent('presenter', {
       entityEl.setAttribute('material', 'color', 'blue');
       console.log(curNode.name);
       let textEl = document.createElement('a-entity');
-      textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'left', xOffset: 0.2});
+      console.log(curNode);
+      if(curNode.flippedText)
+      {
+        console.log('flipped text');
+        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'right', xOffset: 3.7});
+      }
+      else {
+        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'left', xOffset: 0.2});
+      }
       entityEl.appendChild(textEl);
       sceneEl.appendChild(entityEl);
     }
@@ -43,7 +51,7 @@ AFRAME.registerComponent('presenter', {
         entityEl = document.createElement('a-entity');
         entityEl.setAttribute('geometry', {
           primitive: 'cylinder',
-          height: height, //will need to maket his variable
+          height: height,
           radius: 0.1
         });
         entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
