@@ -1,22 +1,32 @@
 AFRAME.registerComponent('presenter', {
 
   init: function() {
-    var sceneEl = document.querySelector('a-scene');
+    var sceneEl = document.querySelector('a-scene'); //parent scene
+    var sceneModel = document.createElement('a-entity'); //child entity
 
     for(let node in View.nodes){
       let entityEl = document.createElement('a-entity');
       let curNode = View.nodes[node];
       entityEl.setAttribute('geometry', {
         primitive: 'sphere',
-        radius: 0.5
+        radius: 0.2
       });
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
       entityEl.setAttribute('material', 'color', 'blue');
       console.log(curNode.name);
       let textEl = document.createElement('a-entity');
-      textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'left', xOffset: 1});
+      console.log(curNode);
+      textEl.setAttribute('look-at', 'a-camera');
+      if(curNode.flippedText)
+      {
+        console.log('flipped text');
+        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'right', xOffset: 3.7});
+      }
+      else {
+        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'left', xOffset: 0.2});
+      }
       entityEl.appendChild(textEl);
-      sceneEl.appendChild(entityEl);
+      sceneModel.appendChild(entityEl);
     }
 
     var drawEdges = function() {
@@ -29,7 +39,7 @@ AFRAME.registerComponent('presenter', {
           console.log("Error while reading view: " + e.message);
           continue;
         }
-        
+
         negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
         targetMag = (new THREE.Vector3()).add(outputPosition).add(negInputPosition);
         targetPosition = (new THREE.Vector3()).copy(targetMag).multiplyScalar(0.5).add(inputPosition) // midpoint
@@ -43,17 +53,19 @@ AFRAME.registerComponent('presenter', {
         entityEl = document.createElement('a-entity');
         entityEl.setAttribute('geometry', {
           primitive: 'cylinder',
-          height: height, //will need to maket his variable
-          radius: 0.3
+          height: height,
+          radius: 0.1
         });
         entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
         entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
         entityEl.setAttribute('material', 'color', 'green');
-        sceneEl.appendChild(entityEl);
+        sceneModel.appendChild(entityEl);
       }
     };
 
     drawEdges();
+    sceneModel.setAttribute('drag-rotate-component', '');
+    sceneEl.appendChild(sceneModel);
   }
 
 });
