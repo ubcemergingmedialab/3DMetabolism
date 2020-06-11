@@ -20,11 +20,10 @@ AFRAME.registerComponent('presenter', {
       textEl.setAttribute('look-at', 'a-camera');
       if(curNode.flippedText)
       {
-        console.log('flipped text');
-        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'right', xOffset: 3.7});
+        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: -0.2, zOffset: 1, align: 'right'});
       }
       else {
-        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'left', xOffset: 0.2});
+        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: 0.2, zOffset: 1, aligh: 'left'});
       }
       entityEl.appendChild(textEl);
       sceneModel.appendChild(entityEl);
