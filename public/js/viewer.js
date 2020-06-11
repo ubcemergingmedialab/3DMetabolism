@@ -12,13 +12,6 @@ var View = (function() {
         this.flippedText = flippedText;
       }
     };
-    // get name() {
-    //   return this.name;
-    // }
-    // get pos() {
-    //   return '${this.xPosition} ${this.yPosition} ${this.zPostition}';
-    //
-    // }
   }
 
   class Edge {
@@ -100,19 +93,3 @@ var View = (function() {
 document.addEventListener("DOMContentLoaded", () => {
   View.init();
 })
-// ----------------------------------
-
-
-// var Present = (function() {
-//   var views = Object.keys(View.nodes)
-//
-//   var init = function() {
-//     console.log(JSON.stringify(views));
-//   }
-//
-//   return {
-//     init
-//   };
-// })();
-//
-// Present.init();
