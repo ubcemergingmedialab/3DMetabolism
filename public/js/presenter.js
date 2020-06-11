@@ -15,7 +15,6 @@ AFRAME.registerComponent('presenter', {
       console.log(curNode.name);
       let textEl = document.createElement('a-entity');
       textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 7, anchor: 'left', xOffset: 1});
-      textEl.setAttribute('look-at', 'a-camera');
       entityEl.appendChild(textEl);
       sceneEl.appendChild(entityEl);
     }
@@ -30,7 +29,7 @@ AFRAME.registerComponent('presenter', {
           console.log("Error while reading view: " + e.message);
           continue;
         }
-
+        
         negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
         targetMag = (new THREE.Vector3()).add(outputPosition).add(negInputPosition);
         targetPosition = (new THREE.Vector3()).copy(targetMag).multiplyScalar(0.5).add(inputPosition) // midpoint
