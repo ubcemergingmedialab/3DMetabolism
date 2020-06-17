@@ -51,6 +51,13 @@ AFRAME.registerComponent('presenter', {
         height = targetMag.length();
 
         entityEl = document.createElement('a-entity');
+        if(View.edges[index].src != undefined) {
+          imgEl = document.createElement('a-image', );
+          imgEl.setAttribute("src", View.edges[index].src);
+          imgEl.setAttribute("rotation", "0 0 0");
+          entityEl.appendChild(imgEl);
+        }
+
         entityEl.setAttribute('geometry', {
           primitive: 'cylinder',
           height: height,

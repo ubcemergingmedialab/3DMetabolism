@@ -33,4 +33,6 @@ AFRAME.registerComponent('drag-rotate-component', {
       this.y_cord = event.clientY;
     }
   }
+  //define a function that de-register mousemove
+  //define a funciton that re-registers mousemove
 });
