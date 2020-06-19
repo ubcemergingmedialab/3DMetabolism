@@ -1,5 +1,7 @@
 AFRAME.registerComponent("pathway_zoom", {
-    schema: {},
+    schema: {
+        zoomPosition: {type: 'vec3'}
+    },
     init: function() {
         let zoom = 'into'; //zoom into or out of edge
         var el = this.el; //the element this component is attached to
@@ -13,13 +15,14 @@ AFRAME.registerComponent("pathway_zoom", {
                 case 'into':
                     el.setAttribute('material', 'color', 'yellow'); 
                     moveCameraRig(new THREE.Vector3(1,2,3)); //todo: current issue to find a way to give this the midpoint
-                    document.getElementById('sceneModel').removeAttribute("drag-rotate-component"); //not working
+                   // moveCameraRig(zoomPosition);
+                    //document.getElementById('sceneModel').removeAttribute("drag-rotate-component"); //not working
                     zoom = 'out';
                     break;
                 case 'out':
                     el.setAttribute('material', 'color', 'green');
                     moveCameraRig(new THREE.Vector3(1, -1.2, 5)); //todo: give this function the proper initial value
-                    document.querySelector('sceneModel').setAttribute('drag-rotate-component',''); //not working
+                    //document.querySelector('sceneModel').setAttribute('drag-rotate-component',''); //not working
                     zoom = 'into';
                     break;
             }

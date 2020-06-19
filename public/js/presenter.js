@@ -4,7 +4,7 @@ AFRAME.registerComponent('presenter', {
     var sceneEl = document.querySelector('a-scene'); //parent scene
     var sceneModel = document.createElement('a-entity'); //child entity
 
-    sceneModel.setAttribute('id', 'sceneModel');
+    //sceneModel.setAttribute('id', 'sceneModel');
 
     for(let node in View.nodes){
       let entityEl = document.createElement('a-entity');
@@ -70,7 +70,8 @@ AFRAME.registerComponent('presenter', {
         entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
   
         entityEl.setAttribute('material', 'color', 'green');
-        entityEl.setAttribute('pathway_zoom','');
+        //console.log(targetPosition)
+        entityEl.setAttribute('pathway_zoom', zoomPosition = targetPosition);
 
         sceneModel.appendChild(entityEl);
       }
