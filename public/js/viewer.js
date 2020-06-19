@@ -20,6 +20,7 @@ var View = (function() {
       this.output = output;
       this.src = src;
     }
+    
   }
 
   var nodes = {

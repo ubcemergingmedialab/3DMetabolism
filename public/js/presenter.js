@@ -4,6 +4,8 @@ AFRAME.registerComponent('presenter', {
     var sceneEl = document.querySelector('a-scene'); //parent scene
     var sceneModel = document.createElement('a-entity'); //child entity
 
+    sceneModel.setAttribute('id', 'sceneModel');
+
     for(let node in View.nodes){
       let entityEl = document.createElement('a-entity');
       let curNode = View.nodes[node];
@@ -51,6 +53,7 @@ AFRAME.registerComponent('presenter', {
         height = targetMag.length();
 
         entityEl = document.createElement('a-entity');
+
         if(View.edges[index].src != undefined) {
           imgEl = document.createElement('a-image', );
           imgEl.setAttribute("src", View.edges[index].src);
@@ -65,13 +68,16 @@ AFRAME.registerComponent('presenter', {
         });
         entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
         entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
+  
         entityEl.setAttribute('material', 'color', 'green');
+        entityEl.setAttribute('pathway_zoom','');
+
         sceneModel.appendChild(entityEl);
       }
     };
 
     drawEdges();
-    sceneModel.setAttribute('drag-rotate-component', '');
+   sceneModel.setAttribute('drag-rotate-component', '');
     sceneEl.appendChild(sceneModel);
   }
 
