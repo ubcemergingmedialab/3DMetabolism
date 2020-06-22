@@ -15,9 +15,10 @@ var View = (function() {
   }
 
   class Edge {
-    constructor(input, output) {
+    constructor(input, output, src) {
       this.input = input;
       this.output = output;
+      this.src = src;
     }
   }
 
@@ -63,7 +64,7 @@ var View = (function() {
     new Edge("glyceraldehyde_3_phosphate","_1_3_biphosphoglycerate"),
     new Edge("_1_3_biphosphoglycerate","_3_phosphoglycerate"),
     new Edge("_3_phosphoglycerate","_2_phosphoglycerate"),
-    new Edge("_2_phosphoglycerate","phosphoenolpyruvate_1"),
+    new Edge("_2_phosphoglycerate","phosphoenolpyruvate_1", "/img/pyruvate_carboxylase.png"),
     new Edge("phosphoenolpyruvate_1","oxaloacetate_1"),
     new Edge("oxaloacetate_1","malate_1"),
     new Edge("pyruvate_1","lactate"),
