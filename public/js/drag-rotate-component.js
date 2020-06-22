@@ -32,7 +32,14 @@ AFRAME.registerComponent('drag-rotate-component', {
       this.x_cord = event.clientX;
       this.y_cord = event.clientY;
     }
+  },
+  OnRemoveMouseDown: function() {
+    document.removeEventListener('mousemove', this.OnDocumentMouseMove.bind(this));
+  },
+  OnAddMouseDown: function() {
+    document.addEventListener('mousemove', this.OnDocumentMouseMove.bind(this));
   }
+    
   //define a function that de-register mousemove
   //define a funciton that re-registers mousemove
 });
