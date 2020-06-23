@@ -2,8 +2,9 @@ AFRAME.registerComponent('presenter', {
 
   init: function() {
     var sceneEl = document.querySelector('a-scene'); //parent scene
-    var sceneModel = document.createElement('a-entity'); //child entity
-
+    var sceneModel = document.createElement('a-entity'); //child entit
+    sceneEl.appendChild(sceneModel);
+    sceneModel.flushToDOM();
     sceneModel.setAttribute('id', 'sceneModel');
 
     for(let node in View.nodes){
@@ -26,38 +27,30 @@ AFRAME.registerComponent('presenter', {
       }
       else {
         textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: 0.2, zOffset: 1, aligh: 'left'});
-      }
-      entityEl.appendChild(textEl);
+      };
       sceneModel.appendChild(entityEl);
+      entityEl.appendChild(textEl)
     }
 
     var drawEdges = function() {
       for (var index = 0; index < View.edges.length; index++) {
-        var inputPosition, outputPosition, targetMag, targetPosition, targetVector, targetRotation, targetAngles, entityEl, negInputPosition, height;
+        let height, targetPosition, targetAngles
         try {
-          inputPosition = (new THREE.Vector3()).copy(View.nodes[View.edges[index].input].position); // A (have to copy so original doesnt change)
-          outputPosition = (new THREE.Vector3()).copy(View.nodes[View.edges[index].output].position); // B (ditto)
+          targetPosition = View.edges[index].GetPosition();
+          targetAngles = View.edges[index].GetRotation();
+          height = View.edges[index].GetHeight();
         } catch(e) {
           console.log("Error while reading view: " + e.message);
           continue;
         }
 
-        negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
-        targetMag = (new THREE.Vector3()).add(outputPosition).add(negInputPosition);
-        targetPosition = (new THREE.Vector3()).copy(targetMag).multiplyScalar(0.5).add(inputPosition) // midpoint
-
-        targetVector = (new THREE.Vector3()).add(outputPosition).add(negInputPosition).normalize(); // AB = B - A
-        targetRotation = (new THREE.Quaternion()).setFromUnitVectors(new THREE.Vector3(0, 1, 0), targetVector) // rotation from up vector to AB
-        targetAngles = (new THREE.Euler()).setFromQuaternion(targetRotation); //turn to euler to apply to aframe entity
-
-        height = targetMag.length();
-
-        entityEl = document.createElement('a-entity');
+        let entityEl = document.createElement('a-entity');
+        sceneModel.appendChild(entityEl);
 
         if(View.edges[index].src != undefined) {
           imgEl = document.createElement('a-image', );
           imgEl.setAttribute("src", View.edges[index].src);
-          imgEl.setAttribute("rotation", "0 0 0");
+          imgEl.setAttribute("rotation", "0 0 90");
           entityEl.appendChild(imgEl);
         }
 
@@ -71,15 +64,16 @@ AFRAME.registerComponent('presenter', {
   
         entityEl.setAttribute('material', 'color', 'green');
         //console.log(targetPosition)
-        entityEl.setAttribute('pathway_zoom', zoomPosition = targetPosition);
-
-        sceneModel.appendChild(entityEl);
+        var cameraRig = document.getElementById("camera-rig");
+        cameraRig.flushToDOM();
+        console.log(cameraRig.getAttribute("position"));
+        var pos = cameraRig.object3D.position;
+        var cameraPos = (new THREE.Vector3()).copy(pos);
+        entityEl.setAttribute('pathway_zoom', {zoomPosition: targetPosition,
+          edgeName: index, cameraPos: cameraPos});
+        
       }
     };
-
     drawEdges();
-   sceneModel.setAttribute('drag-rotate-component', '');
-    sceneEl.appendChild(sceneModel);
   }
-
 });

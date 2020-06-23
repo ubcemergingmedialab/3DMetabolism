@@ -8,9 +8,14 @@ AFRAME.registerComponent('drag-rotate-component', {
     this.ifMouseDown = false;
     this.x_cord = 0;
     this.y_cord = 0;
-    document.addEventListener('mousedown', this.OnDocumentMouseDown.bind(this));
-    document.addEventListener('mouseup', this.OnDocumentMouseUp.bind(this));
-    document.addEventListener('mousemove', this.OnDocumentMouseMove.bind(this));
+    this.OnDocumentMouseDown = this.OnDocumentMouseDown.bind(this);
+    this.OnDocumentMouseUp = this.OnDocumentMouseUp.bind(this);
+    this.OnDocumentMouseMove = this.OnDocumentMouseMove.bind(this);
+    this.OnRemoveMouseDown = this.OnRemoveMouseDown.bind(this);
+    this.OnAddMouseDown = this.OnAddMouseDown.bind(this);
+    document.addEventListener('mousedown', this.OnDocumentMouseDown);
+    document.addEventListener('mouseup', this.OnDocumentMouseUp);
+    document.addEventListener('mousemove', this.OnDocumentMouseMove);
   },
   OnDocumentMouseDown: function(event) {
     this.ifMouseDown = true;
@@ -34,10 +39,12 @@ AFRAME.registerComponent('drag-rotate-component', {
     }
   },
   OnRemoveMouseDown: function() {
-    document.removeEventListener('mousemove', this.OnDocumentMouseMove.bind(this));
+    //document.querySelector('a-camera').setAttribute("look-controls", "enabled: true")
+    document.removeEventListener('mousemove', this.OnDocumentMouseMove);
   },
   OnAddMouseDown: function() {
-    document.addEventListener('mousemove', this.OnDocumentMouseMove.bind(this));
+    //document.querySelector('a-camera').setAttribute("look-controls", "enabled: false")
+    document.addEventListener('mousemove', this.OnDocumentMouseMove);
   }
     
   //define a function that de-register mousemove
