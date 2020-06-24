@@ -20,6 +20,41 @@ var View = (function() {
       this.output = output;
       this.src = src;
     }
+
+    /**
+     * returns a THREE.Vector3 for edge's position, which should be midpoint between input and output
+     */
+    GetPosition() {
+      let inputPosition = View.nodes[this.input].position;
+      let outputPosition = View.nodes[this.output].position;
+      let negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
+
+      let targetMag = (new THREE.Vector3()).add(outputPosition).add(negInputPosition);
+      return (new THREE.Vector3()).copy(targetMag).multiplyScalar(0.5).add(inputPosition)
+    }
+
+    /**
+     * returns Euler that represents the rotation of the edges to span cylinder between input and output nodes
+     */
+    GetRotation() {
+      let inputPosition = View.nodes[this.input].position;
+      let outputPosition = View.nodes[this.output].position;
+      let negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
+
+      let targetVector = (new THREE.Vector3()).add(outputPosition).add(negInputPosition).normalize(); // AB = B - A
+      let targetRotation = (new THREE.Quaternion()).setFromUnitVectors(new THREE.Vector3(0, 1, 0), targetVector) // rotation from up vector to AB
+      return (new THREE.Euler()).setFromQuaternion(targetRotation); //turn to euler to apply to aframe entity
+    }
+    
+    /**
+     * returns height that is the distance between input and output nodes
+     */
+    GetHeight() {
+      let inputPosition = View.nodes[this.input].position;
+      let outputPosition = View.nodes[this.output].position;
+      let negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
+      return (new THREE.Vector3()).add(outputPosition).add(negInputPosition).length();
+    }
   }
 
   var nodes = {
@@ -27,9 +62,9 @@ var View = (function() {
     glucose_6_phosphate: new Node(new THREE.Vector3(0, 7, 0), "glucose 6-phosphate", ""),
     fructose_6_phosphate: new Node(new THREE.Vector3(0, 6, 0), "fructose 6-phosphate", ""),
     fructose_1_6_biphosphate: new Node(new THREE.Vector3(0, 5, 0), "fructose 1,6-biphosphate"),
-    dihydroxyacetone_phosphate: new Node(new THREE.Vector3(-1, 4.5, 0), "dihydroxiacetone phosphate", true),
+    dihydroxyacetone_phosphate: new Node(new THREE.Vector3(-1, 4.5, 0), "dihydroxyacetone phosphate", true),
     glycerol_3_phosphate: new Node(new THREE.Vector3(-2, 4, 0), "glycerol 3-phosphate", true),
-    glycerol: new Node(new THREE.Vector3(-2, 3, -1), "glycerol", true),
+    glycerol: new Node(new THREE.Vector3(-2, 3, 0), "glycerol", true),
     glyceraldehyde_3_phosphate: new Node(new THREE.Vector3(0, 4, 0), "glyceraldehyde 3-phosphate"),
     _1_3_biphosphoglycerate: new Node(new THREE.Vector3(0, 3, 0), "1,3-biphosphoglycerate"),
     _3_phosphoglycerate: new Node(new THREE.Vector3(0, 2, 0), "3-phosphoglycerate"),
@@ -53,7 +88,7 @@ var View = (function() {
 
 
   var edges = [
-    new Edge("glucose", "glucose_6_phosphate"),
+    new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png"),
     new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
     new Edge("fructose_6_phosphate", "fructose_1_6_biphosphate"),
     new Edge("fructose_1_6_biphosphate","dihydroxyacetone_phosphate"),
