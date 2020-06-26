@@ -1,5 +1,9 @@
 AFRAME.registerComponent('presenter', {
 
+  schema : {
+    activePathway: {type: 'string', default: 'gluconeogenesis'}
+  },
+
   init: function() {
     var sceneEl = document.querySelector('a-scene'); //parent scene
     var sceneModel = document.createElement('a-entity'); //child entit
@@ -31,50 +35,56 @@ AFRAME.registerComponent('presenter', {
       sceneModel.appendChild(entityEl);
       entityEl.appendChild(textEl)
     }
+    this.DrawEdges(View.pathways["gluconeogenesis"]);
+  },
 
-    var drawEdges = function() {
-      for (var index = 0; index < View.edges.length; index++) {
-        let height, targetPosition, targetAngles
-        try {
-          targetPosition = View.edges[index].GetPosition();
-          targetAngles = View.edges[index].GetRotation();
-          height = View.edges[index].GetHeight();
-        } catch(e) {
-          console.log("Error while reading view: " + e.message);
-          continue;
-        }
+  update: function() {
+    var data = this.data;
+    console.log("change in pathway");
+    document.querySelectorAll("[pathway_zoom]");
+    this.DrawEdges(View.pathways[data.activePathway]);
+  },
 
-        let entityEl = document.createElement('a-entity');
-        sceneModel.appendChild(entityEl);
-
-        if(View.edges[index].src != undefined) {
-          imgEl = document.createElement('a-image', );
-          imgEl.setAttribute("src", View.edges[index].src);
-          imgEl.setAttribute("rotation", "0 0 90");
-          entityEl.appendChild(imgEl);
-        }
-
-        entityEl.setAttribute('geometry', {
-          primitive: 'cylinder',
-          height: height,
-          radius: 0.1
-        });
-        entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
-        entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
-  
-        entityEl.setAttribute('material', 'color', 'green');
-        //console.log(targetPosition)
-        var cameraRig = document.getElementById("camera-rig");
-        cameraRig.flushToDOM();
-        console.log(cameraRig.getAttribute("position"));
-        var pos = cameraRig.object3D.position;
-        var cameraPos = (new THREE.Vector3()).copy(pos);
-        entityEl.setAttribute('pathway_zoom', {zoomPosition: targetPosition,
-          edgeName: index, cameraPos: cameraPos});
-        //entityEl.setAttribute('varying-transparency', '0.0');
-        
+  DrawEdges: function(currentEdges) {
+    for (var index = 0; index < currentEdges.length; index++) {
+      let height, targetPosition, targetAngles
+      try {
+        targetPosition = currentEdges[index].GetPosition();
+        targetAngles = currentEdges[index].GetRotation();
+        height = currentEdges[index].GetHeight();
+      } catch(e) {
+        console.log("Error while reading view: " + e.message);
+        continue;
       }
-    };
-    drawEdges();
+
+      let entityEl = document.createElement('a-entity');
+      sceneModel.appendChild(entityEl);
+
+      if(currentEdges[index].src != undefined) {
+        imgEl = document.createElement('a-image', );
+        imgEl.setAttribute("src", currentEdges[index].src);
+        imgEl.setAttribute("rotation", "0 0 90");
+        entityEl.appendChild(imgEl);
+      }
+
+      entityEl.setAttribute('geometry', {
+        primitive: 'cylinder',
+        height: height,
+        radius: 0.1
+      });
+      entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
+      entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
+
+      entityEl.setAttribute('material', 'color', 'green');
+      //console.log(targetPosition)
+      var cameraRig = document.getElementById("camera-rig");
+      cameraRig.flushToDOM();
+      console.log(cameraRig.getAttribute("position"));
+      var pos = cameraRig.object3D.position;
+      var cameraPos = (new THREE.Vector3()).copy(pos);
+      entityEl.setAttribute('pathway_zoom', {zoomPosition: targetPosition,
+        edgeName: index, cameraPos: cameraPos});
+      //entityEl.setAttribute('varying-transparency', '0.0');
+    }
   }
 });

@@ -75,19 +75,21 @@ var View = (function() {
     oxaloacetate_1: new Node(new THREE.Vector3(-3, -1, 0), "oxaloacetate"),
     malate_1: new Node(new THREE.Vector3(-4, -1, 0), "malate", true),
     pyruvate_2: new Node(new THREE.Vector3(0, -3, 0), "pyruvate"),
+    acetyl_coA: new Node(new THREE.Vector3(0, -4, 0), "acetyl-coA"),
     phosphoenolpyruvate_2: new Node(new THREE.Vector3(-1, -3, 0), "phosphoenolpyruvate", true),
-    oxaloacetate_2: new Node(new THREE.Vector3(-1, -4, 0), "oxaloacetate", true),
-    citrate: new Node(new THREE.Vector3(1, -4, 0), "citrate"),
-    isocitrate: new Node(new THREE.Vector3(2, -5, 0), "isocitrate"),
-    a_ketoglutarate: new Node(new THREE.Vector3(2, -6, 0), "a-ketoglutarate"),
-    succinyl_coa: new Node(new THREE.Vector3(1, -7, 0), "succinyl-CoA"),
-    succinate: new Node(new THREE.Vector3(-1, -7, 0), "succinate", true),
-    fumarate: new Node(new THREE.Vector3(-2, -6, 0), "fumarate", true),
-    malate_2: new Node(new THREE.Vector3(-2, -5, 0), "malate", true),
+    oxaloacetate_2: new Node(new THREE.Vector3(-1, -5, 0), "oxaloacetate", true),
+    citrate: new Node(new THREE.Vector3(1, -5, 0), "citrate"),
+    isocitrate: new Node(new THREE.Vector3(2, -6, 0), "isocitrate"),
+    a_ketoglutarate: new Node(new THREE.Vector3(2, -7, 0), "a-ketoglutarate"),
+    succinyl_coa: new Node(new THREE.Vector3(1, -8, 0), "succinyl-CoA"),
+    succinate: new Node(new THREE.Vector3(-1, -8, 0), "succinate", true),
+    fumarate: new Node(new THREE.Vector3(-2, -7, 0), "fumarate", true),
+    malate_2: new Node(new THREE.Vector3(-2, -6, 0), "malate", true),
   };
 
 
-  var edges = [
+
+  var gluco = [
     new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png"),
     new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
     new Edge("fructose_6_phosphate", "fructose_1_6_biphosphate"),
@@ -115,6 +117,35 @@ var View = (function() {
     new Edge("malate_2","oxaloacetate_2"),
   ];
 
+  var glycolysis = [
+    new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png"),
+    new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
+    new Edge("fructose_6_phosphate", "fructose_1_6_biphosphate"),
+    new Edge("fructose_1_6_biphosphate","dihydroxyacetone_phosphate"),
+    new Edge("dihydroxyacetone_phosphate","glyceraldehyde_3_phosphate"),
+    new Edge("fructose_1_6_biphosphate","glyceraldehyde_3_phosphate"),
+    new Edge("glyceraldehyde_3_phosphate","_1_3_biphosphoglycerate"),
+    new Edge("_1_3_biphosphoglycerate","_3_phosphoglycerate"),
+    new Edge("_3_phosphoglycerate","_2_phosphoglycerate"),
+    new Edge("pyruvate_2","acetyl_coA"),
+    new Edge("oxaloacetate_2","acetyl_coA"),
+    new Edge("citrate","acetyl_coA"),
+    new Edge("_2_phosphoglycerate","phosphoenolpyruvate_1", "/img/pyruvate_carboxylase.png"),
+    new Edge("oxaloacetate_2","citrate"),
+    new Edge("citrate","isocitrate"),
+    new Edge("isocitrate","a_ketoglutarate"),
+    new Edge("a_ketoglutarate","succinyl_coa"),
+    new Edge("succinyl_coa","succinate"),
+    new Edge("succinate","fumarate"),
+    new Edge("fumarate","malate_2"),
+    new Edge("malate_2","oxaloacetate_2"),
+  ];
+  
+  var pathways = {
+    "gluconeogenesis": gluco,
+    "glycolysis": glycolysis,
+  }
+
   var init = function() {
     //console.log(JSON.stringify(nodes));
   }
@@ -122,7 +153,7 @@ var View = (function() {
   return {
     init,
     nodes,
-    edges
+    pathways
   };
 })();
 
