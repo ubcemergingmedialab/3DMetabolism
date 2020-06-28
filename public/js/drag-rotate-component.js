@@ -39,23 +39,15 @@ AFRAME.registerComponent('drag-rotate-component', {
     }
   },
   GetQuaternion: function() {
-    let worldQuaternion = this.el.object3D.getWorldQuaternion(new THREE.Quaternion());
-
     return this.el.object3D.quaternion;
   },
   GetWorldPos: function() {
-    let worldPos = this.el.object3D.getWorldPosition();
-    return worldPos;
+    return this.el.object3D.position;
   },
   OnRemoveMouseDown: function() {
-    //document.querySelector('a-camera').setAttribute("look-controls", "enabled: true")
     document.removeEventListener('mousemove', this.OnDocumentMouseMove);
   },
   OnAddMouseDown: function() {
-    //document.querySelector('a-camera').setAttribute("look-controls", "enabled: false")
     document.addEventListener('mousemove', this.OnDocumentMouseMove);
   }
-    
-  //define a function that de-register mousemove
-  //define a funciton that re-registers mousemove
 });

@@ -5,8 +5,7 @@ AFRAME.registerComponent("pathway_zoom", {
         edgeName: {type: 'string'}
     },
     init: function() {
-        let zoom = 'into'; //zoom into or out of edge
-        var el = this.el; //the element this component is attached to
+        var el = this.el;
         var data = this.data;
         this.ActivateZoomIn = this.ActivateZoomIn.bind(this);
         this.ActivateZoomOut = this.ActivateZoomOut.bind(this);
@@ -17,30 +16,42 @@ AFRAME.registerComponent("pathway_zoom", {
     ActivateZoomIn: function(event) {
         console.log('zooming in');
         this.el.setAttribute('material', 'color', 'yellow'); 
-        let cameraGyro = document.getElementById('gyro').components['drag-rotate-component'];
-    
-        let zoomIn = this.data.zoomPosition.applyQuaternion(cameraGyro.GetQuaternion());
 
-        this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z + 1)); //todo: current issue to find a way to give this the midpoint
-        cameraGyro.OnRemoveMouseDown(); //not working
+        let cameraGyro = document.getElementById('gyro').components['drag-rotate-component'];
+        let gyroQuaternion = (new THREE.Quaternion()).copy(cameraGyro.GetQuaternion());
+        let zoomIn = this.data.zoomPosition.applyQuaternion(gyroQuaternion);
+
+        console.log(cameraGyro.GetWorldPos())
+        this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z + 1),new THREE.Vector3(0, .2, 0.25));
+        cameraGyro.OnRemoveMouseDown();
+
         this.el.removeEventListener('click', this.ActivateZoomIn);
         this.el.addEventListener('click', this.ActivateZoomOut);
     },
     ActivateZoomOut: function(event) {
         console.log('zooming out');
         this.el.setAttribute('material', 'color', 'green');
-        this.MoveCameraRig(new THREE.Vector3(1, -1.2, 5)); //todo: give this function the proper initial value
+        this.MoveCameraRig(new THREE.Vector3(1, -1.2, 5), new THREE.Vector3(0, 0, 0)); //todo: give this function the proper initial value
         document.getElementById('gyro').components['drag-rotate-component'].OnAddMouseDown(); //not working
         this.el.removeEventListener('click', this.ActivateZoomOut);
         this.el.addEventListener('click', this.ActivateZoomIn);
     },
-    MoveCameraRig: function(vec3) {
+    MoveCameraRig: function(position, rotation) {
+        let rotationDeg = new THREE.Vector3(rotation.x * (180 / Math.PI), rotation.y * (180 / Math.PI),rotation.z * (180 / Math.PI))
         document.getElementById('camera-rig').setAttribute('animation',{
             property: 'position',
-            to: vec3.x + " " + vec3.y + " " + vec3.z,
+            to: position.x + " " + position.y + " " + position.z,
             dur: 1000,
             easing: 'linear',
             loop: false
         });
+        document.getElementById('camera-rig').setAttribute('animation__2', {
+            property: 'rotation',
+            to: rotationDeg.x + " " + rotationDeg.y + " " + rotationDeg.z,
+            dur: 1000,
+            easing: 'linear',
+            loop: false
+
+        }); 
     }
 });
