@@ -28,11 +28,14 @@ AFRAME.registerComponent("pathway_zoom", {
     ActivateZoomIn: function(event) {
         console.log('zooming in');
         this.el.setAttribute('material', 'color', 'yellow'); 
-        let zoomIn = this.data.zoomPosition;
+        let cameraGyro = document.getElementById('gyro').components['drag-rotate-component'];
+    
+        let zoomIn = this.data.zoomPosition.applyQuaternion(cameraGyro.GetQuaternion());
+        console.log(zoomIn)
+
         this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z + 1)); //todo: current issue to find a way to give this the midpoint
-       // moveCameraRig(zoomPosition);
-        console.log(zoomIn);
-        document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown(); //not working
+        console.log(cameraGyro.GetMatrix());
+        cameraGyro.OnRemoveMouseDown(); //not working
         this.el.removeEventListener('click', this.ActivateZoomIn);
         this.el.addEventListener('click', this.ActivateZoomOut);
     },

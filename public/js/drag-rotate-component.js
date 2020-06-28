@@ -38,6 +38,15 @@ AFRAME.registerComponent('drag-rotate-component', {
       this.y_cord = event.clientY;
     }
   },
+  GetQuaternion: function() {
+    let worldQuaternion = this.el.object3D.getWorldQuaternion(new THREE.Quaternion());
+
+    return this.el.object3D.quaternion;
+  },
+  GetWorldPos: function() {
+    let worldPos = this.el.object3D.getWorldPosition(new THREE.Vector3());
+    return worldPos;
+  },
   OnRemoveMouseDown: function() {
     //document.querySelector('a-camera').setAttribute("look-controls", "enabled: true")
     document.removeEventListener('mousemove', this.OnDocumentMouseMove);
