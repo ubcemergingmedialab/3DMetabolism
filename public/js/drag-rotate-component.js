@@ -44,7 +44,7 @@ AFRAME.registerComponent('drag-rotate-component', {
     return this.el.object3D.quaternion;
   },
   GetWorldPos: function() {
-    let worldPos = this.el.object3D.getWorldPosition(new THREE.Vector3());
+    let worldPos = this.el.object3D.getWorldPosition();
     return worldPos;
   },
   OnRemoveMouseDown: function() {
