@@ -45,7 +45,7 @@ var View = (function() {
       let targetRotation = (new THREE.Quaternion()).setFromUnitVectors(new THREE.Vector3(0, 1, 0), targetVector) // rotation from up vector to AB
       return (new THREE.Euler()).setFromQuaternion(targetRotation); //turn to euler to apply to aframe entity
     }
-    
+
     /**
      * returns height that is the distance between input and output nodes
      */
@@ -61,7 +61,7 @@ var View = (function() {
     glucose: new Node(new THREE.Vector3(0, 8, 0), "glucose", ""),
     glucose_6_phosphate: new Node(new THREE.Vector3(0, 7, 0), "glucose 6-phosphate", ""),
     fructose_6_phosphate: new Node(new THREE.Vector3(0, 6, 0), "fructose 6-phosphate", ""),
-    fructose_1_6_biphosphate: new Node(new THREE.Vector3(0, 5, 0), "fructose 1,6-biphosphate"),
+    fructose_1_6_bisphosphate: new Node(new THREE.Vector3(0, 5, 0), "fructose 1,6-bisphosphate"),
     dihydroxyacetone_phosphate: new Node(new THREE.Vector3(-1, 4.5, 0), "dihydroxyacetone phosphate", true),
     glycerol_3_phosphate: new Node(new THREE.Vector3(-2, 4, 0), "glycerol 3-phosphate", true),
     glycerol: new Node(new THREE.Vector3(-2, 3, 0), "glycerol", true),
@@ -92,12 +92,12 @@ var View = (function() {
   var gluco = [
     new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png"),
     new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
-    new Edge("fructose_6_phosphate", "fructose_1_6_biphosphate"),
-    new Edge("fructose_1_6_biphosphate","dihydroxyacetone_phosphate"),
+    new Edge("fructose_6_phosphate", "fructose_1_6_bisphosphate"),
+    new Edge("fructose_1_6_bisphosphate","dihydroxyacetone_phosphate"),
     new Edge("glycerol_3_phosphate","glycerol"),
     new Edge("dihydroxyacetone_phosphate","glyceraldehyde_3_phosphate"),
     new Edge("dihydroxyacetone_phosphate","glycerol_3_phosphate"),
-    new Edge("fructose_1_6_biphosphate","glyceraldehyde_3_phosphate"),
+    new Edge("fructose_1_6_bisphosphate","glyceraldehyde_3_phosphate"),
     new Edge("glyceraldehyde_3_phosphate","_1_3_biphosphoglycerate"),
     new Edge("_1_3_biphosphoglycerate","_3_phosphoglycerate"),
     new Edge("_3_phosphoglycerate","_2_phosphoglycerate"),
@@ -120,10 +120,10 @@ var View = (function() {
   var glycolysis = [
     new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png"),
     new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
-    new Edge("fructose_6_phosphate", "fructose_1_6_biphosphate"),
-    new Edge("fructose_1_6_biphosphate","dihydroxyacetone_phosphate"),
+    new Edge("fructose_6_phosphate", "fructose_1_6_bisphosphate"),
+    new Edge("fructose_1_6_bisphosphate","dihydroxyacetone_phosphate"),
     new Edge("dihydroxyacetone_phosphate","glyceraldehyde_3_phosphate"),
-    new Edge("fructose_1_6_biphosphate","glyceraldehyde_3_phosphate"),
+    new Edge("fructose_1_6_bisphosphate","glyceraldehyde_3_phosphate"),
     new Edge("glyceraldehyde_3_phosphate","_1_3_biphosphoglycerate"),
     new Edge("_1_3_biphosphoglycerate","_3_phosphoglycerate"),
     new Edge("_3_phosphoglycerate","_2_phosphoglycerate"),
@@ -140,7 +140,7 @@ var View = (function() {
     new Edge("fumarate","malate_2"),
     new Edge("malate_2","oxaloacetate_2"),
   ];
-  
+
   var pathways = {
     "gluconeogenesis": gluco,
     "glycolysis": glycolysis,
