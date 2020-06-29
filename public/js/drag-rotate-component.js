@@ -41,8 +41,8 @@ AFRAME.registerComponent('drag-rotate-component', {
   GetQuaternion: function() {
     return this.el.object3D.quaternion;
   },
-  GetWorldPos: function() {
-    return this.el.object3D.position;
+  GetRotation: function() {
+    return this.el.object3D.rotation;
   },
   OnRemoveMouseDown: function() {
     document.removeEventListener('mousemove', this.OnDocumentMouseMove);

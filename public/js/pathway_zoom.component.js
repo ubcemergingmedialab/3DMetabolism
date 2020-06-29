@@ -16,12 +16,19 @@ AFRAME.registerComponent("pathway_zoom", {
     ActivateZoomIn: function(event) {
         console.log('zooming in');
         this.el.setAttribute('material', 'color', 'yellow'); 
+        let edge = View.edges[this.data.edgeName];
 
         let cameraGyro = document.getElementById('gyro').components['drag-rotate-component'];
         let gyroQuaternion = (new THREE.Quaternion()).copy(cameraGyro.GetQuaternion());
         let zoomIn = this.data.zoomPosition.applyQuaternion(gyroQuaternion);
 
-        this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z + 1),new THREE.Vector3(0, 0, Math.PI/2));
+        /* todo- fix this rotation */
+        let rotationX = -edge.GetRotation().x - cameraGyro.GetRotation().x;
+        let rotationY = -edge.GetRotation().y - cameraGyro.GetRotation().y;
+        let rotationZ = -edge.GetRotation().z - cameraGyro.GetRotation().z;
+        let properRotation = new THREE.Vector3(rotationX, rotationY, Math.PI/2 - rotationZ).applyQuaternion(gyroQuaternion);
+
+        this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z + 1),properRotation);
         cameraGyro.OnRemoveMouseDown();
 
         this.el.removeEventListener('click', this.ActivateZoomIn);
@@ -31,14 +38,16 @@ AFRAME.registerComponent("pathway_zoom", {
     ActivateZoomOut: function(event) {
         console.log('zooming out');
         this.el.setAttribute('material', 'color', 'green');
-        this.MoveCameraRig(new THREE.Vector3(1, -1.2, 5), new THREE.Vector3(0, 0, 0)); //todo: give this function the proper initial value
+        this.MoveCameraRig(new THREE.Vector3(1, -1.2, 5), new THREE.Vector3(0, 0, 0));
         document.getElementById('gyro').components['drag-rotate-component'].OnAddMouseDown(); 
         this.el.removeEventListener('click', this.ActivateZoomOut);
         this.el.addEventListener('click', this.ActivateZoomIn);
     },
 
     MoveCameraRig: function(position, rotation) {
-        let rotationDeg = new THREE.Vector3(rotation.x * (180 / Math.PI), rotation.y * (180 / Math.PI),rotation.z * (180 / Math.PI))
+        let radToDeg = 180 / Math.PI;
+        let rotationDeg = new THREE.Vector3(rotation.x * radToDeg, rotation.y * radToDeg,rotation.z * radToDeg)
+
         document.getElementById('camera-rig').setAttribute('animation',{
             property: 'position',
             to: position.x + " " + position.y + " " + position.z,
