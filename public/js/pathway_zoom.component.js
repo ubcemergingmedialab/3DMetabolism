@@ -20,7 +20,31 @@ AFRAME.registerComponent("pathway_zoom", {
 
         let cameraGyro = document.getElementById('gyro').components['drag-rotate-component'];
         let gyroQuaternion = (new THREE.Quaternion()).copy(cameraGyro.GetQuaternion());
-        let zoomIn = this.data.zoomPosition.applyQuaternion(gyroQuaternion);
+        let inputPosition = (new THREE.Vector3()).copy(View.nodes[edge.input].position);
+        let outputPosition = (new THREE.Vector3()).copy(View.nodes[edge.output].position);
+        let negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
+        let edgeVector = (new THREE.Vector3()).add(outputPosition).add(negInputPosition);
+
+        let cameraRotation = new THREE.Quaternion();
+        document.getElementById("camera-rig").object3D.getWorldQuaternion(cameraRotation);
+        let edgeQuaternion = new THREE.Quaternion();
+        this.el.object3D.getWorldQuaternion(edgeQuaternion);
+        cameraRotation.slerp(edgeQuaternion, 1);
+
+        //let rotation = (new THREE.Quaternion()).setFromUnitVectors(cameraRotation, edgeVector);
+        let rotationEuler = (new THREE.Euler()).setFromQuaternion(cameraRotation);
+
+        //console.log("edge angle: " + JSON.stringify(edgeAngle));
+
+        let zoomIn = new THREE.Vector3()
+        this.el.object3D.getWorldPosition(zoomIn);
+        console.log(JSON.stringify(zoomIn));
+        let cameraOffset = new THREE.Vector3();
+        document.getElementById("camera-rig").object3D.getWorldPosition(cameraOffset);
+        cameraOffset.add(new THREE.Vector3(-1, 1.2, -5));
+        console.log(JSON.stringify(cameraOffset));
+        zoomIn.add(cameraOffset.negate());
+        console.log(zoomIn);
 
         /* todo- fix this rotation */
         let rotationX = -edge.GetRotation().x - cameraGyro.GetRotation().x;
@@ -28,7 +52,8 @@ AFRAME.registerComponent("pathway_zoom", {
         let rotationZ = -edge.GetRotation().z - cameraGyro.GetRotation().z;
         let properRotation = new THREE.Vector3(rotationX, rotationY, Math.PI/2 - rotationZ).applyQuaternion(gyroQuaternion);
 
-        this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z + 1),properRotation);
+        //this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z + 1),properRotation);
+        this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z), rotationEuler);
         cameraGyro.OnRemoveMouseDown();
 
         this.el.removeEventListener('click', this.ActivateZoomIn);
@@ -54,6 +79,7 @@ AFRAME.registerComponent("pathway_zoom", {
             easing: 'linear',
             loop: false
         });
+        
         document.getElementById('camera-rig').setAttribute('animation__2', {
             property: 'rotation',
             to: rotationDeg.x + " " + rotationDeg.y + " " + rotationDeg.z,
