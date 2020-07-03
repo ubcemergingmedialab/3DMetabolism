@@ -38,6 +38,9 @@ AFRAME.registerComponent('drag-rotate-component', {
       this.y_cord = event.clientY;
     }
   },
+  GetPosition: function() {
+    return this.el.object3D.position;
+  },
   GetQuaternion: function() {
     return this.el.object3D.quaternion;
   },
