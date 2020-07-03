@@ -38,8 +38,8 @@ AFRAME.registerComponent("pathway_zoom", {
         // rotationMatrix.lookAt(cameraGyro.GetPosition(), edgeVector, perpendicular)
         // cameraRotation.slerp(edgeQuaternion.setFromRotationMatrix(rotationMatrix), 1);
 
-        document.getElementById("gyro").object3D.lookAt(cameraGyro.GetPosition(), edge.GetPosition, 0)
-        document.getElementById("camera-rig").object3D.lookAt(document.getElementById('camera-rig').object3D.position, edge.GetPosition, 0)
+        document.getElementById("gyro").object3D.lookAt(cameraGyro.GetPosition(), edge.GetPosition, perpendicular)
+        document.getElementById("camera-rig").object3D.lookAt(document.getElementById('camera-rig').object3D.position, edge.GetPosition, perpendicular)
 
         let rotationEuler = (new THREE.Euler()).setFromQuaternion(cameraRotation);
 
