@@ -9,6 +9,7 @@ AFRAME.registerComponent('presenter', {
 
     for(let node in View.nodes){
       let entityEl = document.createElement('a-entity');
+      entityEl.setAttribute("id", node);
       let curNode = View.nodes[node];
       entityEl.setAttribute('geometry', {
         primitive: 'sphere',
@@ -59,6 +60,7 @@ AFRAME.registerComponent('presenter', {
           height: height,
           radius: 0.1
         });
+        entityEl.setAttribute('id', index);
         entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
         entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
   
