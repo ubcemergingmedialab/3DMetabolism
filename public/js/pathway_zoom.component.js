@@ -16,6 +16,7 @@ AFRAME.registerComponent("pathway_zoom", {
     ActivateZoomIn: function(event) {
         let edge = View.edges[this.data.edgeName]
         console.log('zooming in');
+
         this.el.setAttribute('material', 'color', 'yellow'); 
         let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
         edgeCamera.setAttribute('camera','active',true);

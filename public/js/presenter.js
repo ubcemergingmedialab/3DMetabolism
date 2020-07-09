@@ -47,9 +47,12 @@ AFRAME.registerComponent('presenter', {
         let entityEl = document.createElement('a-entity');
         let cameraEl = document.createElement('a-camera');
         let cameraRigEdge = document.createElement('a-entity');
-        cameraRigEdge.setAttribute('id',index+'_rig')
+
+        cameraRigEdge.setAttribute('id',index+'_rig'); 
         cameraEl.setAttribute('id', index+'-camera');
         entityEl.setAttribute('id',index);
+
+        cameraEl.setAttribute('look-controls','enabled',false);
 
         cameraRigEdge.appendChild(cameraEl);
         sceneModel.appendChild(cameraRigEdge)
@@ -74,10 +77,10 @@ AFRAME.registerComponent('presenter', {
         let cameraOffset  = new THREE.Vector3()
         entityEl.object3D.getWorldPosition(cameraOffset)
 
-        cameraOffset.add((new THREE.Vector3(0,0,0)))
+        cameraOffset.add((new THREE.Vector3(0,0,0.10)))
 
         cameraRigEdge.object3D.position.set(cameraOffset.x, cameraOffset.y, cameraOffset.z);
-        cameraRigEdge.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
+        cameraRigEdge.object3D.rotation.set(-targetAngles.x, -targetAngles.y, Math.PI/2 - targetAngles.z);
 
   
         entityEl.setAttribute('material', 'color', 'green');
