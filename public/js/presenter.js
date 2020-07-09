@@ -45,6 +45,14 @@ AFRAME.registerComponent('presenter', {
         }
 
         let entityEl = document.createElement('a-entity');
+        let cameraEl = document.createElement('a-camera');
+        let cameraRigEdge = document.createElement('a-entity');
+        cameraRigEdge.setAttribute('id',index+'_rig')
+        cameraEl.setAttribute('id', index+'-camera');
+        entityEl.setAttribute('id',index);
+
+        cameraRigEdge.appendChild(cameraEl);
+        sceneModel.appendChild(cameraRigEdge)
         sceneModel.appendChild(entityEl);
 
         if(View.edges[index].src != undefined) {
@@ -59,8 +67,18 @@ AFRAME.registerComponent('presenter', {
           height: height,
           radius: 0.1
         });
+
         entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
         entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
+
+        let cameraOffset  = new THREE.Vector3()
+        entityEl.object3D.getWorldPosition(cameraOffset)
+
+        cameraOffset.add((new THREE.Vector3(0,0,0)))
+
+        cameraRigEdge.object3D.position.set(cameraOffset.x, cameraOffset.y, cameraOffset.z);
+        cameraRigEdge.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
+
   
         entityEl.setAttribute('material', 'color', 'green');
         //console.log(targetPosition)

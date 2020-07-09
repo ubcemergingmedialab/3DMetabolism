@@ -21,6 +21,10 @@ var View = (function() {
       this.src = src;
     }
 
+    GetObject3D() {
+      return this.object3D;
+    }
+
     /**
      * returns a THREE.Vector3 for edge's position, which should be midpoint between input and output
      */

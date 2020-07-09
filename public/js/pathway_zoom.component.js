@@ -14,51 +14,27 @@ AFRAME.registerComponent("pathway_zoom", {
     },
 
     ActivateZoomIn: function(event) {
+        let edge = View.edges[this.data.edgeName]
         console.log('zooming in');
         this.el.setAttribute('material', 'color', 'yellow'); 
+        let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
+        edgeCamera.setAttribute('camera','active',true);
 
-        let edge = View.edges[this.data.edgeName];
-        let gyroDragRotate = document.getElementById('gyro').components['drag-rotate-component'];
-        let cameraGyro = document.getElementById("gyro");
-        let cameraRig = document.getElementById('camera-rig');
-
-        cameraPos = (new THREE.Vector3()).copy(cameraRig.object3D.position)
-
-        let inputPosition = (new THREE.Vector3()).copy(View.nodes[edge.input].position);
-        let outputPosition = (new THREE.Vector3()).copy(View.nodes[edge.output].position);
-        let negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
-        let edgeVector = (new THREE.Vector3()).add(outputPosition).add(negInputPosition);
-        let perpendicular = edgeVector.cross(this.el.object3D.up)
-
-        let cameraRotation = new THREE.Quaternion();
-        cameraRig.object3D.getWorldQuaternion(cameraRotation);
-        let edgeQuaternion = new THREE.Quaternion();
-        this.el.object3D.getWorldQuaternion(edgeQuaternion);
-
-        cameraGyro.object3D.lookAt(gyroDragRotate.GetPosition(), edge.GetPosition(), perpendicular)
-        cameraRig.object3D.lookAt(cameraRig.object3D.position, edge.GetPosition, perpendicular)
-
-        let zoomIn = new THREE.Vector3()
-        this.el.object3D.getWorldPosition(zoomIn);
-
-        document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown(); 
-        this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z), edge.GetRotation(), new THREE.Vector3(0, 0, 90));
-
-        let eventPlane = this.CreateEventPlane(edge);
+        eventPlane = this.CreateEventPlane(edge);
 
         this.el.removeEventListener('click', this.ActivateZoomIn);
         eventPlane.addEventListener('click', this.ActivateZoomOut);
     },
 
     ActivateZoomOut: function(event) {
-        let cameraGyro = document.getElementById('gyro').components['drag-rotate-component'];
+        let mainCamera = document.getElementById('main-camera');
+
+        mainCamera.setAttribute('camera','active',true);
 
         console.log('zooming out');
         this.el.setAttribute('material', 'color', 'green');
 
         document.getElementById('gyro').components['drag-rotate-component'].OnAddMouseDown(); 
-        //this.MoveCameraRig(new THREE.Vector3(1, -1.2, 5), cameraGyro.GetRotation(), new THREE.Vector3(0, 0, 0));
-        this.MoveCameraRig(cameraPos, cameraGyro.GetRotation(), new THREE.Vector3(0, 0, 0));
 
         eventPlane.removeEventListener('click', this.ActivateZoomOut);
         this.el.addEventListener('click', this.ActivateZoomIn);
@@ -68,6 +44,7 @@ AFRAME.registerComponent("pathway_zoom", {
     CreateEventPlane: function(edge) {
         let sceneModel = document.getElementById('sceneModel');
         let entityEl = document.createElement('a-entity');
+        entityEl.setAttribute('id','eventPlane');
 
         entityEl.setAttribute('geometry', {
             primitive: 'box',
@@ -78,8 +55,9 @@ AFRAME.registerComponent("pathway_zoom", {
 
         entityEl.object3D.position.copy(edge.GetPosition());
         entityEl.object3D.rotation.copy(edge.GetRotation());
-        entityEl.setAttribute('material', 'opacity', '0.0');
+        entityEl.setAttribute('material', 'opacity', '0.5');
         entityEl.setAttribute('id','eventPlane');
+        entityEl.setAttribute('material','color','red')
 
         sceneModel.appendChild(entityEl);
         return entityEl;
@@ -108,12 +86,12 @@ AFRAME.registerComponent("pathway_zoom", {
             loop: false
         });
         
-        document.getElementById('camera-rig').setAttribute('animation__2', {
-            property: 'rotation',
-            to: finalRotation.x + " " + finalRotation.y + " " + finalRotation.z,
-            easing: 'linear',
-            loop: false
+        // document.getElementById('camera-rig').setAttribute('animation__2', {
+        //     property: 'rotation',
+        //     to: finalRotation.x + " " + finalRotation.y + " " + finalRotation.z,
+        //     easing: 'linear',
+        //     loop: false
 
-        }); 
+        // }); 
     }
 });
