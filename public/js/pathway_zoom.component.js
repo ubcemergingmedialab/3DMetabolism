@@ -20,7 +20,7 @@ AFRAME.registerComponent("pathway_zoom", {
         let edge = View.edges[this.data.edgeName];
         let gyroDragRotate = document.getElementById('gyro').components['drag-rotate-component'];
         let cameraGyro = document.getElementById("gyro");
-        let cameraRig = document.getElementById('camera-rig');
+        cameraRig = document.getElementById('camera-rig');
 
         cameraPos = (new THREE.Vector3()).copy(cameraRig.object3D.position)
 
@@ -35,8 +35,17 @@ AFRAME.registerComponent("pathway_zoom", {
         let edgeQuaternion = new THREE.Quaternion();
         this.el.object3D.getWorldQuaternion(edgeQuaternion);
 
-        cameraGyro.object3D.lookAt(gyroDragRotate.GetPosition(), edge.GetPosition(), perpendicular)
-        cameraRig.object3D.lookAt(cameraRig.object3D.position, edge.GetPosition, perpendicular)
+        // cameraGyro.object3D.lookAt(gyroDragRotate.GetPosition(), edge.GetPosition(), perpendicular)
+        // cameraRig.object3D.lookAt(cameraRig.object3D.position, edge.GetPosition, perpendicular)
+
+        let vec = (new THREE.Vector3())
+        this.el.object3D.getWorldPosition(vec)
+
+        let vec2 = (new THREE.Vector3())
+        cameraRig.object3D.getWorldPosition(vec2)
+        cameraPos = (new THREE.Vector3()).copy(vec2)
+
+        cameraRig.object3D.translateOnAxis(vec,vec.distanceTo(vec2))
 
         let zoomIn = new THREE.Vector3()
         this.el.object3D.getWorldPosition(zoomIn);
@@ -52,6 +61,16 @@ AFRAME.registerComponent("pathway_zoom", {
 
     ActivateZoomOut: function(event) {
         let cameraGyro = document.getElementById('gyro').components['drag-rotate-component'];
+
+
+        let vec = (new THREE.Vector3())
+        this.el.object3D.getWorldPosition(vec)
+
+        let vec2 = (new THREE.Vector3())
+        cameraRig.object3D.getWorldPosition(vec2)
+
+        cameraRig.object3D.translateOnAxis(cameraPos,-cameraPos.distanceTo(vec2))
+
 
         console.log('zooming out');
         this.el.setAttribute('material', 'color', 'green');
