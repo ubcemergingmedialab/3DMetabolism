@@ -21,12 +21,29 @@ AFRAME.registerComponent("pathway_zoom", {
         let cameraGyro = document.getElementById("gyro");
         cameraRig = document.getElementById('camera-rig');
 
-        cameraPos = (new THREE.Vector3()).copy(cameraRig.object3D.position)
+        let localEdgePosition = new THREE.Vector3();
+        this.el.object3D.getWorldPosition(localEdgePosition);
+        cameraGyro.object3D.worldToLocal(localEdgePosition);
+
+        cameraPos = new THREE.Vector3()//localEdgePosition.x + this.data., this.data.cameraPos- localEdgePosition.)
+        let edgeRotation = new THREE.Matrix4()
+        edgeRotation.extractRotation(this.el.object3D.matrix);
+        let targetForward = new THREE.Vector3(0, 0, -1);
+        targetForward.applyMatrix4(edgeRotation).normalize();
+        let targetUp = new THREE.Vector3(1, 0, 0);
+        targetUp.applyMatrix4(edgeRotation).normalize();
+
+        cameraGyro.object3D.worldToLocal(targetUp);
+        cameraGyro.object3D.worldToLocal(targetForward);
+
+        targetCross = new THREE.Vector3().copy(targetUp);
+        targetCross.cross(targetForward);
 
         let inputPosition = (new THREE.Vector3()).copy(View.nodes[edge.input].position);
         let outputPosition = (new THREE.Vector3()).copy(View.nodes[edge.output].position);
         let negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
         let edgeVector = (new THREE.Vector3()).add(outputPosition).add(negInputPosition);
+
         let cameraRotation = new THREE.Quaternion();
         cameraRig.object3D.getWorldQuaternion(cameraRotation);
         let edgeQuaternion = new THREE.Quaternion();
@@ -46,17 +63,42 @@ AFRAME.registerComponent("pathway_zoom", {
                                                edgeVecCross.y,edgeVecUp.y,edgeVecNorm.y,0,
                                                edgeVecCross.z,edgeVecUp.z,edgeVecNorm.z,0,
                                                0,0,0,0);
-        
-        let camRigVec = (new THREE.Vector3())
-        cameraRig.object3D.getWorldPosition(camRigVec)
-        let camRigVecNorm = camRigVec.normalize()
-        let camRigVecUp = (camRigVecNorm.cross(cameraRig.object3D.up)).cross(camRigVecNorm);
-        let camRigVecCross = camRigVecNorm.cross(camRigVecUp)
 
-        camRigMatrix = (new THREE.Matrix4()).set(camRigVecCross.x, camRigVecUp.x,camRigVecNorm.x,0,
-                                                 camRigVecCross.y,camRigVecUp.y,camRigVecNorm.y,0,
-                                                 camRigVecCross.z,camRigVecUp.z,camRigVecNorm.z,0,
-                                                 0,0,0,0);
+        
+        let camRotation = new THREE.Matrix4();
+        camRotation.extractRotation(cameraRig.object3D.matrix);
+
+        let cameraUp = new THREE.Vector3(0, 1, 0);
+        cameraUp.applyMatrix4(camRotation).normalize();
+        let cameraForward = new THREE.Vector3(0, 0, -1);
+        cameraForward.applyMatrix4(camRotation).normalize();
+        let camCross = (new THREE.Vector3()).copy(cameraForward);
+        camCross.cross(cameraUp).normalize();
+
+        
+
+        //let camRigOrt = camRigVec.normalize()
+        //let camRigVecUp = (camRigVecNorm.cross(cameraRig.object3D.up)).cross(camRigVecNorm);
+        //let camRigVecCross = camRigVecNorm.cross(camRigVecUp)
+
+        camRigMatrix = (new THREE.Matrix4()).set(cameraUp.x, cameraForward.x,camCross.x, 0,
+                                                 cameraUp.y,cameraForward.y,camCross.y, 0,
+                                                 cameraUp.z,cameraForward.z,camCross.z, 0,
+                                                 0, 0, 0, 1);
+
+        targetMatrix = (new THREE.Matrix4()).set(targetUp.x, targetForward.x, targetCross.x, 0,
+                                                targetUp.y, targetForward.y, targetCross.y, 0,
+                                                targetUp.z, targetForward.z, targetCross.z, 0,
+                                                0, 0, 0, 1);
+
+        console.log(JSON.stringify(camRigMatrix));
+        console.log(JSON.stringify(targetMatrix));
+
+        rotationMatrix = (new THREE.Matrix4());
+        inverseCamRig = new THREE.Matrix4().getInverse(camRigMatrix);
+        rotationMatrix.multiply(targetMatrix * inverseCamRig);
+
+        cameraRig.object3D.setRotationFromMatrix(rotationMatrix);
 
         let  camGyroVec = (new THREE.Vector3())
         cameraGyro.object3D.getWorldPosition(camGyroVec)
@@ -75,24 +117,21 @@ AFRAME.registerComponent("pathway_zoom", {
         let camGyroMatrixInv = (new THREE.Matrix4()).getInverse(camGyroMatrix)
                             
 
-        let vec = (new THREE.Vector3())
-        this.el.object3D.getWorldPosition(vec)
-
         let vec2 = (new THREE.Vector3())
         cameraRig.object3D.getWorldPosition(vec2)
         cameraPos = (new THREE.Vector3()).copy(vec2)
 
-        cameraRig.object3D.setRotationFromMatrix(edgeMatrix.multiply(camRigMatrixInv))
-        cameraGyro.object3D.setRotationFromMatrix(edgeMatrix.multiply(camGyroMatrixInv))
+       // cameraRig.object3D.setRotationFromMatrix(edgeMatrix.multiply(camRigMatrixInv))
+       // cameraGyro.object3D.setRotationFromMatrix(edgeMatrix.multiply(camGyroMatrixInv))
 
-        cameraRig.object3D.translateOnAxis(vec,vec.distanceTo(vec2))
+        //cameraRig.object3D.translateOnAxis(vec,vec.distanceTo(vec2))
 
 
         let zoomIn = new THREE.Vector3()
         this.el.object3D.getWorldPosition(zoomIn);
 
-        document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown(); 
-        this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z), edge.GetRotation(), new THREE.Vector3(0, 0, 90));
+      //  document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown(); 
+       // this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z), edge.GetRotation(), new THREE.Vector3(0, 0, 90));
 
         let eventPlane = this.CreateEventPlane(edge);
 
