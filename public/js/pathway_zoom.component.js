@@ -18,7 +18,6 @@ AFRAME.registerComponent("pathway_zoom", {
         this.el.setAttribute('material', 'color', 'yellow'); 
 
         let edge = View.edges[this.data.edgeName];
-        let gyroDragRotate = document.getElementById('gyro').components['drag-rotate-component'];
         let cameraGyro = document.getElementById("gyro");
         cameraRig = document.getElementById('camera-rig');
 
@@ -28,15 +27,53 @@ AFRAME.registerComponent("pathway_zoom", {
         let outputPosition = (new THREE.Vector3()).copy(View.nodes[edge.output].position);
         let negInputPosition = (new THREE.Vector3()).copy(inputPosition).negate();
         let edgeVector = (new THREE.Vector3()).add(outputPosition).add(negInputPosition);
-        let perpendicular = edgeVector.cross(this.el.object3D.up)
-
         let cameraRotation = new THREE.Quaternion();
         cameraRig.object3D.getWorldQuaternion(cameraRotation);
         let edgeQuaternion = new THREE.Quaternion();
         this.el.object3D.getWorldQuaternion(edgeQuaternion);
 
+        let edgeVecNorm = ((new THREE.Vector3()).copy(edgeVector)).normalize()
+        console.log(edgeVecNorm)
+        let edgeVecUp = (edgeVecNorm.cross(document.getElementById(this.data.edgeName).object3D.up)).cross(edgeVecNorm)
+        let edgeVecCross = edgeVecNorm.cross(edgeVecUp)
+
         // cameraGyro.object3D.lookAt(gyroDragRotate.GetPosition(), edge.GetPosition(), perpendicular)
         // cameraRig.object3D.lookAt(cameraRig.object3D.position, edge.GetPosition, perpendicular)
+
+
+
+        edgeMatrix = (new THREE.Matrix4()).set(edgeVecCross.x,edgeVecUp.x,edgeVecNorm.x,0,
+                                               edgeVecCross.y,edgeVecUp.y,edgeVecNorm.y,0,
+                                               edgeVecCross.z,edgeVecUp.z,edgeVecNorm.z,0,
+                                               0,0,0,0);
+        
+        let camRigVec = (new THREE.Vector3())
+        cameraRig.object3D.getWorldPosition(camRigVec)
+        let camRigVecNorm = camRigVec.normalize()
+        let camRigVecUp = (camRigVecNorm.cross(cameraRig.object3D.up)).cross(camRigVecNorm);
+        let camRigVecCross = camRigVecNorm.cross(camRigVecUp)
+
+        camRigMatrix = (new THREE.Matrix4()).set(camRigVecCross.x, camRigVecUp.x,camRigVecNorm.x,0,
+                                                 camRigVecCross.y,camRigVecUp.y,camRigVecNorm.y,0,
+                                                 camRigVecCross.z,camRigVecUp.z,camRigVecNorm.z,0,
+                                                 0,0,0,0);
+
+        let  camGyroVec = (new THREE.Vector3())
+        cameraGyro.object3D.getWorldPosition(camGyroVec)
+        console.log('break')
+        console.log(camGyroVec)
+        let camGyroVecNorm = camGyroVec.normalize()
+        let camGyroVecUp = (camGyroVecNorm.cross(cameraGyro.object3D.up)).cross(camGyroVecNorm);
+        let camGyroVecCross = camGyroVecNorm.cross(camGyroVecUp)
+                                                
+        camGyroMatrix = (new THREE.Matrix4()).set(camGyroVecCross.x, camGyroVecUp.x, camGyroVecNorm.x,0,
+                                                  camGyroVecCross.y, camGyroVecUp.y, camGyroVecNorm.y,0,
+                                                  camGyroVecCross.z, camGyroVecUp.z, camGyroVecNorm.z,0,
+                                                  0,0,0,0);  
+
+        let camRigMatrixInv = (new THREE.Matrix4()).getInverse(camRigMatrix)
+        let camGyroMatrixInv = (new THREE.Matrix4()).getInverse(camGyroMatrix)
+                            
 
         let vec = (new THREE.Vector3())
         this.el.object3D.getWorldPosition(vec)
@@ -45,7 +82,11 @@ AFRAME.registerComponent("pathway_zoom", {
         cameraRig.object3D.getWorldPosition(vec2)
         cameraPos = (new THREE.Vector3()).copy(vec2)
 
+        cameraRig.object3D.setRotationFromMatrix(edgeMatrix.multiply(camRigMatrixInv))
+        cameraGyro.object3D.setRotationFromMatrix(edgeMatrix.multiply(camGyroMatrixInv))
+
         cameraRig.object3D.translateOnAxis(vec,vec.distanceTo(vec2))
+
 
         let zoomIn = new THREE.Vector3()
         this.el.object3D.getWorldPosition(zoomIn);
@@ -60,7 +101,8 @@ AFRAME.registerComponent("pathway_zoom", {
     },
 
     ActivateZoomOut: function(event) {
-        let cameraGyro = document.getElementById('gyro').components['drag-rotate-component'];
+        let GyroDragComp = document.getElementById('gyro').components['drag-rotate-component'];  
+        let cameraGyro = document.getElementById("gyro");  
 
 
         let vec = (new THREE.Vector3())
@@ -70,6 +112,15 @@ AFRAME.registerComponent("pathway_zoom", {
         cameraRig.object3D.getWorldPosition(vec2)
 
         cameraRig.object3D.translateOnAxis(cameraPos,-cameraPos.distanceTo(vec2))
+        //cameraGyro.object3D.translateOnAxis(cameraPos,-cameraPos.distanceTo(vec2))
+
+        let camRigMatrixInv = (new THREE.Matrix4()).getInverse(camRigMatrix)
+        let camGyroMatrixInv = (new THREE.Matrix4()).getInverse(camGyroMatrix)
+
+        //cameraRig.object3D.setRotationFromMatrix(edgeMatrix.transpose())
+        //cameraGyro.object3D.setRotationFromMatrix(edgeMatrix.transpose())
+        cameraRig.object3D.setRotationFromMatrix(camRigMatrixInv)
+        cameraGyro.object3D.setRotationFromMatrix(camGyroMatrixInv)
 
 
         console.log('zooming out');
@@ -77,7 +128,7 @@ AFRAME.registerComponent("pathway_zoom", {
 
         document.getElementById('gyro').components['drag-rotate-component'].OnAddMouseDown(); 
         //this.MoveCameraRig(new THREE.Vector3(1, -1.2, 5), cameraGyro.GetRotation(), new THREE.Vector3(0, 0, 0));
-        this.MoveCameraRig(cameraPos, cameraGyro.GetRotation(), new THREE.Vector3(0, 0, 0));
+        this.MoveCameraRig(cameraPos, GyroDragComp.GetRotation(), new THREE.Vector3(0, 0, 0));
 
         eventPlane.removeEventListener('click', this.ActivateZoomOut);
         this.el.addEventListener('click', this.ActivateZoomIn);
@@ -97,7 +148,8 @@ AFRAME.registerComponent("pathway_zoom", {
 
         entityEl.object3D.position.copy(edge.GetPosition());
         entityEl.object3D.rotation.copy(edge.GetRotation());
-        entityEl.setAttribute('material', 'opacity', '0.0');
+        entityEl.setAttribute('material', 'opacity', '0.5');
+        entityEl.setAttribute('material','color','red');
         entityEl.setAttribute('id','eventPlane');
 
         sceneModel.appendChild(entityEl);

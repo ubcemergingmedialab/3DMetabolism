@@ -45,6 +45,7 @@ AFRAME.registerComponent('presenter', {
         }
 
         let entityEl = document.createElement('a-entity');
+        entityEl.setAttribute('id', index);
         sceneModel.appendChild(entityEl);
 
         if(View.edges[index].src != undefined) {
