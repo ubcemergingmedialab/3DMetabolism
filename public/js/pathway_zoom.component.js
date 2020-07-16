@@ -1,7 +1,7 @@
 AFRAME.registerComponent("pathway_zoom", {
     schema: {
         zoomPosition: {type: 'vec3'},
-        cameraPos: {type: 'vec3'},
+        cameraPos: {type: 'vec3' },
         edgeName: {type: 'string'}
     },
     init: function() {
@@ -19,8 +19,7 @@ AFRAME.registerComponent("pathway_zoom", {
         console.log('zooming in');
 
         this.el.setAttribute('material', 'color', 'yellow'); 
-        let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
-       eventPlane = this.CreateEventPlane(edge);
+        eventPlane = this.CreateEventPlane(edge);
         this.AnimateCameraZoom();
 
         this.el.removeEventListener('click', this.ActivateZoomIn);
@@ -36,6 +35,7 @@ AFRAME.registerComponent("pathway_zoom", {
         this.el.setAttribute('material', 'color', 'green');
 
         document.getElementById('gyro').components['drag-rotate-component'].OnAddMouseDown(); 
+        document.querySelector('a-scene').components['drag-rotate-component'].OnAddMouseDown();
 
         eventPlane.removeEventListener('click', this.ActivateZoomOut);
         this.el.addEventListener('click', this.ActivateZoomIn);
@@ -64,18 +64,26 @@ AFRAME.registerComponent("pathway_zoom", {
         return entityEl;
     },
 
-    AnimateCameraZoom: function() {
+    AnimateCameraZoom: function(cameraPos) {
         let cameraMainRig = document.getElementById('camera-rig');
         let mainCamera = document.getElementById('main-camera');
+        let sceneModel = document.getElementById('sceneModel')
 
         let vec = (new THREE.Vector3())
         this.el.object3D.getWorldPosition(vec)
 
-        let vec2 = (new THREE.Vector3())
-        mainCamera.object3D.getWorldPosition(vec2)
-        cameraPos = (new THREE.Vector3()).copy(vec2)
+        let vec3 =new THREE.Vector3()
+        //sceneModel.getWorldPosition(vec3)
 
-       mainCamera.setAttribute('look-at',this.el)
+        let vec2 = (new THREE.Vector3())
+        cameraMainRig.object3D.getWorldPosition(vec2)
+        cameraPos = (new THREE.Vector3()).copy(vec2)
+        //cameraPos = new THREE.Vector3(1,-1.2,5)
+        console.log(cameraPos)
+
+        cameraPos.add
+
+        mainCamera.setAttribute('look-at',vec2)
 
         cameraMainRig.addEventListener('animationcomplete__zoomIn', () => {
             let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
@@ -84,14 +92,17 @@ AFRAME.registerComponent("pathway_zoom", {
         });
 
         eventPlane.addEventListener('click', () => {
+
             cameraMainRig.setAttribute('animation__zoomOut',{
                 property: 'position',
-                to: vec2.x + " " + vec2.y+ " " + vec2.z,
+                dur: 1500,
+                to: cameraPos.x + " " + cameraPos.y+ " " + cameraPos.z,
                 easing: 'easeOutElastic'
             });
         });
         cameraMainRig.setAttribute('animation__zoomIn',{
             property: 'position',
+            dur: 1500,
             to: vec.x + " " + vec.y+ " " + vec.z,
             easing: 'easeInElastic'
         });
