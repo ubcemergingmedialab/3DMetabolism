@@ -86,15 +86,12 @@ AFRAME.registerComponent("pathway_zoom", {
         eventPlane.addEventListener('click', () => {
             cameraMainRig.setAttribute('animation__zoomOut',{
                 property: 'position',
-                from: vec.x + " " + vec.y + " " + vec.z,
                 to: vec2.x + " " + vec2.y+ " " + vec2.z,
-                duration:1500,
                 easing: 'easeOutElastic'
             });
         });
         cameraMainRig.setAttribute('animation__zoomIn',{
             property: 'position',
-            from: vec2.x + " " + vec2.y + " " + vec2.z,
             to: vec.x + " " + vec.y+ " " + vec.z,
             easing: 'easeInElastic'
         });
