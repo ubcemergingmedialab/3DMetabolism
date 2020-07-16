@@ -3,6 +3,7 @@ AFRAME.registerComponent('presenter', {
   init: function() {
     var sceneEl = document.querySelector('a-scene'); //parent scene
     var sceneModel = document.createElement('a-entity'); //child entit
+    sceneEl.setAttribute('id','sceneModel');
     sceneEl.appendChild(sceneModel);
     sceneModel.flushToDOM();
     sceneModel.setAttribute('id', 'sceneModel');

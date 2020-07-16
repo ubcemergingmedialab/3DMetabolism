@@ -8,10 +8,11 @@ AFRAME.registerComponent("pathway_zoom", {
         var el = this.el;
         this.ActivateZoomIn = this.ActivateZoomIn.bind(this);
         this.ActivateZoomOut = this.ActivateZoomOut.bind(this);
-        this.MoveCameraRig = this.MoveCameraRig.bind(this);
         this.CreateEventPlane = this.CreateEventPlane.bind(this);
+        this.AnimateCameraZoom = this.AnimateCameraZoom.bind(this);
         el.addEventListener('click', this.ActivateZoomIn);
     },
+
 
     ActivateZoomIn: function(event) {
         let edge = View.edges[this.data.edgeName]
@@ -19,9 +20,8 @@ AFRAME.registerComponent("pathway_zoom", {
 
         this.el.setAttribute('material', 'color', 'yellow'); 
         let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
-        edgeCamera.setAttribute('camera','active',true);
-
-        eventPlane = this.CreateEventPlane(edge);
+       eventPlane = this.CreateEventPlane(edge);
+        this.AnimateCameraZoom();
 
         this.el.removeEventListener('click', this.ActivateZoomIn);
         eventPlane.addEventListener('click', this.ActivateZoomOut);
@@ -64,35 +64,39 @@ AFRAME.registerComponent("pathway_zoom", {
         return entityEl;
     },
 
-    MoveCameraRig: function(position, initRotation, finalRotation) {
-        var rotationOffset;
-        let cameraOffset = new THREE.Vector3(0, 0, 0.10);
-        let radToDeg = 180 / Math.PI;
+    AnimateCameraZoom: function() {
+        let cameraMainRig = document.getElementById('camera-rig');
+        let mainCamera = document.getElementById('main-camera');
 
-        position.add(cameraOffset);
-        try {
-            rotationOffset = initRotation.toVector3();
-        } catch(e) {
-            console.log("Error: can not convert given edge to THREE.Vector3()");
-        }
+        let vec = (new THREE.Vector3())
+        this.el.object3D.getWorldPosition(vec)
 
-        rotationOffset.multiplyScalar(radToDeg);
-        finalRotation.add(rotationOffset.negate());
-        // rotationOffset.negate().add(finalRotation);
-    
-        document.getElementById('camera-rig').setAttribute('animation',{
-            property: 'position',
-            to: position.x + " " + position.y + " " + position.z,
-            easing: 'linear',
-            loop: false
+        let vec2 = (new THREE.Vector3())
+        mainCamera.object3D.getWorldPosition(vec2)
+        cameraPos = (new THREE.Vector3()).copy(vec2)
+
+       mainCamera.setAttribute('look-at',this.el)
+
+        cameraMainRig.addEventListener('animationcomplete__zoomIn', () => {
+            let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
+            edgeCamera.setAttribute('camera','active',true);
+            cameraMainRig.removeAttribute('animation__zoomIn');
         });
-        
-        // document.getElementById('camera-rig').setAttribute('animation__2', {
-        //     property: 'rotation',
-        //     to: finalRotation.x + " " + finalRotation.y + " " + finalRotation.z,
-        //     easing: 'linear',
-        //     loop: false
 
-        // }); 
+        eventPlane.addEventListener('click', () => {
+            cameraMainRig.setAttribute('animation__zoomOut',{
+                property: 'position',
+                from: vec.x + " " + vec.y + " " + vec.z,
+                to: vec2.x + " " + vec2.y+ " " + vec2.z,
+                duration:1500,
+                easing: 'easeOutElastic'
+            });
+        });
+        cameraMainRig.setAttribute('animation__zoomIn',{
+            property: 'position',
+            from: vec2.x + " " + vec2.y + " " + vec2.z,
+            to: vec.x + " " + vec.y+ " " + vec.z,
+            easing: 'easeInElastic'
+        });
     }
 });
