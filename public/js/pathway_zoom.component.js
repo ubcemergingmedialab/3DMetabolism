@@ -1,7 +1,5 @@
 AFRAME.registerComponent("pathway_zoom", {
     schema: {
-        zoomPosition: {type: 'vec3'},
-        cameraPos: {type: 'vec3' },
         edgeName: {type: 'string'}
     },
     init: function() {
@@ -12,7 +10,6 @@ AFRAME.registerComponent("pathway_zoom", {
         this.AnimateCameraZoom = this.AnimateCameraZoom.bind(this);
         el.addEventListener('click', this.ActivateZoomIn);
     },
-
 
     ActivateZoomIn: function(event) {
         let edge = View.edges[this.data.edgeName]
@@ -64,26 +61,10 @@ AFRAME.registerComponent("pathway_zoom", {
         return entityEl;
     },
 
-    AnimateCameraZoom: function(cameraPos) {
+    AnimateCameraZoom: function() {
         let cameraMainRig = document.getElementById('camera-rig');
-        let mainCamera = document.getElementById('main-camera');
-        let sceneModel = document.getElementById('sceneModel')
-
-        let vec = (new THREE.Vector3())
-        this.el.object3D.getWorldPosition(vec)
-
-        let vec3 =new THREE.Vector3()
-        //sceneModel.getWorldPosition(vec3)
-
-        let vec2 = (new THREE.Vector3())
-        cameraMainRig.object3D.getWorldPosition(vec2)
-        cameraPos = (new THREE.Vector3()).copy(vec2)
-        //cameraPos = new THREE.Vector3(1,-1.2,5)
-        console.log(cameraPos)
-
-        cameraPos.add
-
-        mainCamera.setAttribute('look-at',vec2)
+        let targetVector = (new THREE.Vector3())
+        this.el.object3D.getWorldPosition(targetVector)
 
         cameraMainRig.addEventListener('animationcomplete__zoomIn', () => {
             let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
@@ -91,20 +72,23 @@ AFRAME.registerComponent("pathway_zoom", {
             cameraMainRig.removeAttribute('animation__zoomIn');
         });
 
-        eventPlane.addEventListener('click', () => {
+        cameraMainRig.setAttribute('animation__zoomIn',{
+            property: 'position',
+            dir: 'alternate',
+            dur: 1500,
+            from: "1 -1.2 5",
+            to: targetVector.x + " " + targetVector.y+ " " + targetVector.z,
+            easing: 'easeInElastic'
+        });
 
+        eventPlane.addEventListener('click', () => {
             cameraMainRig.setAttribute('animation__zoomOut',{
                 property: 'position',
                 dur: 1500,
-                to: cameraPos.x + " " + cameraPos.y+ " " + cameraPos.z,
+                from: targetVector.x + " " + targetVector.y + " " + targetVector.z,
+                to: "1 -1.2 5",
                 easing: 'easeOutElastic'
             });
-        });
-        cameraMainRig.setAttribute('animation__zoomIn',{
-            property: 'position',
-            dur: 1500,
-            to: vec.x + " " + vec.y+ " " + vec.z,
-            easing: 'easeInElastic'
         });
     }
 });

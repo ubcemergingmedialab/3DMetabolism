@@ -91,8 +91,7 @@ AFRAME.registerComponent('presenter', {
         console.log(cameraRig.getAttribute("position"));
         var pos = cameraRig.object3D.position;
         var cameraPos = (new THREE.Vector3()).copy(pos);
-        entityEl.setAttribute('pathway_zoom', {zoomPosition: targetPosition,
-          edgeName: index, cameraPos: cameraPos});
+        entityEl.setAttribute('pathway_zoom', {edgeName: index});
         //entityEl.setAttribute('varying-transparency', '0.0');
         
       }
