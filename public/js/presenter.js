@@ -80,8 +80,8 @@ AFRAME.registerComponent('presenter', {
 
         cameraOffset.add((new THREE.Vector3(0,0,0.10)))
 
-        cameraRigEdge.object3D.position.set(cameraOffset.x, cameraOffset.y, cameraOffset.z);
         cameraRigEdge.object3D.rotation.set(-targetAngles.x, -targetAngles.y, Math.PI/2 - targetAngles.z);
+        cameraRigEdge.object3D.position.copy(cameraOffset)
 
   
         entityEl.setAttribute('material', 'color', 'green');

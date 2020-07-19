@@ -19,6 +19,9 @@ AFRAME.registerComponent("pathway_zoom", {
         eventPlane = this.CreateEventPlane(edge);
         this.AnimateCameraZoom();
 
+        document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown(); 
+        document.querySelector('a-scene').components['drag-rotate-component'].OnRemoveMouseDown();
+
         this.el.removeEventListener('click', this.ActivateZoomIn);
         eventPlane.addEventListener('click', this.ActivateZoomOut);
     },
@@ -56,7 +59,7 @@ AFRAME.registerComponent("pathway_zoom", {
         entityEl.setAttribute('material', 'opacity', '0.5');
         entityEl.setAttribute('id','eventPlane');
         entityEl.setAttribute('material','color','red')
-
+        
         sceneModel.appendChild(entityEl);
         return entityEl;
     },
