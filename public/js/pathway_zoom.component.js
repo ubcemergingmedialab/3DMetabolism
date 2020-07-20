@@ -65,9 +65,11 @@ AFRAME.registerComponent("pathway_zoom", {
     },
 
     AnimateCameraZoom: function() {
+        let cameraGyro = document.getElementById("gyro");
         let cameraMainRig = document.getElementById('camera-rig');
         let targetVector = (new THREE.Vector3())
         this.el.object3D.getWorldPosition(targetVector)
+        cameraGyro.object3D.worldToLocal(targetVector);
 
         cameraMainRig.addEventListener('animationcomplete__zoomIn', () => {
             let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
