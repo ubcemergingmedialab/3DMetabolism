@@ -43,8 +43,18 @@ AFRAME.registerComponent('presenter', {
     console.log("change in pathway");
     document.querySelectorAll('[pathway_zoom]').forEach(edge => edge.remove());
     //add a condition to check for empty string in active pathway, and merge a new array that contains all our "pathways"
-    this.DrawEdges(View.pathways[data.activePathway]);
-  },
+    if(data.activePathway === "")
+    {
+     var accumulator = [];
+     for(let pathway of View.pathways) {
+        accumulator.concat(pathway);
+      }
+      this.DrawEdges(accumulator);
+      }
+     else {
+       this.DrawEdges(View.pathways[data.activePathway]);
+     }
+    },
 
   DrawEdges: function(currentEdges) {
     for (var index = 0; index < currentEdges.length; index++) {
