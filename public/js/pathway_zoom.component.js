@@ -1,56 +1,113 @@
 AFRAME.registerComponent("pathway_zoom", {
     schema: {
-        zoomPosition: {type: 'vec3'},
-        cameraPos: {type: 'vec3'},
         edgeName: {type: 'string'}
     },
     init: function() {
-        let zoom = 'into'; //zoom into or out of edge
-        var el = this.el; //the element this component is attached to
-        var data = this.data;
+        var el = this.el;
         this.ActivateZoomIn = this.ActivateZoomIn.bind(this);
         this.ActivateZoomOut = this.ActivateZoomOut.bind(this);
-        this.MoveCameraRig = this.MoveCameraRig.bind(this);
+        this.CreateEventPlane = this.CreateEventPlane.bind(this);
+        this.AnimateCameraZoom = this.AnimateCameraZoom.bind(this);
         el.addEventListener('click', this.ActivateZoomIn);
-    
-  
-        //animation="property: position; to: 1 8 -10; dur: 2000; easing: linear; loop: true"
-        //register click event that:
-            // [x] 1 creates animation component string leaving "from" blank and setting "to" to
-            // [x] cylinder entity's position
-            // []  2 finds drag-rotate-component and call function to de-register mousemove
-            // [x] 3 registers another click function (might have to de-register the current one) that:
-            // [x] 1. creates animation component back to original camera position
-            // []  2. finds drag-rotate-component and call function to re-register mousemove
-            // []  3. re-register the click event above
     },
 
     ActivateZoomIn: function(event) {
+
+        let edge = this.el;
         console.log('zooming in');
+
         this.el.setAttribute('material', 'color', 'yellow'); 
-        let zoomIn = this.data.zoomPosition;
-        this.MoveCameraRig(new THREE.Vector3(zoomIn.x, zoomIn.y, zoomIn.z + 1)); //todo: current issue to find a way to give this the midpoint
-       // moveCameraRig(zoomPosition);
-        console.log(zoomIn);
-        document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown(); //not working
+        eventPlane = this.CreateEventPlane(edge);
+        this.AnimateCameraZoom();
+
+        document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown(); 
+        document.querySelector('a-scene').components['drag-rotate-component'].OnRemoveMouseDown();
+
         this.el.removeEventListener('click', this.ActivateZoomIn);
-        this.el.addEventListener('click', this.ActivateZoomOut);
+        eventPlane.addEventListener('click', this.ActivateZoomOut);
     },
+
     ActivateZoomOut: function(event) {
+        let mainCamera = document.getElementById('main-camera');
+        mainCamera.setAttribute('camera','active',true);
+        let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
+        edgeCamera.setAttribute('camera','active',false);
+
         console.log('zooming out');
         this.el.setAttribute('material', 'color', 'green');
-        this.MoveCameraRig(new THREE.Vector3(1, -1.2, 5)); //todo: give this function the proper initial value
-        document.getElementById('gyro').components['drag-rotate-component'].OnAddMouseDown(); //not working
-        this.el.removeEventListener('click', this.ActivateZoomOut);
+
+        document.getElementById('gyro').components['drag-rotate-component'].OnAddMouseDown(); 
+        document.querySelector('a-scene').components['drag-rotate-component'].OnAddMouseDown();
+
+        eventPlane.removeEventListener('click', this.ActivateZoomOut);
         this.el.addEventListener('click', this.ActivateZoomIn);
+        eventPlane.remove();
     },
-    MoveCameraRig: function(vec3) {
-        document.getElementById('camera-rig').setAttribute('animation',{
+
+    CreateEventPlane: function(edge) {
+        let sceneModel = document.getElementById('sceneModel');
+        let entityEl = document.createElement('a-entity');
+        entityEl.setAttribute('id','eventPlane');
+
+        entityEl.setAttribute('geometry', {
+            primitive: 'box',
+            width: .5,
+            height: 1,
+            depth: .05
+          });
+
+        let pos = edge.object3D.position;
+        entityEl.object3D.position.copy(pos);
+        let rot = entityEl.object3D.rotation.clone();
+        entityEl.object3D.rotation.copy(rot);
+        entityEl.setAttribute('material', 'opacity', '0.5');
+        entityEl.setAttribute('id','eventPlane');
+        entityEl.setAttribute('material','color','red')
+        
+        sceneModel.appendChild(entityEl);
+        return entityEl;
+    },
+
+    AnimateCameraZoom: function() {
+        let cameraGyro = document.getElementById("gyro");
+        let cameraMainRig = document.getElementById('camera-rig');
+        let targetVector = (new THREE.Vector3())
+        this.el.object3D.getWorldPosition(targetVector)
+        cameraGyro.object3D.worldToLocal(targetVector);
+
+        cameraMainRig.addEventListener('animationcomplete__zoomIn', () => {
+            let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
+            edgeCamera.setAttribute('camera','active',true);
+            let mainCamera = document.getElementById('main-camera');
+            mainCamera.setAttribute('camera','active',false);
+            cameraMainRig.removeAttribute('animation__zoomIn');
+        });
+
+        cameraMainRig.addEventListener('animationcomplete__zoomOut', () => {
+            let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
+            edgeCamera.setAttribute('camera','active',false);
+            let mainCamera = document.getElementById('main-camera');
+            mainCamera.setAttribute('camera','active',true);
+            cameraMainRig.removeAttribute('animation__zoomOut');
+        });
+
+        cameraMainRig.setAttribute('animation__zoomIn',{
             property: 'position',
-            to: vec3.x + " " + vec3.y + " " + vec3.z,
-            dur: 1000,
-            easing: 'linear',
-            loop: false
+            dir: 'alternate',
+            dur: 1500,
+            from: "1 -1.2 5",
+            to: targetVector.x + " " + targetVector.y+ " " + targetVector.z,
+            easing: 'easeInElastic'
+        });
+
+        eventPlane.addEventListener('click', () => {
+            cameraMainRig.setAttribute('animation__zoomOut',{
+                property: 'position',
+                dur: 1500,
+                from: targetVector.x + " " + targetVector.y + " " + targetVector.z,
+                to: "1 -1.2 5",
+                easing: 'easeOutElastic'
+            });
         });
     }
 });
