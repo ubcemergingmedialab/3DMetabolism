@@ -12,7 +12,8 @@ AFRAME.registerComponent("pathway_zoom", {
     },
 
     ActivateZoomIn: function(event) {
-        let edge = View.edges[this.data.edgeName]
+
+        let edge = this.el;
         console.log('zooming in');
 
         this.el.setAttribute('material', 'color', 'yellow'); 
@@ -28,8 +29,9 @@ AFRAME.registerComponent("pathway_zoom", {
 
     ActivateZoomOut: function(event) {
         let mainCamera = document.getElementById('main-camera');
-
         mainCamera.setAttribute('camera','active',true);
+        let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
+        edgeCamera.setAttribute('camera','active',false);
 
         console.log('zooming out');
         this.el.setAttribute('material', 'color', 'green');
@@ -54,8 +56,10 @@ AFRAME.registerComponent("pathway_zoom", {
             depth: .05
           });
 
-        entityEl.object3D.position.copy(edge.GetPosition());
-        entityEl.object3D.rotation.copy(edge.GetRotation());
+        let pos = edge.object3D.position;
+        entityEl.object3D.position.copy(pos);
+        let rot = entityEl.object3D.rotation.clone();
+        entityEl.object3D.rotation.copy(rot);
         entityEl.setAttribute('material', 'opacity', '0.5');
         entityEl.setAttribute('id','eventPlane');
         entityEl.setAttribute('material','color','red')
@@ -74,7 +78,17 @@ AFRAME.registerComponent("pathway_zoom", {
         cameraMainRig.addEventListener('animationcomplete__zoomIn', () => {
             let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
             edgeCamera.setAttribute('camera','active',true);
+            let mainCamera = document.getElementById('main-camera');
+            mainCamera.setAttribute('camera','active',false);
             cameraMainRig.removeAttribute('animation__zoomIn');
+        });
+
+        cameraMainRig.addEventListener('animationcomplete__zoomOut', () => {
+            let edgeCamera = document.getElementById(this.data.edgeName+"-camera");
+            edgeCamera.setAttribute('camera','active',false);
+            let mainCamera = document.getElementById('main-camera');
+            mainCamera.setAttribute('camera','active',true);
+            cameraMainRig.removeAttribute('animation__zoomOut');
         });
 
         cameraMainRig.setAttribute('animation__zoomIn',{
