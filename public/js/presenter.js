@@ -42,14 +42,12 @@ AFRAME.registerComponent('presenter', {
     var data = this.data;
     console.log("change in pathway " + data.activePathway);
     document.querySelectorAll('[pathway_zoom]').forEach(edge => edge.remove());
-    //add a condition to check for empty string in active pathway, and merge a new array that contains all our "pathways"
     if(data.activePathway == "all")
     {
      var accumulator = [];
      for(let pathway in View.pathways) {
         accumulator = accumulator.concat(View.pathways[pathway]);
       }
-      console.log("paths: "+ JSON.stringify(accumulator));
       this.DrawEdges(accumulator);
       }
      else {
