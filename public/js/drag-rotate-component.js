@@ -38,15 +38,19 @@ AFRAME.registerComponent('drag-rotate-component', {
       this.y_cord = event.clientY;
     }
   },
+  GetPosition: function() {
+    return this.el.object3D.position;
+  },
+  GetQuaternion: function() {
+    return this.el.object3D.quaternion;
+  },
+  GetRotation: function() {
+    return this.el.object3D.rotation;
+  },
   OnRemoveMouseDown: function() {
-    //document.querySelector('a-camera').setAttribute("look-controls", "enabled: true")
     document.removeEventListener('mousemove', this.OnDocumentMouseMove);
   },
   OnAddMouseDown: function() {
-    //document.querySelector('a-camera').setAttribute("look-controls", "enabled: false")
     document.addEventListener('mousemove', this.OnDocumentMouseMove);
   }
-    
-  //define a function that de-register mousemove
-  //define a funciton that re-registers mousemove
 });
