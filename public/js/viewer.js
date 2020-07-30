@@ -21,6 +21,10 @@ var View = (function() {
       this.src = src;
     }
 
+    GetObject3D() {
+      return this.object3D;
+    }
+
     /**
      * returns a THREE.Vector3 for edge's position, which should be midpoint between input and output
      */
@@ -102,7 +106,7 @@ var View = (function() {
     new Edge("_1_3_bisphosphoglycerate","_3_phosphoglycerate"),
     new Edge("_3_phosphoglycerate","_2_phosphoglycerate"),
     new Edge("_2_phosphoglycerate","phosphoenolpyruvate_1", "/img/pyruvate_carboxylase.png"),
-    new Edge("phosphoenolpyruvate_1","oxaloacetate_1"),
+    new Edge("oxaloacetate_1","phosphoenolpyruvate_1"),
     new Edge("oxaloacetate_1","malate_1"),
     new Edge("pyruvate_1","lactate"),
     new Edge("pyruvate_2","oxaloacetate_2"),

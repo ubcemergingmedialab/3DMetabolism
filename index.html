@@ -15,13 +15,13 @@
 </head>
 
 <body>
-  <a-scene>
+  <a-scene drag-rotate-component>
     <a-assets>
       <a-asset-item id="mito" src="/obj/mitochondrion.glb"></a-asset-item>
     </a-assets>
     <a-entity id="gyro" drag-rotate-component>
-      <a-entity id='camera-rig' position="1 -1.2 5">
-        <a-camera user-height="0" look-controls="enabled: false"  >
+      <a-entity id='camera-rig' position="1 -1.2 5"  >
+        <a-camera id='main-camera' user-height="0" look-controls="enabled: false" >
           <a-cursor></a-cursor>
         </a-camera>
       </a-entity>
