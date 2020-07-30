@@ -1,6 +1,6 @@
 AFRAME.registerComponent("assign-pathway", {
     schema: {
-        pathway: {type: 'string'},
+        pathway: {type: 'string', default: ""},
         target: {type: 'string', default: "[presenter]"}
     },
     init: function() {

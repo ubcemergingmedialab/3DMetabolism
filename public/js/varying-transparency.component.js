@@ -3,10 +3,7 @@ AFRAME.registerComponent('varying-transparency', {
     init: function() {
         this.el.addEventListener('model-loaded', this.update.bind(this))
         setInterval(() => {
-          if(this.data <= 0) this.data = 1;
-          this.data -= 0.1;
           this.update();
-          console.log(this.data);
         }, 100);
     },
     update: function() {
