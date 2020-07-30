@@ -21,6 +21,7 @@ AFRAME.registerComponent('presenter', {
       });
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
       entityEl.setAttribute('material', 'color', 'blue');
+      entityEl.setAttribute('assign-position', '[translate-network]');
       console.log(curNode.name);
       let textEl = document.createElement('a-entity');
       textEl.setAttribute('look-at', 'a-camera');
@@ -31,7 +32,7 @@ AFRAME.registerComponent('presenter', {
         textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: -0.2, zOffset: 1, align: 'right'});
       }
       else {
-        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: 0.2, zOffset: 1, aligh: 'left'});
+        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: 0.2, zOffset: 1, align: 'left'});
       };
       this.sceneModel.appendChild(entityEl);
       entityEl.appendChild(textEl)
