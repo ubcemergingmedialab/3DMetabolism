@@ -15,10 +15,12 @@ var View = (function() {
   }
 
   class Edge {
-    constructor(input, output, src) {
+    constructor(input, output, imgSrc, inputElSrc, outputElSrc) {
       this.input = input;
       this.output = output;
-      this.src = src;
+      this.imgSrc = imgSrc;
+      this.leftElSrc = inputElSrc;
+      this.rightElSrc = outputElSrc;
     }
 
     GetObject3D() {

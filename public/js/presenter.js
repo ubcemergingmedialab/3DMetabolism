@@ -29,10 +29,26 @@ AFRAME.registerComponent('presenter', {
       textEl.setAttribute('look-at', 'a-camera');
       if(curNode.flippedText)
       {
-        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: -0.2, zOffset: 1, align: 'right'});
+        textEl.setAttribute('text', {
+          value: curNode.name,
+          color: 'black',
+          width: 4,
+          anchor: 'align',
+          xOffset: -0.2,
+          zOffset: 1,
+          align: 'right'
+        });
       }
       else {
-        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: 0.2, zOffset: 1, aligh: 'left'});
+        textEl.setAttribute('text', {
+          value: curNode.name,
+          color: 'black',
+          width: 4,
+          anchor: 'align',
+          xOffset: 0.2,
+          zOffset: 1,
+          aligh: 'left'
+        });
       };
       this.sceneModel.appendChild(entityEl);
       entityEl.appendChild(textEl)
@@ -65,8 +81,8 @@ AFRAME.registerComponent('presenter', {
       cameraEl.setAttribute("camera", "active", false);
       let cameraRigEdge = document.createElement('a-entity');
 
-      this.initAnimationEl(entityEl,"orange",new THREE.Vector3(0,0.25,0))
-      this.initAnimationEl(entityEl,"brown",new THREE.Vector3(0,-0.25,0))
+      this.initAnimationEl(currentEdges[index].outputElSrc, entityEl, "orange", new THREE.Vector3(0,0.25,0))
+      this.initAnimationEl(currentEdges[index].inputElSrc, entityEl, "brown", new THREE.Vector3(0,-0.25,0))
 
       cameraRigEdge.setAttribute('id',index+'_rig'); 
       cameraEl.setAttribute('id', index+'-camera');
@@ -93,7 +109,6 @@ AFRAME.registerComponent('presenter', {
 
       cameraOffset.add((new THREE.Vector3(0,0,0.10)))
 
-     // cameraRigEdge.object3D.rotation.set(-targetAngles.x, -targetAngles.y, Math.PI/2 - targetAngles.z);
       let edgeRotation = new THREE.Quaternion()
       entityEl.object3D.getWorldQuaternion(edgeRotation)
 
@@ -108,17 +123,19 @@ AFRAME.registerComponent('presenter', {
       console.log(cameraRig.getAttribute("position"));
       entityEl.setAttribute('pathway_zoom', {edgeName: index});
 
-      if(currentEdges[index].src != undefined) {
+      if(currentEdges[index].imgSrc != undefined) {
         imgEl = document.createElement('a-image', );
-        imgEl.setAttribute("src", currentEdges[index].src);
+        imgEl.setAttribute("src", currentEdges[index].imgSrc);
         imgEl.setAttribute("rotation", "0 0 90");
         entityEl.appendChild(imgEl);
       }
     }
   },
-  initAnimationEl: function(parentEl,colorStr,localPos) {
+  initAnimationEl: function(srcEl, parentEl, colorStr, localPos) {
     let animationEl = document.createElement('a-entity');
     parentEl.appendChild(animationEl);
+
+    if(srcEl == undefined) {
     animationEl.setAttribute('geometry', {
       primitive: 'box',
       width: 0.2,
@@ -126,7 +143,7 @@ AFRAME.registerComponent('presenter', {
       depth: 0.2
     })
     animationEl.setAttribute("material","color",colorStr)
+  }
     animationEl.setAttribute('position',localPos)
-
   },
 });
