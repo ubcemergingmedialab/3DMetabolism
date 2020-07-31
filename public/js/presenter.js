@@ -81,8 +81,8 @@ AFRAME.registerComponent('presenter', {
       cameraEl.setAttribute("camera", "active", false);
       let cameraRigEdge = document.createElement('a-entity');
 
-      this.initAnimationEl(currentEdges[index].outputElSrc, entityEl, "orange", new THREE.Vector3(0,0.25,0))
-      this.initAnimationEl(currentEdges[index].inputElSrc, entityEl, "brown", new THREE.Vector3(0,-0.25,0))
+      this.initAnimationEl(currentEdges[index].inputElSrc, entityEl, "orange", new THREE.Vector3(0,0.25,0))
+      this.initAnimationEl(currentEdges[index].outputElSrc, entityEl, "brown", new THREE.Vector3(0,-0.25,0))
 
       cameraRigEdge.setAttribute('id',index+'_rig'); 
       cameraEl.setAttribute('id', index+'-camera');
