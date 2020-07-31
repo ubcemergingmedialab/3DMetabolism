@@ -6,6 +6,7 @@ AFRAME.registerComponent('presenter', {
 
   init: function() {
     this.DrawEdges = this.DrawEdges.bind(this);
+    this.initAnimationEl = this.initAnimationEl.bind(this);
     var sceneEl = document.querySelector('a-scene'); //parent scene
     this.sceneModel = document.createElement('a-entity'); //child entit
     sceneEl.appendChild(this.sceneModel);
@@ -64,14 +65,15 @@ AFRAME.registerComponent('presenter', {
       cameraEl.setAttribute("camera", "active", false);
       let cameraRigEdge = document.createElement('a-entity');
 
+      this.initAnimationEl(entityEl,"orange",new THREE.Vector3(0,0.25,0))
+      this.initAnimationEl(entityEl,"brown",new THREE.Vector3(0,-0.25,0))
+
       cameraRigEdge.setAttribute('id',index+'_rig'); 
       cameraEl.setAttribute('id', index+'-camera');
       entityEl.setAttribute('id',index);
       
-      
       cameraRigEdge.appendChild(cameraEl);
       this.sceneModel.appendChild(cameraRigEdge)
-      
       this.sceneModel.appendChild(entityEl);
 
       cameraEl.setAttribute('look-controls','enabled',false);
@@ -81,6 +83,7 @@ AFRAME.registerComponent('presenter', {
         height: height,
         radius: 0.1
       });
+
 
       entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
       entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
@@ -94,13 +97,11 @@ AFRAME.registerComponent('presenter', {
       cameraRigEdge.object3D.position.copy(cameraOffset);
 
       entityEl.setAttribute('material', 'color', 'green');
-      //console.log(targetPosition)
+
       var cameraRig = document.getElementById("camera-rig");
       console.log(cameraRig.getAttribute("position"));
-      var pos = cameraRig.object3D.position;
-      var cameraPos = (new THREE.Vector3()).copy(pos);
       entityEl.setAttribute('pathway_zoom', {edgeName: index});
-      //entityEl.setAttribute('varying-transparency', '0.0');
+
       if(currentEdges[index].src != undefined) {
         imgEl = document.createElement('a-image', );
         imgEl.setAttribute("src", currentEdges[index].src);
@@ -108,5 +109,18 @@ AFRAME.registerComponent('presenter', {
         entityEl.appendChild(imgEl);
       }
     }
-  }
+  },
+  initAnimationEl: function(parentEl,colorStr,localPos) {
+    let animationEl = document.createElement('a-entity');
+    parentEl.appendChild(animationEl);
+    animationEl.setAttribute('geometry', {
+      primitive: 'box',
+      width: 0.5,
+      height: 0.5,
+      depth: 0.5
+    })
+    animationEl.setAttribute("material","color",colorStr)
+    animationEl.setAttribute('position',localPos)
+
+  },
 });
