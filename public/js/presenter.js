@@ -93,8 +93,14 @@ AFRAME.registerComponent('presenter', {
 
       cameraOffset.add((new THREE.Vector3(0,0,0.10)))
 
-      cameraRigEdge.object3D.rotation.set(-targetAngles.x, -targetAngles.y, Math.PI/2 - targetAngles.z);
+     // cameraRigEdge.object3D.rotation.set(-targetAngles.x, -targetAngles.y, Math.PI/2 - targetAngles.z);
+      let edgeRotation = new THREE.Quaternion()
+      entityEl.object3D.getWorldQuaternion(edgeRotation)
+
+      cameraRigEdge.object3D.applyQuaternion(edgeRotation);
+      cameraRigEdge.object3D.rotateZ(Math.PI/2)
       cameraRigEdge.object3D.position.copy(cameraOffset);
+      
 
       entityEl.setAttribute('material', 'color', 'green');
 
@@ -115,9 +121,9 @@ AFRAME.registerComponent('presenter', {
     parentEl.appendChild(animationEl);
     animationEl.setAttribute('geometry', {
       primitive: 'box',
-      width: 0.5,
-      height: 0.5,
-      depth: 0.5
+      width: 0.2,
+      height: 0.2,
+      depth: 0.2
     })
     animationEl.setAttribute("material","color",colorStr)
     animationEl.setAttribute('position',localPos)

@@ -56,10 +56,16 @@ AFRAME.registerComponent("pathway_zoom", {
             depth: .05
           });
 
-        let pos = edge.object3D.position;
+        let pos = new THREE.Vector3()
+        entityEl.object3D.getWorldPosition(pos)
+        //let pos = edge.object3D.position;
         entityEl.object3D.position.copy(pos);
-        let rot = entityEl.object3D.rotation.clone();
-        entityEl.object3D.rotation.copy(rot);
+        //let rot = entityEl.object3D.rotation.clone();
+        let rot = new THREE.Quaternion()
+        edge.object3D.getWorldQuaternion(rot)
+        entityEl.object3D.applyQuaternion(rot)
+
+        //entityEl.object3D.rotation.copy(rot);
         entityEl.setAttribute('material', 'opacity', '0.5');
         entityEl.setAttribute('id','eventPlane');
         entityEl.setAttribute('material','color','red')
