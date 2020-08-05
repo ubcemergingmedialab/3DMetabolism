@@ -58,15 +58,23 @@ AFRAME.registerComponent('presenter', {
 
   update: function() {
     var data = this.data;
-    console.log("change in pathway");
+    console.log("change in pathway " + data.activePathway);
     document.querySelectorAll('[pathway_zoom]').forEach(edge => edge.remove());
-    this.DrawEdges(View.pathways[data.activePathway]);
-    this.sceneModel.flushToDOM();
+    if(data.activePathway == "all")
+    {
+      var accumulator = [];
+      for(let pathway in View.pathways) {
+        accumulator = accumulator.concat(View.pathways[pathway]);
+      }
+      this.DrawEdges(accumulator);
+    }
+    else {
+       this.DrawEdges(View.pathways[data.activePathway]);
+    }
   },
-  
+
   DrawEdges: function(currentEdges) {
     for (var index = 0; index < currentEdges.length; index++) {
-
       let height, targetPosition, targetAngles
       try {
         targetPosition = currentEdges[index].GetPosition();
