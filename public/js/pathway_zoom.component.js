@@ -60,7 +60,7 @@ AFRAME.registerComponent("pathway_zoom", {
         entityEl.object3D.position.copy(pos);
         let rot = entityEl.object3D.rotation.clone();
         entityEl.object3D.rotation.copy(rot);
-        entityEl.setAttribute('material', 'opacity', '0.5');
+        entityEl.setAttribute('material', 'opacity', '0.0');
         entityEl.setAttribute('id','eventPlane');
         entityEl.setAttribute('material','color','red')
         

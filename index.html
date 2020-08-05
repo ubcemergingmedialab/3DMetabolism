@@ -6,12 +6,12 @@
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="https://rdub80.github.io/aframe-gui/examples/js/aframe-gui.js"></script>
   <script src="/js/viewer.js"></script>
-  <script src="/js/presenter.js"></script>
-  <script src="/js/drag-rotate-component.js"></script>
   <script src="/js/pathway_zoom.component.js"></script>
+  <script src="/js/rotate-text.component.js"></script>
+  <script src="/js/drag-rotate-component.js"></script>
   <script src="/js/varying-transparency.component.js"></script>
   <script src="/js/assign-pathway.component.js"></script>
-
+  <script src="/js/presenter.js"></script>
 </head>
 
 <body>
@@ -32,6 +32,9 @@
       </a-gui-button>
     </a-entity>
     <a-entity presenter cursor="rayOrigin: mouse"></a-entity>
+    <a-light type="ambient" color="#fff" intensity="9"></a-light>
+    <a-light type="directional" color="#fff" intensity="10"></a-light>
+    <a-sky color="#c0c8cc"></a-sky>
     </a-entity>
   </a-scene>
 </body>

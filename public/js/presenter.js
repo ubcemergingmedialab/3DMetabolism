@@ -47,7 +47,7 @@ AFRAME.registerComponent('presenter', {
           anchor: 'align',
           xOffset: 0.2,
           zOffset: 1,
-          aligh: 'left'
+          align: 'left'
         });
       };
       this.sceneModel.appendChild(entityEl);
@@ -81,8 +81,8 @@ AFRAME.registerComponent('presenter', {
       cameraEl.setAttribute("camera", "active", false);
       let cameraRigEdge = document.createElement('a-entity');
 
-      this.initAnimationEl(currentEdges[index].inputElSrc, entityEl, "orange", new THREE.Vector3(0,0.25,0))
-      this.initAnimationEl(currentEdges[index].outputElSrc, entityEl, "brown", new THREE.Vector3(0,-0.25,0))
+      this.initAnimationEl(currentEdges[index].leftElSrc, entityEl, "orange", new THREE.Vector3(0,0.1,0))
+      this.initAnimationEl(currentEdges[index].rightElSrc, entityEl, "brown", new THREE.Vector3(0,-0.1,0))
 
       cameraRigEdge.setAttribute('id',index+'_rig'); 
       cameraEl.setAttribute('id', index+'-camera');
@@ -127,6 +127,7 @@ AFRAME.registerComponent('presenter', {
         imgEl = document.createElement('a-image', );
         imgEl.setAttribute("src", currentEdges[index].imgSrc);
         imgEl.setAttribute("rotation", "0 0 90");
+        imgEl.setAttribute("scale", "0.4 0.4 0.4");
         entityEl.appendChild(imgEl);
       }
     }
@@ -136,14 +137,19 @@ AFRAME.registerComponent('presenter', {
     parentEl.appendChild(animationEl);
 
     if(srcEl == undefined) {
-    animationEl.setAttribute('geometry', {
-      primitive: 'box',
-      width: 0.2,
-      height: 0.2,
-      depth: 0.2
-    })
-    animationEl.setAttribute("material","color",colorStr)
-  }
-    animationEl.setAttribute('position',localPos)
+      animationEl.setAttribute('geometry', {
+        primitive: 'box',
+        width: 0.2,
+        height: 0.2,
+        depth: 0.2
+      })
+      animationEl.setAttribute("material","color",colorStr)
+    } else {
+      console.log("adding model");
+      animationEl.setAttribute("gltf-model", "url(" + srcEl +")");
+    }
+    animationEl.setAttribute('position', localPos)
+    animationEl.setAttribute('scale', "0.07 0.07 0.07")
+    animationEl.setAttribute('rotation', "0 0 90");
   },
 });

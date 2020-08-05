@@ -96,7 +96,7 @@ var View = (function() {
 
 
   var gluco = [
-    new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png"),
+    new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png", "/obj/pyruvate.glb", "/obj/oxaloacetate.glb"),
     new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
     new Edge("fructose_6_phosphate", "fructose_1_6_bisphosphate"),
     new Edge("fructose_1_6_bisphosphate","dihydroxyacetone_phosphate"),
