@@ -22,6 +22,8 @@ AFRAME.registerComponent('presenter', {
       });
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
       entityEl.setAttribute('material', 'color', 'blue');
+      entityEl.setAttribute("class", "interactible");
+      entityEl.setAttribute('assign-position', '[translate-network]');
       console.log(curNode.name);
       let textEl = document.createElement('a-entity');
       textEl.setAttribute('look-at', 'a-camera');
@@ -85,6 +87,7 @@ AFRAME.registerComponent('presenter', {
         continue;
       }
       let entityEl = document.createElement('a-entity');
+      entityEl.setAttribute("class", "interactible");
       let cameraEl = document.createElement('a-camera');
       cameraEl.setAttribute("camera", "active", false);
       let cameraRigEdge = document.createElement('a-entity');

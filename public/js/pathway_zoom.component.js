@@ -62,6 +62,7 @@ AFRAME.registerComponent("pathway_zoom", {
         entityEl.object3D.rotation.copy(rot);
         entityEl.setAttribute('material', 'opacity', '0.0');
         entityEl.setAttribute('id','eventPlane');
+        entityEl.setAttribute("class", "interactible");
         entityEl.setAttribute('material','color','red')
         
         sceneModel.appendChild(entityEl);
