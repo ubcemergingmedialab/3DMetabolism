@@ -25,7 +25,7 @@ AFRAME.registerComponent('translate-network', {
                 property: 'position',
                 dir: 'normal',
                 dur: 1500,
-                to: translation.x + " " + (translation.y - 0.5) + " " + translation.z,
+                to: translation.x + " " + (translation.y - 2.2) + " " + translation.z,
                 easing: 'easeInQuad'
             });
         }
