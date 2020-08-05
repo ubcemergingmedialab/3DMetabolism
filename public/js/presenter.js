@@ -6,6 +6,7 @@ AFRAME.registerComponent('presenter', {
 
   init: function() {
     this.DrawEdges = this.DrawEdges.bind(this);
+    this.initAnimationEl = this.initAnimationEl.bind(this);
     var sceneEl = document.querySelector('a-scene'); //parent scene
     this.sceneModel = document.createElement('a-entity'); //child entit
     sceneEl.appendChild(this.sceneModel);
@@ -28,10 +29,26 @@ AFRAME.registerComponent('presenter', {
       textEl.setAttribute('look-at', 'a-camera');
       if(curNode.flippedText)
       {
-        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: -0.2, zOffset: 1, align: 'right'});
+        textEl.setAttribute('text', {
+          value: curNode.name,
+          color: 'black',
+          width: 4,
+          anchor: 'align',
+          xOffset: -0.2,
+          zOffset: 1,
+          align: 'right'
+        });
       }
       else {
-        textEl.setAttribute('text', {value: curNode.name, color: 'black', width: 4, anchor: 'align', xOffset: 0.2, zOffset: 1, aligh: 'left'});
+        textEl.setAttribute('text', {
+          value: curNode.name,
+          color: 'black',
+          width: 4,
+          anchor: 'align',
+          xOffset: 0.2,
+          zOffset: 1,
+          align: 'left'
+        });
       };
       this.sceneModel.appendChild(entityEl);
       entityEl.appendChild(textEl)
@@ -72,14 +89,15 @@ AFRAME.registerComponent('presenter', {
       cameraEl.setAttribute("camera", "active", false);
       let cameraRigEdge = document.createElement('a-entity');
 
+      this.initAnimationEl(currentEdges[index].leftElSrc, entityEl, "orange", new THREE.Vector3(0,0.1,0))
+      this.initAnimationEl(currentEdges[index].rightElSrc, entityEl, "brown", new THREE.Vector3(0,-0.1,0))
+
       cameraRigEdge.setAttribute('id',index+'_rig'); 
       cameraEl.setAttribute('id', index+'-camera');
       entityEl.setAttribute('id',index);
       
-      
       cameraRigEdge.appendChild(cameraEl);
       this.sceneModel.appendChild(cameraRigEdge)
-      
       this.sceneModel.appendChild(entityEl);
 
       cameraEl.setAttribute('look-controls','enabled',false);
@@ -90,6 +108,7 @@ AFRAME.registerComponent('presenter', {
         radius: 0.1
       });
 
+
       entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
       entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
 
@@ -98,23 +117,47 @@ AFRAME.registerComponent('presenter', {
 
       cameraOffset.add((new THREE.Vector3(0,0,0.10)))
 
-      cameraRigEdge.object3D.rotation.set(-targetAngles.x, -targetAngles.y, Math.PI/2 - targetAngles.z);
+      let edgeRotation = new THREE.Quaternion()
+      entityEl.object3D.getWorldQuaternion(edgeRotation)
+
+      cameraRigEdge.object3D.applyQuaternion(edgeRotation);
+      cameraRigEdge.object3D.rotateZ(Math.PI/2)
       cameraRigEdge.object3D.position.copy(cameraOffset);
+      
 
       entityEl.setAttribute('material', 'color', 'green');
-      //console.log(targetPosition)
+
       var cameraRig = document.getElementById("camera-rig");
       console.log(cameraRig.getAttribute("position"));
-      var pos = cameraRig.object3D.position;
-      var cameraPos = (new THREE.Vector3()).copy(pos);
       entityEl.setAttribute('pathway_zoom', {edgeName: index});
-      //entityEl.setAttribute('varying-transparency', '0.0');
-      if(currentEdges[index].src != undefined) {
+
+      if(currentEdges[index].imgSrc != undefined) {
         imgEl = document.createElement('a-image', );
-        imgEl.setAttribute("src", currentEdges[index].src);
+        imgEl.setAttribute("src", currentEdges[index].imgSrc);
         imgEl.setAttribute("rotation", "0 0 90");
+        imgEl.setAttribute("scale", "0.4 0.4 0.4");
         entityEl.appendChild(imgEl);
       }
     }
-  }
+  },
+  initAnimationEl: function(srcEl, parentEl, colorStr, localPos) {
+    let animationEl = document.createElement('a-entity');
+    parentEl.appendChild(animationEl);
+
+    if(srcEl == undefined) {
+      animationEl.setAttribute('geometry', {
+        primitive: 'box',
+        width: 0.2,
+        height: 0.2,
+        depth: 0.2
+      })
+      animationEl.setAttribute("material","color",colorStr)
+    } else {
+      console.log("adding model");
+      animationEl.setAttribute("gltf-model", "url(" + srcEl +")");
+    }
+    animationEl.setAttribute('position', localPos)
+    animationEl.setAttribute('scale', "0.07 0.07 0.07")
+    animationEl.setAttribute('rotation', "0 0 90");
+  },
 });
