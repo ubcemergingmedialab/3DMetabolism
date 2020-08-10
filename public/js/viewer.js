@@ -1,4 +1,4 @@
-var View = (function() {
+var View = (function () {
 
   class Node {
     //position is a THREE.Vector3
@@ -6,7 +6,7 @@ var View = (function() {
       this.position = position
       this.name = name;
       //this.modelSource = modelSource;
-      if(flippedText === undefined) {
+      if (flippedText === undefined) {
         this.flippedtext = false;
       } else {
         this.flippedText = flippedText;
@@ -99,53 +99,53 @@ var View = (function() {
     new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png", "/obj/pyruvate.glb", "/obj/oxaloacetate.glb"),
     new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
     new Edge("fructose_6_phosphate", "fructose_1_6_bisphosphate"),
-    new Edge("fructose_1_6_bisphosphate","dihydroxyacetone_phosphate"),
-    new Edge("dihydroxyacetone_phosphate","glycerol_3_phosphate"),
-    new Edge("glycerol_3_phosphate","glycerol"),
-    new Edge("dihydroxyacetone_phosphate","glyceraldehyde_3_phosphate"),
-    new Edge("fructose_1_6_bisphosphate","glyceraldehyde_3_phosphate"),
-    new Edge("glyceraldehyde_3_phosphate","_1_3_bisphosphoglycerate"),
-    new Edge("_1_3_bisphosphoglycerate","_3_phosphoglycerate"),
-    new Edge("_3_phosphoglycerate","_2_phosphoglycerate"),
-    new Edge("_2_phosphoglycerate","phosphoenolpyruvate_1", "/img/pyruvate_carboxylase.png"),
-    new Edge("oxaloacetate_1","phosphoenolpyruvate_1"),
-    new Edge("oxaloacetate_1","malate_1"),
-    new Edge("pyruvate_1","lactate"),
-    new Edge("pyruvate_2","oxaloacetate_2"),
-    new Edge("phosphoenolpyruvate_2","oxaloacetate_2"),
-    new Edge("oxaloacetate_2","citrate"),
-    new Edge("citrate","isocitrate"),
-    new Edge("isocitrate","a_ketoglutarate"),
-    new Edge("a_ketoglutarate","succinyl_coa"),
-    new Edge("succinyl_coa","succinate"),
-    new Edge("succinate","fumarate"),
-    new Edge("fumarate","malate_2"),
-    new Edge("malate_2","oxaloacetate_2"),
+    new Edge("fructose_1_6_bisphosphate", "dihydroxyacetone_phosphate"),
+    new Edge("dihydroxyacetone_phosphate", "glycerol_3_phosphate"),
+    new Edge("glycerol_3_phosphate", "glycerol"),
+    new Edge("dihydroxyacetone_phosphate", "glyceraldehyde_3_phosphate"),
+    new Edge("fructose_1_6_bisphosphate", "glyceraldehyde_3_phosphate"),
+    new Edge("glyceraldehyde_3_phosphate", "_1_3_bisphosphoglycerate"),
+    new Edge("_1_3_bisphosphoglycerate", "_3_phosphoglycerate"),
+    new Edge("_3_phosphoglycerate", "_2_phosphoglycerate"),
+    new Edge("_2_phosphoglycerate", "phosphoenolpyruvate_1", "/img/pyruvate_carboxylase.png"),
+    new Edge("oxaloacetate_1", "phosphoenolpyruvate_1"),
+    new Edge("oxaloacetate_1", "malate_1"),
+    new Edge("pyruvate_1", "lactate"),
+    new Edge("pyruvate_2", "oxaloacetate_2"),
+    new Edge("phosphoenolpyruvate_2", "oxaloacetate_2"),
+    new Edge("oxaloacetate_2", "citrate"),
+    new Edge("citrate", "isocitrate"),
+    new Edge("isocitrate", "a_ketoglutarate"),
+    new Edge("a_ketoglutarate", "succinyl_coa"),
+    new Edge("succinyl_coa", "succinate"),
+    new Edge("succinate", "fumarate"),
+    new Edge("fumarate", "malate_2"),
+    new Edge("malate_2", "oxaloacetate_2"),
   ];
 
   var glycolysis = [
     new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png"),
     new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
     new Edge("fructose_6_phosphate", "fructose_1_6_bisphosphate"),
-    new Edge("fructose_1_6_bisphosphate","dihydroxyacetone_phosphate"),
-    new Edge("dihydroxyacetone_phosphate","glyceraldehyde_3_phosphate"),
-    new Edge("fructose_1_6_bisphosphate","glyceraldehyde_3_phosphate"),
-    new Edge("glyceraldehyde_3_phosphate","_1_3_bisphosphoglycerate"),
-    new Edge("_1_3_bisphosphoglycerate","_3_phosphoglycerate"),
-    new Edge("_3_phosphoglycerate","_2_phosphoglycerate"),
-    new Edge("_2_phosphoglycerate","phosphoenolpyruvate_1", "/img/pyruvate_carboxylase.png"),
-    new Edge("phosphoenolpyruvate_1","pyruvate_1"),
-    new Edge("pyruvate_2","acetyl_coA"),
-    new Edge("oxaloacetate_2","acetyl_coA"),
-    new Edge("acetyl_coA","citrate"),
-    new Edge("oxaloacetate_2","citrate"),
-    new Edge("citrate","isocitrate"),
-    new Edge("isocitrate","a_ketoglutarate"),
-    new Edge("a_ketoglutarate","succinyl_coa"),
-    new Edge("succinyl_coa","succinate"),
-    new Edge("succinate","fumarate"),
-    new Edge("fumarate","malate_2"),
-    new Edge("malate_2","oxaloacetate_2"),
+    new Edge("fructose_1_6_bisphosphate", "dihydroxyacetone_phosphate"),
+    new Edge("dihydroxyacetone_phosphate", "glyceraldehyde_3_phosphate"),
+    new Edge("fructose_1_6_bisphosphate", "glyceraldehyde_3_phosphate"),
+    new Edge("glyceraldehyde_3_phosphate", "_1_3_bisphosphoglycerate"),
+    new Edge("_1_3_bisphosphoglycerate", "_3_phosphoglycerate"),
+    new Edge("_3_phosphoglycerate", "_2_phosphoglycerate"),
+    new Edge("_2_phosphoglycerate", "phosphoenolpyruvate_1", "/img/pyruvate_carboxylase.png"),
+    new Edge("phosphoenolpyruvate_1", "pyruvate_1"),
+    new Edge("pyruvate_2", "acetyl_coA"),
+    new Edge("oxaloacetate_2", "acetyl_coA"),
+    new Edge("acetyl_coA", "citrate"),
+    new Edge("oxaloacetate_2", "citrate"),
+    new Edge("citrate", "isocitrate"),
+    new Edge("isocitrate", "a_ketoglutarate"),
+    new Edge("a_ketoglutarate", "succinyl_coa"),
+    new Edge("succinyl_coa", "succinate"),
+    new Edge("succinate", "fumarate"),
+    new Edge("fumarate", "malate_2"),
+    new Edge("malate_2", "oxaloacetate_2"),
   ];
 
   var pathways = {
@@ -153,14 +153,36 @@ var View = (function() {
     "glycolysis": glycolysis,
   }
 
-  var init = function() {
+  var sequences = {
+    "1": [
+      "glycerol",
+      "glycerol_3_phosphate",
+      "dihydroxyacetone_phosphate",
+      "glyceraldehyde_3_phosphate",
+      "fructose_1_6_bisphosphate", //misspelled?
+      "fructose_6_phosphate",
+      "glucose_6_phosphate",
+      "glucose"
+    ]
+  }
+
+  var all_edges = {}
+
+  var init = function () {
     //console.log(JSON.stringify(nodes));
+    for (let listName in pathways) {
+      for (let edge of pathways[listName]) {
+        all_edges[edge.input + "/" + edge.output] = edge;
+      }
+    }
   }
 
   return {
     init,
     nodes,
-    pathways
+    pathways,
+    all_edges,
+    sequences
   };
 })();
 
