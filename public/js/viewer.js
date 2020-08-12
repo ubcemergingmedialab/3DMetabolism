@@ -163,6 +163,23 @@ var View = (function () {
       "fructose_6_phosphate",
       "glucose_6_phosphate",
       "glucose"
+    ],
+    "2": [
+      "lactate",
+      "pyruvate_1",
+      "pyruvate_2",
+      "oxaloacetate_2",
+      "phosphoenolpyruvate_2",
+      "phosphoenolpyruvate_1",
+      "_2_phosphoglycerate",
+      "_3_phosphoglycerate",
+      "_1_3_bisphosphoglycerate",
+      "glyceraldehyde_3_phosphate",
+      "dihydroxyacetone_phosphate",
+      "fructose_1_6_bisphosphate",
+      "fructose_6_phosphate",
+      "glucose_6_phosphate",
+      "glucose"
     ]
   }
 /*

@@ -12,6 +12,7 @@
   <script src="/js/assign-pathway.component.js"></script>
   <script src="/js/assign-position.component.js"></script>
   <script src="/js/translate-network.component.js"></script>
+  <script src="/js/sequence-animation.component.js"></script>
   <script src="/js/presenter.js"></script>
 
 </head>
@@ -38,7 +39,7 @@
     </a-entity>
     <a-entity id="mitochondrion" gltf-model="#mito" position="0 -2.2 0" scale="10 10 10" varying-transparency="0.4">
     </a-entity>
-    <a-entity translate-network presenter cursor="rayOrigin: mouse" raycaster="objects: .interactible"></a-entity>
+    <a-entity sequence-animation translate-network presenter cursor="rayOrigin: mouse" raycaster="objects: .interactible"></a-entity>
     <a-light type="ambient" color="#fff" intensity="9"></a-light>
     <a-light type="directional" color="#fff" intensity="10"></a-light>
     <a-sky color="#c0c8cc"></a-sky>
