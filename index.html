@@ -7,11 +7,12 @@
     <link rel="stylesheet" type="text/css" href="./css/index-style.css">
 </head>
 <body>
-    <div class="nav-menu">
-        <button id="pathways_all" onclick="updatePathway('all')" >All Pathways</button>
-        <button id="pathways_gluconeogenesis" onclick="updatePathway('gluconeogenesis')">Gluconeogenesis</button>
-        <button id="pathways_glycolysis" onclick="updatePathway('glycolysis')">Glycolysis</button>
-        
+    <div class="holder">
+        <div class="bar">
+            <button id="pathways_all" onclick="updatePathway('all')" >All Pathways</button>
+            <button id="pathways_gluconeogenesis" onclick="updatePathway('gluconeogenesis')">Gluconeogenesis</button>
+            <button id="pathways_glycolysis" onclick="updatePathway('glycolysis')">Glycolysis</button>
+        </div>
         <script>
             function updatePathway(pathway) {
                 try{ 
@@ -26,10 +27,11 @@
             }
         </script>
 
-    </div>
 
-    <iframe id="scene-iframe" allowfullscreen="yes" scrolling="no" allowvr="yes"  frameborder="0px" src="html/scene.html">
+    <iframe class="frame" id="scene-iframe" allowfullscreen="yes" scrolling="no" allowvr="yes"  frameborder="0px" src="html/scene.html">
     </iframe>
+    
+</div>
 
 </body>
 </html>
