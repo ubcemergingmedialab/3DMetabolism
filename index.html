@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3DMetabolism</title>
     <link rel="stylesheet" type="text/css" href="./css/index-style.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 <body>
-    <div class="nav-menu">
-        <button id="pathways_all" onclick="updatePathway('all')" >All Pathways</button>
-        <button id="pathways_gluconeogenesis" onclick="updatePathway('gluconeogenesis')">Gluconeogenesis</button>
-        <button id="pathways_glycolysis" onclick="updatePathway('glycolysis')">Glycolysis</button>
-        
+    <div class="holder">
+        <div class="bar">
+            <button id="pathways_all" onclick="updatePathway('all')" >All Pathways</button>
+            <button id="pathways_gluconeogenesis" onclick="updatePathway('gluconeogenesis')">Gluconeogenesis</button>
+            <button id="pathways_glycolysis" onclick="updatePathway('glycolysis')">Glycolysis</button>
+        </div>
         <script>
             function updatePathway(pathway) {
                 try{ 
                     let iframe = document.getElementById("scene-iframe");
-                    let target = iframe.contentWindow.document.getElementById("sceneModel");
+                    let target = iframe.contentWindow.document.getElementById("presenter");
 
                     target.setAttribute("presenter", "activePathway:" + pathway);
                     console.log("setting pathway to: " + pathway);
@@ -26,10 +28,11 @@
             }
         </script>
 
-    </div>
 
-    <iframe id="scene-iframe" allowfullscreen="yes" scrolling="no" allowvr="yes"  frameborder="0px" src="html/scene.html">
-    </iframe>
+        <iframe class="frame" id="scene-iframe" allowfullscreen="yes" scrolling="no" allowvr="yes"  frameborder="0px" src="html/scene.html">
+        </iframe>
+    
+    </div>
 
 </body>
 </html>
