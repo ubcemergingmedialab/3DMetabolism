@@ -1,8 +1,29 @@
-#scene-iframe { width: 81vw; 
-                height:100vh;
-                position: absolute; 
-                right:0; 
-                top:0;
-                float: left;
+.holder{
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 
+.frame{
+    width: 100%;
+    height: 100%;
+}
+
+.bar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+}
+
+html {
+    height:100%;
+    width: 100%;
+  }
+  
+  body {
+    font-family: helvetica, arial, sans-serif;
+    width: 100%;
+    height: 100%;
+  }
