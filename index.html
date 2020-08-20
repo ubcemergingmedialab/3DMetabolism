@@ -1,25 +1,38 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>3DMetabolism</title>
-  <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
-  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-  <script src="/js/viewer.js"></script>
-  <script src="/js/presenter.js"></script>
-  <script src="/js/drag-rotate-component.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3DMetabolism</title>
+    <link rel="stylesheet" type="text/css" href="./css/index-style.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
-
 <body>
-  <a-scene>
-    <a-assets>
-    </a-assets>
-      <a-entity presenter></a-entity>
-      <a-camera user-height="0" position="1 -1.2 5" look-controls="enabled: false">
-        <a-cursor></a-cursor>
-      </a-camera>
-    </a-entity>
-  </a-scene>
-</body>
+    <div class="holder">
+        <div class="bar">
+            <button id="pathways_all" onclick="updatePathway('all')" >All Pathways</button>
+            <button id="pathways_gluconeogenesis" onclick="updatePathway('gluconeogenesis')">Gluconeogenesis</button>
+            <button id="pathways_glycolysis" onclick="updatePathway('glycolysis')">Glycolysis</button>
+        </div>
+        <script>
+            function updatePathway(pathway) {
+                try{ 
+                    let iframe = document.getElementById("scene-iframe");
+                    let target = iframe.contentWindow.document.getElementById("presenter");
 
+                    target.setAttribute("presenter", "activePathway:" + pathway);
+                    console.log("setting pathway to: " + pathway);
+                } catch(e) {
+                    console.log("pathway not set on assign-pathway component");
+                }
+            }
+        </script>
+
+
+        <iframe class="frame" id="scene-iframe" allowfullscreen="yes" scrolling="no" allowvr="yes"  frameborder="0px" src="html/scene.html">
+        </iframe>
+    
+    </div>
+
+</body>
 </html>
