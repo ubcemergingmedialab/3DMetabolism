@@ -165,21 +165,6 @@ var View = (function () {
       "glucose"
     ]
   }
-/*
-  let component = this.el.getAttribute("highlight-sequence");
-  let sequenceName = component.sequence;
-  for(let i = 0; i < sequences[sequenceName]; i++) {
-    curSequence = sequences[sequenceName];
-    let metabolite = curSequence[i]
-    let curElement = document.getElementById(metabolite);
-    curElement.setAttribute("material", "color", "red");
-    if(curSequence[i+1] != null) {
-      let input = curSequence[i];
-      let output = curSequences[i+1];
-      let curEdge = document.getElementById(input + "/" + output);
-      curEdge.setAttribute("material", "color", "purple");
-    }
-  }*/
 
   var all_edges = {}
 

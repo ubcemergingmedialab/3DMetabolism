@@ -12,6 +12,7 @@
   <script src="/js/assign-pathway.component.js"></script>
   <script src="/js/assign-position.component.js"></script>
   <script src="/js/translate-network.component.js"></script>
+  <script src="/js/highlight-sequence.js"></script>
   <script src="/js/presenter.js"></script>
 
 </head>
@@ -35,6 +36,9 @@
       <a-gui-button id="" class="interactible" position="-3 2 0" width="3" height="0.5" assign-pathway="pathway: all"
         value="All pathways" font-family="Helvetica" margin="0 0 0.05 0">
       </a-gui-button>
+      <a-gui-button id="" class="interactible" position="-3 -1 0" width="3" height="0.5" highlight-sequence= "sequence: 1"
+        value="Highlight pathways" font-family="Helvetica" margin="0 0 0.05 0">
+      </a-gui-button>
     </a-entity>
     <a-entity id="mitochondrion" gltf-model="#mito" position="0 -2.2 0" scale="10 10 10" varying-transparency="0.4">
     </a-entity>
@@ -45,5 +49,6 @@
     </a-entity>
   </a-scene>
 </body>
+
 
 </html>
