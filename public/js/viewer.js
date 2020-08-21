@@ -148,6 +148,15 @@ var View = (function() {
     new Edge("malate_2","oxaloacetate_2"),
   ];
 
+  var sequences = {
+    "gluconeogenesis": [
+      "1", "2",
+    ],
+    "glycolysis": [
+      "3"
+    ]
+  }
+
   var pathways = {
     "gluconeogenesis": gluco,
     "glycolysis": glycolysis,
