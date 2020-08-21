@@ -101,7 +101,7 @@ var View = (function () {
     new Edge("fructose_6_phosphate", "fructose_1_6_bisphosphate"),
     new Edge("fructose_1_6_bisphosphate", "dihydroxyacetone_phosphate"),
     new Edge("dihydroxyacetone_phosphate", "glycerol_3_phosphate"),
-    new Edge("glycerol_3_phosphate", "glycerol"),
+    new Edge("glycerol", "glycerol_3_phosphate"),
     new Edge("dihydroxyacetone_phosphate", "glyceraldehyde_3_phosphate"),
     new Edge("fructose_1_6_bisphosphate", "glyceraldehyde_3_phosphate"),
     new Edge("glyceraldehyde_3_phosphate", "_1_3_bisphosphoglycerate"),

@@ -20,7 +20,7 @@ AFRAME.registerComponent('presenter', {
         primitive: 'sphere',
         radius: 0.2
       });
-      entityEl.setAttribute("id", curNode.name);
+      entityEl.setAttribute("id", node);
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
       entityEl.setAttribute('material', 'color', 'blue');
       entityEl.setAttribute("class", "interactible");
