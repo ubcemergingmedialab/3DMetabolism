@@ -169,7 +169,8 @@ var View = (function() {
   return {
     init,
     nodes,
-    pathways
+    pathways,
+    sequences
   };
 })();
 
