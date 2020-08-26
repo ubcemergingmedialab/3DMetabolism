@@ -4,38 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3DMetabolism</title>
-    <script src="/public/js/menu-presenter.js"></script>
+    <script src="/js/menu-presenter.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/index-style.css">
     <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 
 <body>
-    <div class="holder">
+    <div class="holder" id="holder">
         <div class="menu">
+            <script>menuPresenter()</script>
             <div class="menu_header">
                 <button id="pathways_button"></button>
                 <button id="seq"></button>
             </div>
             <div class="vector_divider"></div>
             <span>Pathways</span>
-            <div class="Pathways">
-                <!-- <script type="text/javascript" src="/public/js/menu-presenter.js"></script> -->
-                <script type="text/javascript">
-                    function test() {
-                        alert("hello");
-                    }
-                </script>
-                <button id="test" onclick="menuPresenter()">Testing</button>
+            <div class="Pathways" id="Pathways">
+                <!-- <button id="test" onclick="menuPresenter()">Testing</button>
                 <button id="pathways_all" onclick="updatePathway('all')" >All Pathways</button>
                 <button id="pathways_gluconeogenesis" onclick="updatePathway('gluconeogenesis')">Gluconeogenesis</button>
-                <button id="pathways_glycolysis" onclick="updatePathway('glycolysis')">Glycolysis</button>
+                <button id="pathways_glycolysis" onclick="updatePathway('glycolysis')">Glycolysis</button> -->
             </div>
             <span>Sequences</span>
             <div class="Pathways">
-                <button id="pathways_all" onclick="" >Glycerol to Glucose</button>
+                <!-- <button id="pathways_all" onclick="" >Glycerol to Glucose</button>
                 <button id="pathways_gluconeogenesis" onclick="">Lactate to Glucose</button>
-                <button id="pathways_glycolysis" onclick="">Amino Acids to Glucose</button>
+                <button id="pathways_glycolysis" onclick="">Amino Acids to Glucose</button> -->
             </div>
             <span>Animate Direction</span>
             <span>Highlight Structures</span>
