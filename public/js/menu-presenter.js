@@ -1,28 +1,50 @@
-function menuPresenter() {
-
-    // var btn = document.createElement("BUTTON");   // Create a <button> element
-    // btn.innerHTML = "CLICK ME";                   // Insert text
-    // link.body.appendChild(btn);       
+function menuPresenter(view) {
+    var view = View;  
+    sequences = view.sequences  
+    
 
     function init() {
         window.onload = function() {
-            private.initPathways();
+            initialize.PathwaysSubMenu();
+
         }
     }
 
-    var public = {
-        getHtml: function() {
-            initHtml();
-            this.getHtml()
+    /* The functions within initialize are used to initialize html elements*/
+    var initialize = {
+        PathwaysSubMenu: function() {
+            let pathwayClass = document.getElementsByClassName("Pathways");
+            this.createBtnPathway('btn_all_pathways','All Pathways', pathwayClass[0], 'all');
+            this.createBtnPathway('btn_Gluconeogenesis','Gluconeogenesis',pathwayClass[0], 'gluconeogenesis');
+            this.createBtnPathway('btn_glycolysis','Glycolysis',pathwayClass[0], 'glycolysis');
+    
+        },
+        createBtnPathway: function(elementId, elementText, parentElement, updatePathwaysParam) {
+            let btn = document.createElement("button");
+            btn.setAttribute('id',elementId);
+            btn.textContent = elementText;
+            btn.addEventListener("click", () => {
+                private.updatePathways(updatePathwaysParam);
+            });
+            parentElement.appendChild(btn);
         },
 
-        pathwaysEventHandler: function(pathway) {
-            
-
+        createBtnSequence: function(elementId, elementText, parentElement) {
+            let btn = document.createElement("button");
+            btn.setAttribute('id',elementId);
+            btn.textContent = elementText;
+            btn.addEventListener("click", () => {
+                alert("You pressed the button");
+            });
+            parentElement.appendChild(btn);
         }
-
     }
+    /* The functions within private are intended for internal use only */
     var private = {
+
+        /* updatePathways(pathway) will update the iframe scene as well as the Sequence sub-menu 
+         *  with the associated pathway given
+         */
         updatePathways: function(pathway) {
             try{ 
                 let iframe = document.getElementById("scene-iframe");
@@ -33,46 +55,34 @@ function menuPresenter() {
             } catch(e) {
                 console.log("pathway not set on assign-pathway component");
             }
-
             try{
-                this.updateSequence(sequence);
+                this.updateSequenceSubMenu(pathway);
             } catch(e) {
                 console.log("cannot create pathway associated sequence menu");
             }
         },
 
-        updateSequence: function(sequence) {
+        /** updateSequenceSubMenu(pathway) will update the Sequence sub-menu 
+         * according to the given pathway
+         */
+        updateSequenceSubMenu: function(pathway) {
+            let sequencesClass = document.getElementsByClassName("Sequences"); 
+            // if(sequencesClass.length){
+            //     this.removeElementsByClass("Sequences");
+            // }
+            for (let sequence in sequences[pathway]) { 
+               initialize.createBtnSequence(sequence,sequence,sequencesClass[0]);
+            }
 
         },
 
-        initPathways: function() {
-            let pathwayClass = document.getElementsByClassName("Pathways")[0];
-            let btnAllPathways = document.createElement("button");
-            let btnGluconeogenesis = document.createElement("button");
-            let btnGlycolysis = document.createElement("button");
-
-            // btnAllPathways.innerHTML("All Pathways");
-            // btnGluconeogenesis.innerHTML("Gluconeogenesis");
-            // btnGlycolysis.innerHTML("Glycolysis");
-
-            pathwayClass.appendChild(btnAllPathways);
-            pathwayClass.appendChild(btnGluconeogenesis);
-            pathwayClass.appendChild(btnGlycolysis);
-
+        /** removeElementsByClass(className) removes all elements associated to className*/
+        removeElementsByClass: function(className) {
+            let elements = document.getElementsByClassName(className);
+            while(elements[0]) {
+                elements[0].remove()
+            }
         }
-
-
     }
-    var __buttonTemplate = function(buttonText){
-        var btn = document.createElement("BUTTON");
-        btn.innerHTML(buttonText);
-
-    }
-
-    //TODO: initHtml();
-    //TODO: getHtml();
-    //TODO: sequenceEventHandler();
-    //TODO: removeHtml();
-
     init();
 }

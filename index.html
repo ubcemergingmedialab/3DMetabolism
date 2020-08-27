@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3DMetabolism</title>
+    <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+    <script src="/js/viewer.js"></script>
     <script src="/js/menu-presenter.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/index-style.css">
@@ -13,7 +15,7 @@
 <body>
     <div class="holder" id="holder">
         <div class="menu">
-            <script>menuPresenter()</script>
+            <script>menuPresenter(View)</script>
             <div class="menu_header">
                 <button id="pathways_button"></button>
                 <button id="seq"></button>
@@ -27,7 +29,7 @@
                 <button id="pathways_glycolysis" onclick="updatePathway('glycolysis')">Glycolysis</button> -->
             </div>
             <span>Sequences</span>
-            <div class="Pathways">
+            <div class="Sequences">
                 <!-- <button id="pathways_all" onclick="" >Glycerol to Glucose</button>
                 <button id="pathways_gluconeogenesis" onclick="">Lactate to Glucose</button>
                 <button id="pathways_glycolysis" onclick="">Amino Acids to Glucose</button> -->
