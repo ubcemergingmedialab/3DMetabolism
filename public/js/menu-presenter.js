@@ -1,6 +1,6 @@
 function menuPresenter(view) {
     var view = View;  
-    sequences = view.sequences  
+    var sequences = view.sequences  
     
 
     function init() {
@@ -13,32 +13,41 @@ function menuPresenter(view) {
     /* The functions within initialize are used to initialize html elements*/
     var initialize = {
         PathwaysSubMenu: function() {
-            let pathwayClass = document.getElementsByClassName("Pathways");
-            this.createBtnPathway('btn_all_pathways','All Pathways', pathwayClass[0], 'all');
-            this.createBtnPathway('btn_Gluconeogenesis','Gluconeogenesis',pathwayClass[0], 'gluconeogenesis');
-            this.createBtnPathway('btn_glycolysis','Glycolysis',pathwayClass[0], 'glycolysis');
+            let pathwayClass = document.getElementById("Pathways");
+
+            this.createBtnPathway('btn_all_pathways','All Pathways', pathwayClass, 'all');
+            this.createBtnPathway('btn_Gluconeogenesis','Gluconeogenesis',pathwayClass, 'gluconeogenesis');
+            this.createBtnPathway('btn_glycolysis','Glycolysis',pathwayClass, 'glycolysis');
     
         },
+
         createBtnPathway: function(elementId, elementText, parentElement, updatePathwaysParam) {
             let btn = document.createElement("button");
+
             btn.setAttribute('id',elementId);
             btn.textContent = elementText;
+
             btn.addEventListener("click", () => {
                 private.updatePathways(updatePathwaysParam);
             });
+
             parentElement.appendChild(btn);
         },
 
         createBtnSequence: function(elementId, elementText, parentElement) {
             let btn = document.createElement("button");
+
             btn.setAttribute('id',elementId);
             btn.textContent = elementText;
+            
             btn.addEventListener("click", () => {
                 alert("You pressed the button");
             });
+
             parentElement.appendChild(btn);
         }
     }
+
     /* The functions within private are intended for internal use only */
     var private = {
 
@@ -66,22 +75,24 @@ function menuPresenter(view) {
          * according to the given pathway
          */
         updateSequenceSubMenu: function(pathway) {
-            let sequencesClass = document.getElementsByClassName("Sequences"); 
-            // if(sequencesClass.length){
-            //     this.removeElementsByClass("Sequences");
-            // }
-            for (let sequence in sequences[pathway]) { 
-               initialize.createBtnSequence(sequence,sequence,sequencesClass[0]);
-            }
+            let sequencesClass = document.getElementById("Sequences"); 
+            let sequence = sequences[pathway]
 
+            this.removeElementsByClass("Sequences")
+
+            for (let el in sequence) { 
+               initialize.createBtnSequence(sequence[el],sequence[el],sequencesClass);
+            }
         },
 
-        /** removeElementsByClass(className) removes all elements associated to className*/
+        /** removeElementsByClass(className) removes all children appended to className*/
         removeElementsByClass: function(className) {
-            let elements = document.getElementsByClassName(className);
-            while(elements[0]) {
-                elements[0].remove()
+            let parent = document.getElementById(className);
+
+            while(parent.firstChild){
+                parent.removeChild(parent.firstChild);
             }
+
         }
     }
     init();
