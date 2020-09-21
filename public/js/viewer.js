@@ -2,7 +2,7 @@ var View = (function () {
 
   class Node {
     //position is a THREE.Vector3
-    constructor(position, name, /*modelSource, */flippedText) {
+    constructor(position, name, /*modelSource, */flippedText, placeholder) {
       this.position = position
       this.name = name;
       //this.modelSource = modelSource;
@@ -10,6 +10,11 @@ var View = (function () {
         this.flippedtext = false;
       } else {
         this.flippedText = flippedText;
+      }
+      if (placeholder === undefined) {
+        this.placehodler = false;
+      } else {
+        this.placeholder = true;
       }
     };
   }
