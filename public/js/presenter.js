@@ -1,10 +1,10 @@
 AFRAME.registerComponent('presenter', {
 
-  schema : {
-    activePathway: {type: 'string', default: 'gluconeogenesis'}
+  schema: {
+    activePathway: { type: 'string', default: 'gluconeogenesis' }
   },
 
-  init: function() {
+  init: function () {
     this.DrawEdges = this.DrawEdges.bind(this);
     this.initAnimationEl = this.initAnimationEl.bind(this);
     var sceneEl = document.querySelector('a-scene'); //parent scene
@@ -13,13 +13,14 @@ AFRAME.registerComponent('presenter', {
     this.sceneModel.flushToDOM();
     this.sceneModel.setAttribute('id', 'sceneModel');
 
-    for(let node in View.nodes){
+    for (let node in View.nodes) {
       let entityEl = document.createElement('a-entity');
       let curNode = View.nodes[node];
       entityEl.setAttribute('geometry', {
         primitive: 'sphere',
         radius: 0.2
       });
+      entityEl.setAttribute("id", node);
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
       entityEl.setAttribute('material', 'color', 'blue');
       entityEl.setAttribute("class", "interactible");
@@ -29,8 +30,7 @@ AFRAME.registerComponent('presenter', {
       textEl.setAttribute('look-at', 'a-camera');
       console.log(curNode);
       textEl.setAttribute('look-at', 'a-camera');
-      if(curNode.flippedText)
-      {
+      if (curNode.flippedText) {
         textEl.setAttribute('text', {
           value: curNode.name,
           color: 'black',
@@ -58,31 +58,30 @@ AFRAME.registerComponent('presenter', {
     this.DrawEdges(View.pathways["gluconeogenesis"]);
   },
 
-  update: function() {
+  update: function () {
     var data = this.data;
     console.log("change in pathway " + data.activePathway);
     document.querySelectorAll('[pathway_zoom]').forEach(edge => edge.remove());
-    if(data.activePathway == "all")
-    {
+    if (data.activePathway == "all") {
       var accumulator = [];
-      for(let pathway in View.pathways) {
+      for (let pathway in View.pathways) {
         accumulator = accumulator.concat(View.pathways[pathway]);
       }
       this.DrawEdges(accumulator);
     }
     else {
-       this.DrawEdges(View.pathways[data.activePathway]);
+      this.DrawEdges(View.pathways[data.activePathway]);
     }
   },
 
-  DrawEdges: function(currentEdges) {
+  DrawEdges: function (currentEdges) {
     for (var index = 0; index < currentEdges.length; index++) {
       let height, targetPosition, targetAngles
       try {
         targetPosition = currentEdges[index].GetPosition();
         targetAngles = currentEdges[index].GetRotation();
         height = currentEdges[index].GetHeight();
-      } catch(e) {
+      } catch (e) {
         console.log("Error while reading view: " + e.message);
         continue;
       }
@@ -92,18 +91,18 @@ AFRAME.registerComponent('presenter', {
       cameraEl.setAttribute("camera", "active", false);
       let cameraRigEdge = document.createElement('a-entity');
 
-      this.initAnimationEl(currentEdges[index].leftElSrc, entityEl, "orange", new THREE.Vector3(0,0.1,0))
-      this.initAnimationEl(currentEdges[index].rightElSrc, entityEl, "brown", new THREE.Vector3(0,-0.1,0))
+      this.initAnimationEl(currentEdges[index].leftElSrc, entityEl, "orange", new THREE.Vector3(0, 0.1, 0))
+      this.initAnimationEl(currentEdges[index].rightElSrc, entityEl, "brown", new THREE.Vector3(0, -0.1, 0))
 
-      cameraRigEdge.setAttribute('id',index+'_rig'); 
-      cameraEl.setAttribute('id', index+'-camera');
-      entityEl.setAttribute('id',index);
-      
+      cameraRigEdge.setAttribute('id', index + '_rig');
+      cameraEl.setAttribute('id', index + '-camera');
+      entityEl.setAttribute('id', currentEdges[index].input + "/" + currentEdges[index].output);
+
       cameraRigEdge.appendChild(cameraEl);
       this.sceneModel.appendChild(cameraRigEdge)
       this.sceneModel.appendChild(entityEl);
 
-      cameraEl.setAttribute('look-controls','enabled',false);
+      cameraEl.setAttribute('look-controls', 'enabled', false);
 
       entityEl.setAttribute('geometry', {
         primitive: 'cylinder',
@@ -115,27 +114,27 @@ AFRAME.registerComponent('presenter', {
       entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
       entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
 
-      let cameraOffset  = new THREE.Vector3()
+      let cameraOffset = new THREE.Vector3()
       entityEl.object3D.getWorldPosition(cameraOffset)
 
-      cameraOffset.add((new THREE.Vector3(0,0,0.10)))
+      cameraOffset.add((new THREE.Vector3(0, 0, 0.10)))
 
       let edgeRotation = new THREE.Quaternion()
       entityEl.object3D.getWorldQuaternion(edgeRotation)
 
       cameraRigEdge.object3D.applyQuaternion(edgeRotation);
-      cameraRigEdge.object3D.rotateZ(Math.PI/2)
+      cameraRigEdge.object3D.rotateZ(Math.PI / 2)
       cameraRigEdge.object3D.position.copy(cameraOffset);
-      
+
 
       entityEl.setAttribute('material', 'color', 'green');
 
       var cameraRig = document.getElementById("camera-rig");
       console.log(cameraRig.getAttribute("position"));
-      entityEl.setAttribute('pathway_zoom', {edgeName: index});
+      entityEl.setAttribute('pathway_zoom', { edgeName: index });
 
-      if(currentEdges[index].imgSrc != undefined) {
-        imgEl = document.createElement('a-image', );
+      if (currentEdges[index].imgSrc != undefined) {
+        imgEl = document.createElement('a-image');
         imgEl.setAttribute("src", currentEdges[index].imgSrc);
         imgEl.setAttribute("rotation", "0 0 90");
         imgEl.setAttribute("scale", "0.4 0.4 0.4");
@@ -143,21 +142,21 @@ AFRAME.registerComponent('presenter', {
       }
     }
   },
-  initAnimationEl: function(srcEl, parentEl, colorStr, localPos) {
+  initAnimationEl: function (srcEl, parentEl, colorStr, localPos) {
     let animationEl = document.createElement('a-entity');
     parentEl.appendChild(animationEl);
 
-    if(srcEl == undefined) {
+    if (srcEl == undefined) {
       animationEl.setAttribute('geometry', {
         primitive: 'box',
         width: 0.2,
         height: 0.2,
         depth: 0.2
       })
-      animationEl.setAttribute("material","color",colorStr)
+      animationEl.setAttribute("material", "color", colorStr)
     } else {
       console.log("adding model");
-      animationEl.setAttribute("gltf-model", "url(" + srcEl +")");
+      animationEl.setAttribute("gltf-model", "url(" + srcEl + ")");
     }
     animationEl.setAttribute('position', localPos)
     animationEl.setAttribute('scale', "0.07 0.07 0.07")
