@@ -22,7 +22,14 @@ AFRAME.registerComponent('presenter', {
       });
       entityEl.setAttribute("id", node);
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
-      entityEl.setAttribute('material', 'color', 'blue');
+
+      if(curNode.placeholder) {
+        entityEl.setAttribute('material', 'visible', 'false');
+      }
+      else{
+        entityEl.setAttribute('material', 'color', 'blue');
+      }
+
       entityEl.setAttribute("class", "interactible");
       entityEl.setAttribute('assign-position', '[translate-network]');
       console.log(curNode.name);
