@@ -96,14 +96,14 @@ var View = (function () {
 
 
   var gluco = [
-    new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png", "/obj/pyruvate.glb", "/obj/oxaloacetate.glb"),
-    new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
-    new Edge("fructose_6_phosphate", "fructose_1_6_bisphosphate"),
+    new Edge("glucose_6_phosphate", "glucose", "/img/pyruvate_carboxylase.png", " / obj / pyruvate.glb", " / obj / oxaloacetate.glb"),
+    new Edge("fructose_6_phosphate", "glucose_6_phosphate"),
+    new Edge("fructose_1_6_bisphosphate", "fructose_6_phosphate"),
     new Edge("fructose_1_6_bisphosphate", "dihydroxyacetone_phosphate"),
-    new Edge("dihydroxyacetone_phosphate", "glycerol_3_phosphate"),
-    new Edge("glycerol_3_phosphate", "glycerol"),
+    new Edge("glycerol_3_phosphate", "dihydroxyacetone_phosphate"),
+    new Edge("glycerol", "glycerol_3_phosphate"),
     new Edge("dihydroxyacetone_phosphate", "glyceraldehyde_3_phosphate"),
-    new Edge("fructose_1_6_bisphosphate", "glyceraldehyde_3_phosphate"),
+    new Edge("glyceraldehyde_3_phosphate", "fructose_1_6_bisphosphate"),
     new Edge("glyceraldehyde_3_phosphate", "_1_3_bisphosphoglycerate"),
     new Edge("_1_3_bisphosphoglycerate", "_3_phosphoglycerate"),
     new Edge("_3_phosphoglycerate", "_2_phosphoglycerate"),
@@ -125,8 +125,8 @@ var View = (function () {
 
   var glycolysis = [
     new Edge("glucose", "glucose_6_phosphate", "/img/pyruvate_carboxylase.png"),
-    new Edge("glucose_6_phosphate", "fructose_6_phosphate"),
-    new Edge("fructose_6_phosphate", "fructose_1_6_bisphosphate"),
+    new Edge("fructose_6_phosphate", "glucose_6_phosphate"),
+    new Edge("fructose_1_6_bisphosphate", "fructose_6_phosphate"),
     new Edge("fructose_1_6_bisphosphate", "dihydroxyacetone_phosphate"),
     new Edge("dihydroxyacetone_phosphate", "glyceraldehyde_3_phosphate"),
     new Edge("fructose_1_6_bisphosphate", "glyceraldehyde_3_phosphate"),
