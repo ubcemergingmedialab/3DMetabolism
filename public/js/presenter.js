@@ -22,7 +22,14 @@ AFRAME.registerComponent('presenter', {
       });
       entityEl.setAttribute("id", node);
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
-      entityEl.setAttribute('material', 'color', 'blue');
+
+      if (curNode.isPlaceholder) {
+        entityEl.setAttribute('material', 'visible', 'false');
+      }
+      else {
+        entityEl.setAttribute('material', 'color', 'blue');
+      }
+
       entityEl.setAttribute("class", "interactible");
       entityEl.setAttribute('assign-position', '[translate-network]');
       console.log(curNode.name);
@@ -30,28 +37,30 @@ AFRAME.registerComponent('presenter', {
       textEl.setAttribute('look-at', 'a-camera');
       console.log(curNode);
       textEl.setAttribute('look-at', 'a-camera');
-      if (curNode.flippedText) {
-        textEl.setAttribute('text', {
-          value: curNode.name,
-          color: 'black',
-          width: 4,
-          anchor: 'align',
-          xOffset: -0.2,
-          zOffset: 1,
-          align: 'right'
-        });
+      if (!curNode.isPlaceholder) {
+        if (curNode.flippedText) {
+          textEl.setAttribute('text', {
+            value: curNode.name,
+            color: 'black',
+            width: 4,
+            anchor: 'align',
+            xOffset: -0.2,
+            zOffset: 1,
+            align: 'right'
+          });
+        }
+        else {
+          textEl.setAttribute('text', {
+            value: curNode.name,
+            color: 'black',
+            width: 4,
+            anchor: 'align',
+            xOffset: 0.2,
+            zOffset: 1,
+            align: 'left'
+          });
+        }
       }
-      else {
-        textEl.setAttribute('text', {
-          value: curNode.name,
-          color: 'black',
-          width: 4,
-          anchor: 'align',
-          xOffset: 0.2,
-          zOffset: 1,
-          align: 'left'
-        });
-      };
       this.sceneModel.appendChild(entityEl);
       entityEl.appendChild(textEl)
     }
