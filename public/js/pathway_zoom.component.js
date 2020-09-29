@@ -1,6 +1,7 @@
 AFRAME.registerComponent("pathway_zoom", {
     schema: {
-        edgeName: {type: 'string'}
+        edgeName: {type: 'string'},
+        initPos: {type: 'string', default: '1 0 11'}
     },
     init: function() {
         var el = this.el;
@@ -96,7 +97,7 @@ AFRAME.registerComponent("pathway_zoom", {
             property: 'position',
             dir: 'alternate',
             dur: 1500,
-            from: "1 -1.2 5",
+            from: this.data.initPos,
             to: targetVector.x + " " + targetVector.y+ " " + targetVector.z,
             easing: 'easeInElastic'
         });
@@ -106,7 +107,7 @@ AFRAME.registerComponent("pathway_zoom", {
                 property: 'position',
                 dur: 1500,
                 from: targetVector.x + " " + targetVector.y + " " + targetVector.z,
-                to: "1 -1.2 5",
+                to: this.data.initPos,
                 easing: 'easeOutElastic'
             });
         });
