@@ -34,13 +34,12 @@ AFRAME.registerComponent("highlight-sequence", {
           colorEdge(metabolite, outputMetabolite);
         }
       }
-      for (let i = 0; i < edges.length; i++) {
-        const edge = edges[i];
+      edges.forEach((edge) => {
         colorEdge(edge.input, edge.output);
         [edge.input, edge.output].forEach((metabolite) => {
           colorNode(metabolite);
         });
-      }
+      });
     });
   }
 })
