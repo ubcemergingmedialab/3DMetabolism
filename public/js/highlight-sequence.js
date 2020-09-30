@@ -29,8 +29,8 @@ AFRAME.registerComponent("highlight-sequence", {
         const metabolite = nodes[i];
         console.log("HIGHLIGHT" + metabolite);
         colorNode(metabolite);
-        if (nodes[i + 1] !== null) {
-          const outputMetabolite = nodes[i + 1];
+        const outputMetabolite = nodes[i + 1];
+        if (outputMetabolite !== null) {
           colorEdge(metabolite, outputMetabolite);
         }
       }
