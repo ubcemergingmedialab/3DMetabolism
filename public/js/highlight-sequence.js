@@ -4,6 +4,22 @@ AFRAME.registerComponent("highlight-sequence", {
   },
   init: function () {
     console.log("HIGHLIGHT INIT");
+    const colorEdge = (input, output) => {
+      const curEdge = document.getElementById(input + "/" + output);
+      if (curEdge == null) {
+        console.log("could not find edge " + input + "/" + output);
+      } else {
+        curEdge.setAttribute("material", "color", "purple");
+      }
+    };
+    const colorNode = (node) => {
+      const curElement = document.getElementById(node);
+      if (curElement === null) {
+        console.log("could not find node " + node);
+      } else {
+        curElement.setAttribute("material", "color", "red");
+      }
+    };
     this.el.addEventListener('click', () => {
       const component = this.el.getAttribute("highlight-sequence");
       const sequenceName = component.sequence;
@@ -12,40 +28,17 @@ AFRAME.registerComponent("highlight-sequence", {
       for (let i = 0; i < nodes.length; i++) {
         const metabolite = nodes[i];
         console.log("HIGHLIGHT" + metabolite);
-        const curElement = document.getElementById(metabolite);
-        if (curElement === null) {
-          console.log("could not find node " + metabolite);
-          continue;
-        }
-        curElement.setAttribute("material", "color", "red");
+        colorNode(metabolite);
         if (nodes[i + 1] !== null) {
           const outputMetabolite = nodes[i + 1];
-          console.log("looking for " + metabolite + "/" + outputMetabolite);
-          const curEdge = document.getElementById(metabolite + "/" + outputMetabolite);
-          if (curEdge === null) {
-            console.log("could not find edge " + metabolite + "/" + outputMetabolite);
-            continue;
-          }
-          curEdge.setAttribute("material", "color", "purple");
+          colorEdge(metabolite, outputMetabolite);
         }
       }
       for (let i = 0; i < edges.length; i++) {
         const edge = edges[i];
-        const edgeName = edge.input + '/' + edge.output;
-        console.log("HIGHLIGHT" + edgeName);
-        const curEdge = document.getElementById(edgeName);
-        if (curEdge === null) {
-          console.log("could not find node " + edgeName);
-          continue;
-        }
-        curEdge.setAttribute("material", "color", "purple");
+        colorEdge(edge.input, edge.output);
         [edge.input, edge.output].forEach((metabolite) => {
-          const curElement = document.getElementById(metabolite);
-          if (curElement === null) {
-            console.log("could not find node " + metabolite);
-          } else {
-            curElement.setAttribute("material", "color", "red");
-          }
+          colorNode(metabolite);
         });
       }
     });
