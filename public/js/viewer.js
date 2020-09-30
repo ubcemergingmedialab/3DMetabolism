@@ -87,7 +87,10 @@ var View = (function () {
   
   var existingNodes = {
     glucose: new Node(new THREE.Vector3(0, 8, 0), "glucose", ""),
-    glucose_6_phosphate: new Node(new THREE.Vector3(0, 7, 0), "glucose 6-phosphate", ""),
+    glucose_6_phosphate: new Node(new THREE.Vector3(0, 7, 0), "glucose 6-phosphate", true),
+    glucose_1_phosphate: new Node(new THREE.Vector3(2,7,0),"glucose 1-phosphate"),
+    upd_glucose: new Node(new THREE.Vector3(4,7,0),"UPD-glucose", ""),
+    glycogen: new Node(new THREE.Vector3(6,7,0),"glycogen", ""),
     fructose_6_phosphate: new Node(new THREE.Vector3(0, 6, 0), "fructose 6-phosphate", ""),
     fructose_1_6_bisphosphate: new Node(new THREE.Vector3(0, 5, 0), "fructose 1,6-bisphosphate"),
     dihydroxyacetone_phosphate: new Node(new THREE.Vector3(-1, 4.5, 0), "dihydroxyacetone phosphate", true),
@@ -130,6 +133,11 @@ var View = (function () {
   var gluco = [
     new Edge("glucose_6_phosphate", "glucose", "/img/pyruvate_carboxylase.png", " / obj / pyruvate.glb", " / obj / oxaloacetate.glb"),
     new Edge("fructose_6_phosphate", "glucose_6_phosphate"),
+
+    new Edge("glucose_6_phosphate","glucose_1_phosphate"),
+    new Edge("glucose_1_phosphate","upd_glucose"),
+    new Edge("upd_glucose","glycogen"),
+
     new Edge("fructose_1_6_bisphosphate", "fructose_6_phosphate"),
     new Edge("glycerol_3_phosphate", "dihydroxyacetone_phosphate"),
     new Edge("glycerol", "glycerol_3_phosphate"),
