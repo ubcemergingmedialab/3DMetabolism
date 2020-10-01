@@ -4,31 +4,40 @@ AFRAME.registerComponent("highlight-sequence", {
   },
   init: function () {
     console.log("HIGHLIGHT INIT");
-    this.el.addEventListener('click', () => {
-      let component = this.el.getAttribute("highlight-sequence");
-      let sequenceName = component.sequence;
-      for (let i = 0; i < View.sequences[sequenceName].length; i++) {
-        curSequence = View.sequences[sequenceName];
-        let metabolite = curSequence[i]
-        console.log("HIGHLIGHT" + metabolite);
-        let curElement = document.getElementById(metabolite);
-        if (curElement === null) {
-          console.log("could not find node " + metabolite);
-          continue;
-        }
+    const colorEdge = (input, output) => {
+      const curEdge = document.getElementById(input + "/" + output);
+      if (curEdge == null) {
+        console.log("could not find edge " + input + "/" + output);
+      } else {
+        curEdge.setAttribute("material", "color", "purple");
+      }
+    };
+    const colorNode = (node) => {
+      const curElement = document.getElementById(node);
+      if (curElement === null) {
+        console.log("could not find node " + node);
+      } else {
         curElement.setAttribute("material", "color", "red");
-        if (curSequence[i + 1] != null) {
-          let input = curSequence[i];
-          let output = curSequence[i + 1];
-          console.log("looking for " + input + "/" + output);
-          let curEdge = document.getElementById(input + "/" + output);
-          if (curEdge === null) {
-            console.log("could not find edge " + input + "/" + output);
-            continue;
-          }
-          curEdge.setAttribute("material", "color", "purple");
+      }
+    };
+    this.el.addEventListener('click', () => {
+      const component = this.el.getAttribute("highlight-sequence");
+      const sequenceName = component.sequence;
+      const nodes = View.sequences.nodes[sequenceName];
+      const edges = View.sequences.edges[sequenceName];
+      for (let i = 0; i < nodes.length; i++) {
+        const metabolite = nodes[i];
+        console.log("HIGHLIGHT" + metabolite);
+        colorNode(metabolite);
+        const outputMetabolite = nodes[i + 1];
+        if (outputMetabolite !== null) {
+          colorEdge(metabolite, outputMetabolite);
         }
       }
+      edges.forEach((edge) => {
+        colorEdge(edge.input, edge.output);
+        [edge.input, edge.output].forEach(colorNode);
+      });
     });
   }
 })
