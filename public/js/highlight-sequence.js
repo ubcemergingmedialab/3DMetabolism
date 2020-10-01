@@ -23,21 +23,26 @@ AFRAME.registerComponent("highlight-sequence", {
     this.el.addEventListener('click', () => {
       const component = this.el.getAttribute("highlight-sequence");
       const sequenceName = component.sequence;
+      console.log("highlighting " + sequenceName);
       const nodes = View.sequences.nodes[sequenceName];
-      const edges = View.sequences.edges[sequenceName];
-      for (let i = 0; i < nodes.length; i++) {
-        const metabolite = nodes[i];
-        console.log("HIGHLIGHT" + metabolite);
-        colorNode(metabolite);
-        const outputMetabolite = nodes[i + 1];
-        if (outputMetabolite !== null) {
-          colorEdge(metabolite, outputMetabolite);
+      const edges = View.pathways[sequenceName];
+      if (nodes != undefined) {
+        for (let i = 0; i < nodes.length; i++) {
+          const metabolite = nodes[i];
+          console.log("HIGHLIGHT" + metabolite);
+          colorNode(metabolite);
+          const outputMetabolite = nodes[i + 1];
+          if (outputMetabolite !== null) {
+            colorEdge(metabolite, outputMetabolite);
+          }
         }
       }
-      edges.forEach((edge) => {
-        colorEdge(edge.input, edge.output);
-        [edge.input, edge.output].forEach(colorNode);
-      });
+      if (edges != undefined) {
+        edges.forEach((edge) => {
+          colorEdge(edge.input, edge.output);
+          [edge.input, edge.output].forEach(colorNode);
+        });
+      }
     });
   }
 })
