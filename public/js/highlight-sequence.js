@@ -36,9 +36,7 @@ AFRAME.registerComponent("highlight-sequence", {
       }
       edges.forEach((edge) => {
         colorEdge(edge.input, edge.output);
-        [edge.input, edge.output].forEach((metabolite) => {
-          colorNode(metabolite);
-        });
+        [edge.input, edge.output].forEach(colorNode);
       });
     });
   }
