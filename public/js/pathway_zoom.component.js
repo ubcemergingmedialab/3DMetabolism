@@ -31,7 +31,7 @@ AFRAME.registerComponent("pathway_zoom", {
     ActivateZoomOut: function (event) {
         let mainCamera = document.getElementById('main-camera');
         mainCamera.setAttribute('camera', 'active', true);
-        let edgeCamera = document.getElementById(this.data.edgeName + "-camera");
+        let edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
         edgeCamera.setAttribute('camera', 'active', false);
 
         console.log('zooming out');
@@ -61,7 +61,7 @@ AFRAME.registerComponent("pathway_zoom", {
         entityEl.object3D.position.copy(pos);
         let rot = entityEl.object3D.rotation.clone();
         entityEl.object3D.rotation.copy(rot);
-        entityEl.setAttribute('material', 'opacity', '0.5');
+        entityEl.setAttribute('material', 'opacity', '0.0');
         entityEl.setAttribute('id', 'eventPlane');
         entityEl.setAttribute("class", "interactible");
         entityEl.setAttribute('material', 'color', 'red')
@@ -78,7 +78,8 @@ AFRAME.registerComponent("pathway_zoom", {
         cameraGyro.object3D.worldToLocal(targetVector);
 
         cameraMainRig.addEventListener('animationcomplete__zoomIn', () => {
-            let edgeCamera = document.getElementById(this.data.edgeName + "-camera");
+            let edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
+            console.log("looking for camera: " + this.data.edgeName)
             edgeCamera.setAttribute('camera', 'active', true);
             let mainCamera = document.getElementById('main-camera');
             mainCamera.setAttribute('camera', 'active', false);
@@ -86,7 +87,7 @@ AFRAME.registerComponent("pathway_zoom", {
         });
 
         cameraMainRig.addEventListener('animationcomplete__zoomOut', () => {
-            let edgeCamera = document.getElementById(this.data.edgeName + "-camera");
+            let edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
             edgeCamera.setAttribute('camera', 'active', false);
             let mainCamera = document.getElementById('main-camera');
             mainCamera.setAttribute('camera', 'active', true);
@@ -98,7 +99,7 @@ AFRAME.registerComponent("pathway_zoom", {
             dir: 'alternate',
             dur: 1500,
             from: this.data.initPos,
-            to: targetVector.x + " " + targetVector.y + " " + targetVector.z,
+            to: targetVector.x + " " + targetVector.y + " " + targetVector.z + 0.1,
             easing: 'easeInElastic'
         });
 
@@ -106,8 +107,7 @@ AFRAME.registerComponent("pathway_zoom", {
             cameraMainRig.setAttribute('animation__zoomOut', {
                 property: 'position',
                 dur: 1500,
-                from: targetVector.x + " " + targetVector.y + " " + targetVector.z,
-                from: this.data.initPos,
+                to: this.data.initPos,
                 easing: 'easeOutElastic'
             });
         });
