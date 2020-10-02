@@ -227,10 +227,10 @@ var View = (function () {
   var oxidative_phosphorylation = [];
 
   var pathways = {
-    "all": all_pathways,
+    "all_pathways": all_pathways,
     "glycolysis": glycolysis,
     "gluconeogenesis": gluconeogenesis,
-    "pyruvate_dehydrogenase complex": pyruvate_dehydrogenase,
+    "pyruvate_dehydrogenase": pyruvate_dehydrogenase,
     "citric_acid_cycle": citric_acid_cycle,
     "glycogenesis": glycogenesis,
     "glycogenolysis": glycogenolysis,
