@@ -71,7 +71,7 @@ AFRAME.registerComponent('presenter', {
     var data = this.data;
     console.log("change in pathway " + data.activePathway);
     document.querySelectorAll('[pathway_zoom]').forEach(edge => edge.remove());
-    document.querySelectorAll('edgeCamera').forEach(edge => edge.remove());
+    document.querySelectorAll('.edgeCamera').forEach(edge => edge.remove());
     this.DrawEdges(View.pathways[data.activePathway]);
   },
 
@@ -102,8 +102,8 @@ AFRAME.registerComponent('presenter', {
       cameraEl.setAttribute('id', 'edgeCamera');
       entityEl.setAttribute('id', edgeName);
 
-      cameraRigEdge.appendChild(cameraEl);
       this.sceneModel.appendChild(cameraRigEdge)
+      cameraRigEdge.appendChild(cameraEl);
       this.sceneModel.appendChild(entityEl);
 
       cameraEl.setAttribute('look-controls', 'enabled', false);

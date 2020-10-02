@@ -168,7 +168,7 @@ var View = (function () {
     new Edge("acetyl_coA", "oxaloacetate_2_citrate_placeholder")
   ];
   var gluconeogenesis = [
-    new Edge("glucose_6_phosphate", "glucose", "/img/pyruvate_carboxylase.png", " / obj / pyruvate.glb", " / obj / oxaloacetate.glb"),
+    new Edge("glucose_6_phosphate", "glucose", "/img/pyruvate_carboxylase.png", "/obj/pyruvate.glb", "/obj/oxaloacetate.glb"),
     new Edge("fructose_6_phosphate", "glucose_6_phosphate"),
     new Edge("fructose_1_6_bisphosphate", "fructose_6_phosphate"),
     new Edge("dihydroxyacetone_phosphate", "glyceraldehyde_3_phosphate"),
