@@ -71,16 +71,8 @@ AFRAME.registerComponent('presenter', {
     var data = this.data;
     console.log("change in pathway " + data.activePathway);
     document.querySelectorAll('[pathway_zoom]').forEach(edge => edge.remove());
-    if (data.activePathway == "all") {
-      var accumulator = [];
-      for (let pathway in View.pathways) {
-        accumulator = accumulator.concat(View.pathways[pathway]);
-      }
-      this.DrawEdges(accumulator);
-    }
-    else {
-      this.DrawEdges(View.pathways[data.activePathway]);
-    }
+    document.querySelectorAll('edgeCamera').forEach(edge => edge.remove());
+    this.DrawEdges(View.pathways[data.activePathway]);
   },
 
   DrawEdges: function (currentEdges) {
@@ -103,9 +95,12 @@ AFRAME.registerComponent('presenter', {
       this.initAnimationEl(currentEdges[index].leftElSrc, entityEl, "orange", new THREE.Vector3(0, 0.1, 0))
       this.initAnimationEl(currentEdges[index].rightElSrc, entityEl, "brown", new THREE.Vector3(0, -0.1, 0))
 
-      cameraRigEdge.setAttribute('id', index + '_rig');
-      cameraEl.setAttribute('id', index + '-camera');
-      entityEl.setAttribute('id', currentEdges[index].input + "/" + currentEdges[index].output);
+      let edgeName = currentEdges[index].input + "/" + currentEdges[index].output
+      cameraRigEdge.setAttribute('id', edgeName + '_rig');
+      cameraRigEdge.setAttribute('class', 'edgeCamera')
+      cameraEl.setAttribute('id', edgeName + '-camera');
+      cameraEl.setAttribute('id', 'edgeCamera');
+      entityEl.setAttribute('id', edgeName);
 
       cameraRigEdge.appendChild(cameraEl);
       this.sceneModel.appendChild(cameraRigEdge)
@@ -140,7 +135,7 @@ AFRAME.registerComponent('presenter', {
 
       var cameraRig = document.getElementById("camera-rig");
       console.log(cameraRig.getAttribute("position"));
-      entityEl.setAttribute('pathway_zoom', { edgeName: index });
+      entityEl.setAttribute('pathway_zoom', { edgeName: edgeName });
 
       if (currentEdges[index].imgSrc != undefined) {
         imgEl = document.createElement('a-image');
