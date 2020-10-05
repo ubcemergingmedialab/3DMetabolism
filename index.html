@@ -14,7 +14,8 @@
   <script src="/js/assign-position.component.js"></script>
   <script src="/js/translate-network.component.js"></script>
   <script src="/js/highlight-sequence.js"></script>
-  <script src="/js/presenter.js"></script>
+  <script src="/client/presenter.js"></script>
+  <script src="/client/index.js"></script>
 
 </head>
 
@@ -23,6 +24,12 @@
     <a-assets>
       <a-asset-item id="mito" src="/obj/mitochondrion.glb"></a-asset-item>
     </a-assets>
+    <a-cylinder material-displacement scale="10 10 10" radius="0.2" position="0 1.5 -2" segments-height="128"
+      segments-width="128">
+      <a-animation attribute="scale" direction="alternate-reverse" dur="5000" from="1 1 1" to="4 4 4"
+        repeat="indefinite"></a-animation>
+    </a-cylinder>
+
     <a-entity id="gyro" drag-rotate-component>
       <a-entity id='camera-rig' position="1 0 11">
         <a-camera id='main-camera' user-height="0" look-controls="enabled: false">
@@ -82,7 +89,8 @@
         margin="0 0 0.05 0"></a-gui-button>
       </a-gui-button>
     </a-entity>
-    <a-entity id="mitochondrion" gltf-model="#mito" position="0 -2.2 0" scale="10 10 10" varying-transparency="0.4">
+    <a-entity id="mitochondrion" gltf-model="#mito" position="0 -2.2 0" scale="10 10 10" varying-transparency="0.4"
+      material-displacement>
     </a-entity>
     <a-entity translate-network presenter cursor="rayOrigin: mouse" raycaster="objects: .interactible"></a-entity>
     <a-light type="ambient" color="#fff" intensity="9"></a-light>

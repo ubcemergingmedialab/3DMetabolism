@@ -1,5 +1,7 @@
 var express = require('express');
 var path = require('path');
+var glslify = require('glslify');
+var browserify = require("browserify-middleware");
 
 var app = express();
 const port = 8080;
@@ -11,6 +13,8 @@ app.get('/', (req, res) => {
 });
 
 app.use("/", express.static(path.join(__dirname, "public")));
+
+app.use("/client", browserify('./client', { transform: [glslify] }))
 
 var addr = addr_local;
 app.listen(port, addr_local, () => {

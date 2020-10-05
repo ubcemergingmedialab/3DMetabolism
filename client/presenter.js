@@ -108,6 +108,7 @@ AFRAME.registerComponent('presenter', {
 
       cameraEl.setAttribute('look-controls', 'enabled', false);
 
+      entityEl.setAttribute("material-displacement");
       entityEl.setAttribute('geometry', {
         primitive: 'cylinder',
         height: height,
@@ -131,7 +132,7 @@ AFRAME.registerComponent('presenter', {
       cameraRigEdge.object3D.position.copy(cameraOffset);
 
 
-      entityEl.setAttribute('material', 'color', 'green');
+      //entityEl.setAttribute('material', 'color', 'green');
 
       var cameraRig = document.getElementById("camera-rig");
       console.log(cameraRig.getAttribute("position"));
