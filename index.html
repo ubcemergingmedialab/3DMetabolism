@@ -3,7 +3,7 @@
 
 <head>
   <title>3DMetabolism</title>
-  <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="https://rdub80.github.io/aframe-gui/examples/js/aframe-gui.js"></script>
   <script src="/js/viewer.js"></script>
@@ -24,11 +24,6 @@
     <a-assets>
       <a-asset-item id="mito" src="/obj/mitochondrion.glb"></a-asset-item>
     </a-assets>
-    <a-cylinder material-displacement scale="10 10 10" radius="0.2" position="0 1.5 -2" segments-height="128"
-      segments-width="128">
-      <a-animation attribute="scale" direction="alternate-reverse" dur="5000" from="1 1 1" to="4 4 4"
-        repeat="indefinite"></a-animation>
-    </a-cylinder>
 
     <a-entity id="gyro" drag-rotate-component>
       <a-entity id='camera-rig' position="1 0 11">

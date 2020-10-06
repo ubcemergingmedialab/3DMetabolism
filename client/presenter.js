@@ -102,13 +102,14 @@ AFRAME.registerComponent('presenter', {
       cameraEl.setAttribute('id', 'edgeCamera');
       entityEl.setAttribute('id', edgeName);
 
+      entityEl.setAttribute("material-displacement");
+
       this.sceneModel.appendChild(cameraRigEdge)
       cameraRigEdge.appendChild(cameraEl);
       this.sceneModel.appendChild(entityEl);
 
       cameraEl.setAttribute('look-controls', 'enabled', false);
 
-      entityEl.setAttribute("material-displacement");
       entityEl.setAttribute('geometry', {
         primitive: 'cylinder',
         height: height,
