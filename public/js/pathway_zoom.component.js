@@ -9,6 +9,9 @@ AFRAME.registerComponent("pathway_zoom", {
         this.ActivateZoomOut = this.ActivateZoomOut.bind(this);
         this.CreateEventPlane = this.CreateEventPlane.bind(this);
         this.AnimateCameraZoom = this.AnimateCameraZoom.bind(this);
+        this.ZoomInAnimationCompleteHandler = this.ZoomInAnimationCompleteHandler.bind(this);
+        this.ZoomOutAnimationCompleteHandler = this.ZoomOutAnimationCompleteHandler.bind(this);
+        this.RemoveAnimationCompleteHandlers = this.RemoveAnimationCompleteHandlers.bind(this);
         el.addEventListener('click', this.ActivateZoomIn);
     },
 
@@ -20,6 +23,8 @@ AFRAME.registerComponent("pathway_zoom", {
         this.el.setAttribute('material', 'color', 'yellow');
         eventPlane = this.CreateEventPlane(edge);
         this.AnimateCameraZoom();
+
+        document.querySelector("[presenter]").setAttribute("raycaster", "objects:.eventPlane");
 
         document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown();
         document.querySelector('a-scene').components['drag-rotate-component'].OnRemoveMouseDown();
@@ -33,6 +38,8 @@ AFRAME.registerComponent("pathway_zoom", {
         mainCamera.setAttribute('camera', 'active', true);
         let edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
         edgeCamera.setAttribute('camera', 'active', false);
+
+        document.querySelector("[presenter]").setAttribute("raycaster", "objects:.interactible");
 
         console.log('zooming out');
         this.el.setAttribute('material', 'color', 'green');
@@ -52,7 +59,7 @@ AFRAME.registerComponent("pathway_zoom", {
 
         entityEl.setAttribute('geometry', {
             primitive: 'box',
-            width: .5,
+            width: 1,
             height: 1,
             depth: .05
         });
@@ -63,7 +70,7 @@ AFRAME.registerComponent("pathway_zoom", {
         entityEl.object3D.rotation.copy(rot);
         entityEl.setAttribute('material', 'opacity', '0.0');
         entityEl.setAttribute('id', 'eventPlane');
-        entityEl.setAttribute("class", "interactible");
+        entityEl.setAttribute("class", "eventPlane");
         entityEl.setAttribute('material', 'color', 'red')
 
         sceneModel.appendChild(entityEl);
@@ -73,43 +80,75 @@ AFRAME.registerComponent("pathway_zoom", {
     AnimateCameraZoom: function () {
         let cameraGyro = document.getElementById("gyro");
         let cameraMainRig = document.getElementById('camera-rig');
+        document.querySelector("[presenter]").setAttribute("raycaster", "objects:.eventPlane");
         let targetVector = (new THREE.Vector3())
         this.el.object3D.getWorldPosition(targetVector)
         cameraGyro.object3D.worldToLocal(targetVector);
 
-        cameraMainRig.addEventListener('animationcomplete__zoomIn', () => {
-            let edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
-            console.log("looking for camera: " + this.data.edgeName)
-            edgeCamera.setAttribute('camera', 'active', true);
-            let mainCamera = document.getElementById('main-camera');
-            mainCamera.setAttribute('camera', 'active', false);
-            cameraMainRig.removeAttribute('animation__zoomIn');
-        });
-
-        cameraMainRig.addEventListener('animationcomplete__zoomOut', () => {
-            let edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
-            edgeCamera.setAttribute('camera', 'active', false);
-            let mainCamera = document.getElementById('main-camera');
-            mainCamera.setAttribute('camera', 'active', true);
-            cameraMainRig.removeAttribute('animation__zoomOut');
-        });
+        cameraMainRig.addEventListener('animationcomplete__zoomIn', this.ZoomInAnimationCompleteHandler);
+        cameraMainRig.addEventListener('animationcomplete__zoomOut', this.ZoomOutAnimationCompleteHandler);
 
         cameraMainRig.setAttribute('animation__zoomIn', {
             property: 'position',
             dir: 'alternate',
-            dur: 1500,
+            dur: 1200,
             from: this.data.initPos,
-            to: targetVector.x + " " + targetVector.y + " " + targetVector.z + 0.1,
-            easing: 'easeInElastic'
+            to: targetVector.x + " " + targetVector.y + " " + (targetVector.z),
+            easing: 'easeInCubic'
         });
 
         eventPlane.addEventListener('click', () => {
             cameraMainRig.setAttribute('animation__zoomOut', {
                 property: 'position',
-                dur: 1500,
+                dur: 1200,
                 to: this.data.initPos,
-                easing: 'easeOutElastic'
+                easing: 'easeOutCubic'
             });
+            document.querySelector("[presenter]").setAttribute("raycaster", "objects:.interactible");
         });
+    },
+
+    ZoomInAnimationCompleteHandler: function () {
+        let cameraMainRig = document.getElementById('camera-rig');
+        console.log("looking for camera: " + this.data.edgeName + "_rig")
+        let edgeCamera;
+        try {
+            edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
+        } catch (e) {
+            console.log(e);
+            this.RemoveAnimationCompleteHandlers();
+            return;
+        }
+        let mainCamera = document.getElementById('main-camera');
+        edgeCamera.setAttribute('camera', 'active', true);
+        mainCamera.setAttribute('camera', 'active', false);
+        cameraMainRig.removeAttribute('animation__zoomIn');
+    },
+
+    ZoomOutAnimationCompleteHandler: function () {
+        let cameraMainRig = document.getElementById('camera-rig');
+        let edgeCamera;
+        try {
+            edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
+        } catch (e) {
+            console.log(e);
+            this.RemoveAnimationCompleteHandlers();
+            return;
+        }
+        let mainCamera = document.getElementById('main-camera');
+        edgeCamera.setAttribute('camera', 'active', false);
+        mainCamera.setAttribute('camera', 'active', true);
+        cameraMainRig.removeAttribute('animation__zoomOut');
+    },
+
+    RemoveAnimationCompleteHandlers: function () {
+        let cameraMainRig = document.getElementById('camera-rig');
+        cameraMainRig.removeEventListener('animationcomplete__zoomIn', this.ZoomInAnimationCompleteHandler);
+        cameraMainRig.removeEventListener('animationcomplete__zoomOut', this.ZoomOutAnimationCompleteHandler);
+    },
+
+    remove: function () {
+        console.log('removing handlers');
+        this.RemoveAnimationCompleteHandlers();
     }
 });

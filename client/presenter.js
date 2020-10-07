@@ -70,7 +70,10 @@ AFRAME.registerComponent('presenter', {
   update: function () {
     var data = this.data;
     console.log("change in pathway " + data.activePathway);
-    document.querySelectorAll('[pathway_zoom]').forEach(edge => edge.remove());
+    document.querySelectorAll('[pathway_zoom]').forEach(edge => {
+      edge.removeAttribute("pathway_zoom");
+      edge.remove();
+    })
     document.querySelectorAll('.edgeCamera').forEach(edge => edge.remove());
     this.DrawEdges(View.pathways[data.activePathway]);
   },
