@@ -24,8 +24,6 @@ AFRAME.registerComponent("pathway_zoom", {
         eventPlane = this.CreateEventPlane(edge);
         this.AnimateCameraZoom();
 
-        document.querySelector("[presenter]").setAttribute("raycaster", "objects:.eventPlane");
-
         document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown();
         document.querySelector('a-scene').components['drag-rotate-component'].OnRemoveMouseDown();
 
@@ -38,8 +36,6 @@ AFRAME.registerComponent("pathway_zoom", {
         mainCamera.setAttribute('camera', 'active', true);
         let edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
         edgeCamera.setAttribute('camera', 'active', false);
-
-        document.querySelector("[presenter]").setAttribute("raycaster", "objects:.interactible");
 
         console.log('zooming out');
         this.el.setAttribute('material', 'color', 'green');
@@ -55,7 +51,6 @@ AFRAME.registerComponent("pathway_zoom", {
     CreateEventPlane: function (edge) {
         let sceneModel = document.getElementById('sceneModel');
         let entityEl = document.createElement('a-entity');
-        entityEl.setAttribute('id', 'eventPlane');
 
         entityEl.setAttribute('geometry', {
             primitive: 'box',
