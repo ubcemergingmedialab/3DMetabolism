@@ -12,7 +12,7 @@ AFRAME.registerComponent('material-displacement', {
     init: function () {
         console.log('init material displacement');
         this.material = new THREE.ShaderMaterial({
-            uniforms: { time: { value: 0.0 } },
+            uniforms: { time: { value: 1.0 } },
             vertexShader,
             fragmentShader
         });
