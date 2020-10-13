@@ -116,9 +116,11 @@ AFRAME.registerComponent('presenter', {
       entityEl.setAttribute('geometry', {
         primitive: 'cylinder',
         height: height,
-        radius: 0.1
+        radius: 0.1,
+        openEnded: true
       });
 
+      entityEl.setAttribute('material', 'color', 'green');
 
       entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
       entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
@@ -136,7 +138,7 @@ AFRAME.registerComponent('presenter', {
       cameraRigEdge.object3D.position.copy(cameraOffset);
 
 
-      //entityEl.setAttribute('material', 'color', 'green');
+
 
       var cameraRig = document.getElementById("camera-rig");
       console.log(cameraRig.getAttribute("position"));
