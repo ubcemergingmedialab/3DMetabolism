@@ -135,7 +135,7 @@ var View = (function () {
   };
 
   var all_pathways = [
-    new Edge("glucose_6_phosphate", "glucose", "/img/pyruvate_carboxylase.png", " / obj / pyruvate.glb", " / obj / oxaloacetate.glb"),
+    new Edge("glucose_6_phosphate", "glucose", "/img/pyruvate_carboxylase.png", " /obj/pyruvate.glb", "/obj/oxaloacetate.glb"),
     new Edge("fructose_6_phosphate", "glucose_6_phosphate"),
     new Edge("glucose_6_phosphate", "glucose_1_phosphate"),
     new Edge("glucose_1_phosphate", "upd_glucose"),

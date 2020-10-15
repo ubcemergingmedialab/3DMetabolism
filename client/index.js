@@ -23,9 +23,12 @@ AFRAME.registerComponent('material-displacement', {
      * Apply the material to the current entity.
      */
     update: function () {
-        const mesh = this.el.getObject3D('mesh');
+        console.log("setting material " + this.el.getAttribute("id"));
+        let mesh = this.el.getObject3D('mesh');
         if (mesh) {
-            mesh.material = this.material;
+            mesh.traverse(node => {
+                node.material = this.material;
+            });
         }
     },
 
@@ -37,3 +40,13 @@ AFRAME.registerComponent('material-displacement', {
     }
 
 })
+/*
+AFRAME.registerShader('displace', {
+    schema: {
+        time: {
+            type: 'number', is: 'uniform', default: 0.0
+        }
+    },
+    vertexShader: `
+    `
+})*/

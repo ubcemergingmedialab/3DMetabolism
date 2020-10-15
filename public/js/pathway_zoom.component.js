@@ -20,7 +20,7 @@ AFRAME.registerComponent("pathway_zoom", {
         let edge = this.el;
         console.log('zooming in');
 
-        this.el.setAttribute('material', 'color', 'yellow');
+        //this.el.setAttribute('material', 'color', 'yellow');
         eventPlane = this.CreateEventPlane(edge);
         this.AnimateCameraZoom();
 
@@ -78,7 +78,7 @@ AFRAME.registerComponent("pathway_zoom", {
         document.querySelector("[presenter]").setAttribute("raycaster", "objects:.eventPlane");
         let targetVector = (new THREE.Vector3())
         this.el.object3D.getWorldPosition(targetVector)
-        cameraGyro.object3D.worldToLocal(targetVector);
+        //cameraGyro.object3D.worldToLocal(targetVector);
 
         cameraMainRig.addEventListener('animationcomplete__zoomIn', this.ZoomInAnimationCompleteHandler);
         cameraMainRig.addEventListener('animationcomplete__zoomOut', this.ZoomOutAnimationCompleteHandler);

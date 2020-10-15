@@ -105,7 +105,6 @@ AFRAME.registerComponent('presenter', {
       cameraEl.setAttribute('id', 'edgeCamera');
       entityEl.setAttribute('id', edgeName);
 
-      entityEl.setAttribute("material-displacement");
 
       this.sceneModel.appendChild(cameraRigEdge)
       cameraRigEdge.appendChild(cameraEl);
@@ -113,11 +112,15 @@ AFRAME.registerComponent('presenter', {
 
       cameraEl.setAttribute('look-controls', 'enabled', false);
 
+      console.log("setting component");
+      entityEl.setAttribute("material-displacement", "");
+      console.log("set component");
       entityEl.setAttribute('geometry', {
         primitive: 'cylinder',
         height: height,
         radius: 0.1
       });
+      console.log("set geometry");
 
 
       entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
@@ -126,7 +129,7 @@ AFRAME.registerComponent('presenter', {
       let cameraOffset = new THREE.Vector3()
       entityEl.object3D.getWorldPosition(cameraOffset)
 
-      cameraOffset.add((new THREE.Vector3(0, 0, 0.10)))
+      cameraOffset.add((new THREE.Vector3(0, 0, 0)))
 
       let edgeRotation = new THREE.Quaternion()
       entityEl.object3D.getWorldQuaternion(edgeRotation)
@@ -134,6 +137,8 @@ AFRAME.registerComponent('presenter', {
       cameraRigEdge.object3D.applyQuaternion(edgeRotation);
       cameraRigEdge.object3D.rotateZ(Math.PI / 2)
       cameraRigEdge.object3D.position.copy(cameraOffset);
+      console.log("camera: " + cameraRigEdge.object3D.position.x + " " + cameraRigEdge.object3D.position.y + " " + cameraRigEdge.object3D.position.z);
+      console.log("edge: " + entityEl.object3D.position.x + " " + entityEl.object3D.position.y + " " + entityEl.object3D.position.z);
 
 
       //entityEl.setAttribute('material', 'color', 'green');
