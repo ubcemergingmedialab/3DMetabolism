@@ -25,11 +25,16 @@ float turbulence( vec3 p ) {
   return t;
 }
 
-void main() {
-  noise = turbulence( cross(vec3(1.0,1.0,1.0),normal) + time / 3.0 );
-  float displacement =  noise / 40.0;
+float calculateOffset(float y) {
+  return sin(y + time * 2.0);
+}
 
-  vec3 newPosition = position + displacement;
+void main() {
+  //noise = turbulence( cross(vec3(1.0,1.0,1.0),normal) + time / 3.0 );
+  //float displacement =  noise / 40.0;
+  float displacement = (calculateOffset(position.y) / 4.0) + 0.5;
+
+  vec3 newPosition = position + normal * displacement;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
 }
 
