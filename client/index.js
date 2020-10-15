@@ -5,42 +5,11 @@ const vertexShader = glsl.file('../shaders/vertex.glsl');
 const fragmentShader = glsl.file('../shaders/fragment.glsl');
 
 AFRAME.registerComponent('material-displacement', {
-    /**
-     * Creates a new THREE.ShaderMaterial using the two shaders defined
-     * in vertex.glsl and fragment.glsl.
-     */
-    init: function () {
-        console.log('init material displacement');
-        this.material = new THREE.ShaderMaterial({
-            uniforms: { time: { value: 0.0 } },
-            vertexShader,
-            fragmentShader
-        });
-        this.el.addEventListener('model-loaded', () => this.update());
-    },
-
-    /**
-     * Apply the material to the current entity.
-     */
-    update: function () {
-        console.log("setting material " + this.el.getAttribute("id"));
-        let mesh = this.el.getObject3D('mesh');
-        if (mesh) {
-            mesh.traverse(node => {
-                node.material = this.material;
-            });
-        }
-    },
-
-    /**
-     * On each frame, update the 'time' uniform in the shaders.
-     */
     tick: function (t) {
-        this.material.uniforms.time.value = t / 1000;
+        this.el.setAttribute("material", "time:" + t);
     }
-
 })
-/*
+
 AFRAME.registerShader('displace', {
     schema: {
         time: {
@@ -48,5 +17,16 @@ AFRAME.registerShader('displace', {
         }
     },
     vertexShader: `
+    uniform time;
+float calculateOffset(float y) {
+    return sin(y + time);
+}
+
+void main() {
+    float offset = calculateOffset(position.y);
+    vec3 newPosition = position + normal * offset;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+}
+  
     `
-})*/
+})
