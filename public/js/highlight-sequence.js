@@ -26,8 +26,8 @@ AFRAME.registerComponent("highlight-sequence", {
       const outlineElems = document.querySelectorAll("[isoutline='true']");
       outlineElems.forEach((elem) => {
         elem.parentElement.removeChild(elem);
-      })
-    }
+      });
+    };
     const outlineElem = (id, type = 'node') => {
       const curElement = document.getElementById(id);
       if (curElement == null) {
@@ -49,7 +49,7 @@ AFRAME.registerComponent("highlight-sequence", {
         outlineElement.setAttribute('isoutline', 'true');
         curElement.parentElement.appendChild(outlineElement);
       }
-    }
+    };
     this.el.addEventListener('click', () => {
       cleanupOutlines();
       const component = this.el.getAttribute("highlight-sequence");
