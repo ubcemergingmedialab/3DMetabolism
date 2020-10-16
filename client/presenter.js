@@ -114,6 +114,7 @@ AFRAME.registerComponent('presenter', {
 
       console.log("setting component");
       entityEl.setAttribute("material", "shader:displace;");
+      entityEl.setAttribute("material-displacement", "");
       console.log("set component");
       entityEl.setAttribute('geometry', {
         primitive: 'cylinder',
