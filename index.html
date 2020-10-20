@@ -7,6 +7,7 @@
   <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
   <script src="https://rdub80.github.io/aframe-gui/examples/js/aframe-gui.js"></script>
   <script src="/js/viewer.js"></script>
+  <script src="/js/dropdown-menu.component.js"></script>
   <script src="/js/pathway_zoom.component.js"></script>
   <script src="/js/drag-rotate-component.js"></script>
   <script src="/js/varying-transparency.component.js"></script>
@@ -65,8 +66,34 @@
         highlight-sequence="sequence: pyruvate_dehydrogenase" value="HL" font-family="Helvetica" font-size="120px"
         margin="0 0 0.05 0"></a-gui-button>
       <a-gui-button id="" class="interactible" position="-3 0 0" width="3" height="0.5"
-        assign-pathway="pathway: gluconeogenesis" value="gluconeogenesis" font-family="Helvetica" margin="0 0 0.05 0">
+        assign-pathway="pathway: gluconeogenesis" value="gluconeogenesis" font-family="Helvetica" margin="0 0 0.05 0">=
       </a-gui-button>
+
+      <!-- dropdown menu -->
+      <a-entity id="dropdown-gluconeogenesis" >
+        <a-gui-icon-label-button position="-1.25 0 0" id="toggleDropDown" class="interactible" width="0.5" height="0.5" icon="android-menu"
+          opendropdown="target:#container-gluconeogenesis" role="button" visible="true">
+        </a-gui-icon-label-button>
+        
+        <a-gui-flex-container id="container-gluconeogenesis" flex-direction="column" justify-content="flexStart" align-items="normal"
+          component-padding="0.1" opacity="0" width="0.75" height="0.75" position="0.5 0 0" visible="false" icon="android-menu"
+          animation__drop2="property:visible; startEvents:opendropdown; dur:100; to: true;"
+          animation__back2="property:visible; startEvents:closedropdown; dur: 1000; to:false">
+
+
+          <a-gui-button id="toggleCaudateBtn" class="interactible" value="Animation1"
+            width="3" height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate">
+          </a-gui-button>
+          <a-gui-button id="toggleCaudateBtn" class="interactible" value="Animation1"
+            width="3" height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate">
+          </a-gui-button>
+
+          <a-gui-icon-button width="0.5" class="interactible" height="0.5" closedropdown="target:#container-gluconeogenesis"
+            icon="android-close" role="button" raycaster-autorefresh>
+          </a-gui-button>
+        </a-gui-flex-container>
+      </a-entity>
+
       <a-gui-button id="" class="interactible" position="-5 0 0" width="1" height="0.5"
         highlight-sequence="sequence: gluconeogenesis" value="HL" font-family="Helvetica" font-size="120px"
         margin="0 0 0.05 0"></a-gui-button>
