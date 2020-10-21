@@ -71,26 +71,20 @@
 
       <!-- dropdown menu -->
       <a-entity id="dropdown-gluconeogenesis" >
-        <a-gui-icon-label-button position="-1.25 0 0" id="toggleDropDown" class="interactible" width="0.5" height="0.5" icon="android-menu"
-          opendropdown="target:#container-gluconeogenesis" role="button" visible="true">
-        </a-gui-icon-label-button>
+        <a-gui-icon-button gui-icon-label-button position="-1.25 0 0" id="toggleDropDown" class="interactible" width="0.5" height="0.5" icon="android-menu"
+        toggledropdown="target:#container-gluconeogenesis" visible="true" toggle="true">
+        </a-gui-icon-button>
         
         <a-gui-flex-container id="container-gluconeogenesis" flex-direction="column" justify-content="flexStart" align-items="normal"
           component-padding="0.1" opacity="0" width="0.75" height="0.75" position="0.5 0 0" visible="false" icon="android-menu"
           animation__drop2="property:visible; startEvents:opendropdown; dur:100; to: true;"
           animation__back2="property:visible; startEvents:closedropdown; dur: 1000; to:false">
-
-
-          <a-gui-button id="toggleCaudateBtn" class="interactible" value="Animation1"
+          <a-gui-button id="gluconeogenesis-animation-1" class="interactible" value="Animation1"
             width="3" height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate">
           </a-gui-button>
-          <a-gui-button id="toggleCaudateBtn" class="interactible" value="Animation1"
-            width="3" height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate">
-          </a-gui-button>
-
-          <a-gui-icon-button width="0.5" class="interactible" height="0.5" closedropdown="target:#container-gluconeogenesis"
-            icon="android-close" role="button" raycaster-autorefresh>
-          </a-gui-button>
+          <a-gui-button id="gluconeogenesis-animation-2" class="interactible" value="Animation2"
+          width="3" height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate">
+        </a-gui-button>
         </a-gui-flex-container>
       </a-entity>
 

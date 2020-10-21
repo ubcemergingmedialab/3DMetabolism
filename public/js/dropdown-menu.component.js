@@ -1,19 +1,4 @@
-AFRAME.registerComponent('opendropdown', {
-    schema: {
-        target: { type: 'selector', default: '' }
-    },
-
-    init: function () {
-        var target = this.data.target;
-        if (target) {
-            this.el.addEventListener('click', () => {
-                target.dispatchEvent(new Event('opendropdown', {'bubbles': true}));
-            });
-        }
-    }
-});
-
-AFRAME.registerComponent('closedropdown', {
+AFRAME.registerComponent('toggledropdown', {
     schema: {
         target: { type: 'selector', default: '' }
     },
@@ -22,7 +7,14 @@ AFRAME.registerComponent('closedropdown', {
         var target = this.data.target;
         if(target) {
           this.el.addEventListener('click', () => {
-              target.dispatchEvent(new Event('closedropdown', {'bubbles': true}));
+              if (!this.el.getAttribute('gui-icon-button').toggle) {
+                  target.dispatchEvent(new Event('closedropdown', {'bubbles': true}));
+                  this.el.getAttribute('gui-icon-button').toggle = true;
+              }
+              else {
+                target.dispatchEvent(new Event('opendropdown', {'bubbles': true}));
+                this.el.getAttribute('gui-icon-button').toggle = false;
+              }
           });
         }
     }
