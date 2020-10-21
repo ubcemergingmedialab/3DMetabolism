@@ -8,7 +8,7 @@ AFRAME.registerComponent("highlight-sequence", {
     const EDGE_COLOR = "green";
     const NODE_COLOR = "blue";
     console.log("HIGHLIGHT INIT");
-    const colorEdge = (input, output, color) => {
+    const colorEdge = (input, output, color = EDGE_COLOR_HIGHLIGHT) => {
       const curEdge = document.getElementById(input + "/" + output);
       if (curEdge == null) {
         console.log("could not find edge " + input + "/" + output);
@@ -17,7 +17,7 @@ AFRAME.registerComponent("highlight-sequence", {
       }
       outlineElem(input + "/" + output, 'edge');
     };
-    const colorNode = (node, color) => {
+    const colorNode = (node, color = NODE_COLOR_HIGHLIGHT) => {
       const curElement = document.getElementById(node);
       if (curElement === null) {
         console.log("could not find node " + node);
@@ -91,17 +91,17 @@ AFRAME.registerComponent("highlight-sequence", {
         for (let i = 0; i < nodes.length; i++) {
           const metabolite = nodes[i];
           console.log("HIGHLIGHT" + metabolite);
-          colorNode(metabolite, NODE_COLOR_HIGHLIGHT);
+          colorNode(metabolite);
           const outputMetabolite = nodes[i + 1];
           if (outputMetabolite !== null) {
-            colorEdge(metabolite, outputMetabolite, EDGE_COLOR_HIGHLIGHT);
+            colorEdge(metabolite, outputMetabolite);
           }
         }
       }
       if (edges != undefined) {
         edges.forEach((edge) => {
-          colorEdge(edge.input, edge.output, EDGE_COLOR_HIGHLIGHT);
-          [edge.input, edge.output].forEach((node) => colorNode(node, NODE_COLOR_HIGHLIGHT));
+          colorEdge(edge.input, edge.output);
+          [edge.input, edge.output].forEach((node) => colorNode(node));
         });
       }
     });
