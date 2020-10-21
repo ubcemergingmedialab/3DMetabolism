@@ -3,30 +3,28 @@ AFRAME.registerComponent("highlight-sequence", {
     sequence: { type: 'string', default: "1" },
   },
   init: function () {
+    const EDGE_COLOR_HIGHLIGHT = "purple";
+    const NODE_COLOR_HIGHLIGHT = "red";
+    const EDGE_COLOR = "green";
+    const NODE_COLOR = "blue";
     console.log("HIGHLIGHT INIT");
-    const colorEdge = (input, output) => {
+    const colorEdge = (input, output, color) => {
       const curEdge = document.getElementById(input + "/" + output);
       if (curEdge == null) {
         console.log("could not find edge " + input + "/" + output);
       } else {
-        curEdge.setAttribute("material", "color", "purple");
+        curEdge.setAttribute("material", "color", color);
       }
       outlineElem(input + "/" + output, 'edge');
     };
-    const colorNode = (node) => {
+    const colorNode = (node, color) => {
       const curElement = document.getElementById(node);
       if (curElement === null) {
         console.log("could not find node " + node);
       } else {
-        curElement.setAttribute("material", "color", "red");
+        curElement.setAttribute("material", "color", color);
       }
       outlineElem(node);
-    };
-    const cleanupOutlines = () => {
-      const outlineElems = document.querySelectorAll("[isoutline='true']");
-      outlineElems.forEach((elem) => {
-        elem.parentElement.removeChild(elem);
-      });
     };
     const outlineElem = (id, type = 'node') => {
       const curElement = document.getElementById(id);
@@ -50,8 +48,40 @@ AFRAME.registerComponent("highlight-sequence", {
         curElement.parentElement.appendChild(outlineElement);
       }
     };
-    this.el.addEventListener('click', () => {
+    const cleanupOutlines = () => {
+      const outlineElems = document.querySelectorAll("[isoutline='true']");
+      outlineElems.forEach((elem) => {
+        elem.parentElement.removeChild(elem);
+      });
+    };
+    const cleanupHighlights = () => {
+      const sequenceName = 'all_pathways'; // index into all pathways
+      const nodes = View.sequences.nodes[sequenceName];
+      const edges = View.pathways[sequenceName];
+      if (nodes != undefined) {
+        for (let i = 0; i < nodes.length; i++) {
+          const metabolite = nodes[i];
+          console.log("HIGHLIGHT" + metabolite);
+          colorNode(metabolite, NODE_COLOR);
+          const outputMetabolite = nodes[i + 1];
+          if (outputMetabolite !== null) {
+            colorEdge(metabolite, outputMetabolite, EDGE_COLOR);
+          }
+        }
+      }
+      if (edges != undefined) {
+        edges.forEach((edge) => {
+          colorEdge(edge.input, edge.output, EDGE_COLOR);
+          [edge.input, edge.output].forEach((node) => colorNode(node, NODE_COLOR));
+        });
+      }
+    }
+    const cleanup = () => {
       cleanupOutlines();
+      cleanupHighlights();
+    }
+    this.el.addEventListener('click', () => {
+      cleanup();
       const component = this.el.getAttribute("highlight-sequence");
       const sequenceName = component.sequence;
       console.log("highlighting " + sequenceName);
@@ -61,17 +91,17 @@ AFRAME.registerComponent("highlight-sequence", {
         for (let i = 0; i < nodes.length; i++) {
           const metabolite = nodes[i];
           console.log("HIGHLIGHT" + metabolite);
-          colorNode(metabolite);
+          colorNode(metabolite, NODE_COLOR_HIGHLIGHT);
           const outputMetabolite = nodes[i + 1];
           if (outputMetabolite !== null) {
-            colorEdge(metabolite, outputMetabolite);
+            colorEdge(metabolite, outputMetabolite, EDGE_COLOR_HIGHLIGHT);
           }
         }
       }
       if (edges != undefined) {
         edges.forEach((edge) => {
-          colorEdge(edge.input, edge.output);
-          [edge.input, edge.output].forEach(colorNode);
+          colorEdge(edge.input, edge.output, EDGE_COLOR_HIGHLIGHT);
+          [edge.input, edge.output].forEach((node) => colorNode(node, NODE_COLOR_HIGHLIGHT));
         });
       }
     });
