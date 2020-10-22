@@ -31,86 +31,90 @@
         <a-camera id='main-camera' user-height="2" look-controls="enabled: false">
         </a-camera>
       </a-entity>
-      <a-gui-button id="" class="interactible" position="-3 -2.5 0" width="3" height="0.5"
-        assign-pathway="pathway: oxidative_phosphorylation" value="oxidative phosphorylation" font-family="Helvetica"
-        font-size="120px" margin="0 0 0.05 0">
-      </a-gui-button>
-      <a-gui-button id="" class="interactible" position="-5 -2.5 0" width="1" height="0.5"
-        highlight-sequence="sequence: oxidative_phosphorylation" value="HL" font-family="Helvetica" font-size="120px"
-        margin="0 0 0.05 0">
-      </a-gui-button>
-      <a-gui-button id="" class="interactible" position="-3 -2 0" width="3" height="0.5"
-        assign-pathway="pathway: glycogenolysis" value="glycogenolysis" font-family="Helvetica" margin="0 0 0.05 0">
-      </a-gui-button>
-      <a-gui-button id="" class="interactible" position="-5 -2 0" width="1" height="0.5"
-        highlight-sequence="sequence: glycogenolysis" value="HL" font-family="Helvetica" font-size="120px"
-        margin="0 0 0.05 0"></a-gui-button>
-      <a-gui-button id="" class="interactible" position="-3 -1.5 0" width="3" height="0.5"
-        assign-pathway="pathway: glycogenesis" value="glycogenesis" font-family="Helvetica" margin="0 0 0.05 0">
-      </a-gui-button>
-      <a-gui-button id="" class="interactible" position="-5 -1.5 0" width="1" height="0.5"
-        highlight-sequence="sequence: glycogenesis" value="HL" font-family="Helvetica" font-size="120px"
-        margin="0 0 0.05 0"></a-gui-button>
-      <a-gui-button id="" class="interactible" position="-3 -1 0" width="3" height="0.5"
-        assign-pathway="pathway: citric_acid_cycle" value="citric acid cycle" font-family="Helvetica"
-        margin="0 0 0.05 0">
-      </a-gui-button>
-      <a-gui-button id="" class="interactible" position="-5 -1 0" width="1" height="0.5"
-        highlight-sequence="sequence: citric_acid_cycle" value="HL" font-family="Helvetica" font-size="120px"
-        margin="0 0 0.05 0"></a-gui-button>
-      <a-gui-button id="" class="interactible" position="-3 -0.5 0" width="3" height="0.5"
-        assign-pathway="pathway: pyruvate_dehydrogenase" value="pyruvate dehydrogenase complex" font-family="Helvetica"
-        font-size="95px" margin="0 0 0.05 0">
-      </a-gui-button>
-      <a-gui-button id="" class="interactible" position="-5 -0.5 0" width="1" height="0.5"
-        highlight-sequence="sequence: pyruvate_dehydrogenase" value="HL" font-family="Helvetica" font-size="120px"
-        margin="0 0 0.05 0"></a-gui-button>
-      <a-gui-button id="" class="interactible" position="-3 0 0" width="3" height="0.5"
-        assign-pathway="pathway: gluconeogenesis" value="gluconeogenesis" font-family="Helvetica" margin="0 0 0.05 0">=
-      </a-gui-button>
-
-      <!-- dropdown menu -->
-      <a-entity id="dropdown-gluconeogenesis" >
-        <a-gui-icon-button gui-icon-label-button position="-1.25 0 0" id="toggleDropDown" class="interactible" width="0.5" height="0.5" icon="android-menu"
-        toggledropdown="target:#container-gluconeogenesis" visible="true" toggle="true">
-        </a-gui-icon-button>
-        
-        <a-gui-flex-container id="container-gluconeogenesis" flex-direction="column" justify-content="flexStart" align-items="normal"
-          component-padding="0.1" opacity="0" width="0.75" height="0.75" position="0.5 0 0" visible="false" icon="android-menu"
-          animation__drop2="property:visible; startEvents:opendropdown; dur:100; to: true;"
-          animation__back2="property:visible; startEvents:closedropdown; dur: 1000; to:false">
-          <a-gui-button id="gluconeogenesis-animation-1" class="interactible" value="Animation1"
-            width="3" height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate">
-          </a-gui-button>
-          <a-gui-button id="gluconeogenesis-animation-2" class="interactible" value="Animation2"
-          width="3" height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate">
+      <a-entity position="-4 2 0">
+        <a-gui-button id="" class="interactible" position="-3 -2.5 0" width="3" height="0.5"
+          assign-pathway="pathway: oxidative_phosphorylation" value="oxidative phosphorylation" font-family="Helvetica"
+          font-size="120px" margin="0 0 0.05 0">
         </a-gui-button>
-        </a-gui-flex-container>
-      </a-entity>
+        <a-gui-button id="" class="interactible" position="-5 -2.5 0" width="1" height="0.5"
+          highlight-sequence="sequence: oxidative_phosphorylation" value="HL" font-family="Helvetica" font-size="120px"
+          margin="0 0 0.05 0">
+        </a-gui-button>
+        <a-gui-button id="" class="interactible" position="-3 -2 0" width="3" height="0.5"
+          assign-pathway="pathway: glycogenolysis" value="glycogenolysis" font-family="Helvetica" margin="0 0 0.05 0">
+        </a-gui-button>
+        <a-gui-button id="" class="interactible" position="-5 -2 0" width="1" height="0.5"
+          highlight-sequence="sequence: glycogenolysis" value="HL" font-family="Helvetica" font-size="120px"
+          margin="0 0 0.05 0"></a-gui-button>
+        <a-gui-button id="" class="interactible" position="-3 -1.5 0" width="3" height="0.5"
+          assign-pathway="pathway: glycogenesis" value="glycogenesis" font-family="Helvetica" margin="0 0 0.05 0">
+        </a-gui-button>
+        <a-gui-button id="" class="interactible" position="-5 -1.5 0" width="1" height="0.5"
+          highlight-sequence="sequence: glycogenesis" value="HL" font-family="Helvetica" font-size="120px"
+          margin="0 0 0.05 0"></a-gui-button>
+        <a-gui-button id="" class="interactible" position="-3 -1 0" width="3" height="0.5"
+          assign-pathway="pathway: citric_acid_cycle" value="citric acid cycle" font-family="Helvetica"
+          margin="0 0 0.05 0">
+        </a-gui-button>
+        <a-gui-button id="" class="interactible" position="-5 -1 0" width="1" height="0.5"
+          highlight-sequence="sequence: citric_acid_cycle" value="HL" font-family="Helvetica" font-size="120px"
+          margin="0 0 0.05 0"></a-gui-button>
+        <a-gui-button id="" class="interactible" position="-3 -0.5 0" width="3" height="0.5"
+          assign-pathway="pathway: pyruvate_dehydrogenase" value="pyruvate dehydrogenase complex"
+          font-family="Helvetica" font-size="95px" margin="0 0 0.05 0">
+        </a-gui-button>
+        <a-gui-button id="" class="interactible" position="-5 -0.5 0" width="1" height="0.5"
+          highlight-sequence="sequence: pyruvate_dehydrogenase" value="HL" font-family="Helvetica" font-size="120px"
+          margin="0 0 0.05 0"></a-gui-button>
+        <a-gui-button id="" class="interactible" position="-3 0 0" width="3" height="0.5"
+          assign-pathway="pathway: gluconeogenesis" value="gluconeogenesis" font-family="Helvetica" margin="0 0 0.05 0">
 
-      <a-gui-button id="" class="interactible" position="-5 0 0" width="1" height="0.5"
-        highlight-sequence="sequence: gluconeogenesis" value="HL" font-family="Helvetica" font-size="120px"
-        margin="0 0 0.05 0"></a-gui-button>
-      <a-gui-button id="" class="interactible" position="-3 0.5 0" width="3" height="0.5"
-        assign-pathway="pathway: glycolysis" value="glycolysis" font-family="Helvetica" margin="0 0 0.05 0">
-      </a-gui-button>
-      <a-gui-button id="" class="interactible" position="-5 0.5 0" width="1" height="0.5"
-        highlight-sequence="sequence: glycolysis" value="HL" font-family="Helvetica" font-size="120px"
-        margin="0 0 0.05 0"></a-gui-button>
-      <a-gui-button id="" class="interactible" position="-3 1 0" width="3" height="0.5"
-        assign-pathway="pathway: all_pathways" value="All pathways" font-family="Helvetica" margin="0 0 0.05 0">
-      </a-gui-button>
-      <a-gui-button id="" class="interactible" position="-5 1 0" width="1" height="0.5"
-        highlight-sequence="sequence: all_pathways" value="HL" font-family="Helvetica" font-size="120px"
-        margin="0 0 0.05 0"></a-gui-button>
-      </a-gui-button>
+        </a-gui-button>
+
+        <!-- dropdown menu -->
+        <a-entity id="dropdown-gluconeogenesis">
+          <a-gui-icon-button gui-icon-label-button position="-1.25 0 0" id="toggleDropDown" class="interactible"
+            width="0.5" height="0.5" icon="android-menu" toggledropdown="target:#container-gluconeogenesis"
+            visible="true" toggle="true">
+          </a-gui-icon-button>
+
+          <a-gui-flex-container id="container-gluconeogenesis" flex-direction="column" justify-content="flexStart"
+            align-items="normal" component-padding="0.1" opacity="0" width="0.75" height="0.75" position="0.5 0 0"
+            visible="false" icon="android-menu"
+            animation__drop2="property:visible; startEvents:opendropdown; dur:100; to: true;"
+            animation__back2="property:visible; startEvents:closedropdown; dur: 1000; to:false">
+            <a-gui-button id="gluconeogenesis-animation-1" class="interactible" value="Animation1" width="3"
+              height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate">
+            </a-gui-button>
+            <a-gui-button id="gluconeogenesis-animation-2" class="interactible" value="Animation2" width="3"
+              height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate">
+            </a-gui-button>
+          </a-gui-flex-container>
+        </a-entity>
+        <a-gui-button id="" class="interactible" position="-5 0 0" width="1" height="0.5"
+          highlight-sequence="sequence: gluconeogenesis" value="HL" font-family="Helvetica" font-size="120px"
+          margin="0 0 0.05 0"></a-gui-button>
+        <a-gui-button id="" class="interactible" position="-3 0.5 0" width="3" height="0.5"
+          assign-pathway="pathway: glycolysis" value="glycolysis" font-family="Helvetica" margin="0 0 0.05 0">
+        </a-gui-button>
+        <a-gui-button id="" class="interactible" position="-5 0.5 0" width="1" height="0.5"
+          highlight-sequence="sequence: glycolysis" value="HL" font-family="Helvetica" font-size="120px"
+          margin="0 0 0.05 0"></a-gui-button>
+        <a-gui-button id="" class="interactible" position="-3 1 0" width="3" height="0.5"
+          assign-pathway="pathway: all_pathways" value="All pathways" font-family="Helvetica" margin="0 0 0.05 0">
+        </a-gui-button>
+        <a-gui-button id="" class="interactible" position="-5 1 0" width="1" height="0.5"
+          highlight-sequence="sequence: all_pathways" value="HL" font-family="Helvetica" font-size="120px"
+          margin="0 0 0.05 0"></a-gui-button>
+        </a-gui-button>
+      </a-entity>
     </a-entity>
     <a-entity id="mitochondrion" gltf-model="#mito" position="0 -2.2 0" scale="10 10 10" varying-transparency="0.4">
     </a-entity>
     <a-entity translate-network presenter cursor="rayOrigin: mouse" raycaster="objects: .interactible"></a-entity>
     <a-light type="ambient" color="#fff" intensity="9"></a-light>
     <a-light type="directional" color="#fff" intensity="10"></a-light>
-    <a-sky color="#c0c8cc"></a-sky>
+    <a-sky color="#4e6e9e"></a-sky>
     </a-entity>
   </a-scene>
 </body>
