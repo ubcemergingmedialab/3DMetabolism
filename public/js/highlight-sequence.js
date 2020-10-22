@@ -1,30 +1,28 @@
+const HIGHLIGHT_EDGE_COLOR = 'purple';
+const HIGHLIGHT_NODE_COLOR = 'red';
+const INITIAL_EDGE_COLOR = 'green';
+const INITIAL_NODE_COLOR = 'blue';
 AFRAME.registerComponent("highlight-sequence", {
   schema: {
     sequence: { type: 'string', default: "1" },
+    clickState: { type: 'number', default: 0 }, // 0 for unclicked, 1 for clicked, 2 for outline
   },
   init: function () {
-    const EDGE_COLOR_HIGHLIGHT = "purple";
-    const NODE_COLOR_HIGHLIGHT = "red";
-    const EDGE_COLOR = "green";
-    const NODE_COLOR = "blue";
-    console.log("HIGHLIGHT INIT");
-    const colorEdge = (input, output, color = EDGE_COLOR_HIGHLIGHT) => {
+    const colorEdge = (input, output, color = HIGHLIGHT_EDGE_COLOR) => {
       const curEdge = document.getElementById(input + "/" + output);
       if (curEdge == null) {
         console.log("could not find edge " + input + "/" + output);
       } else {
         curEdge.setAttribute("material", "color", color);
       }
-      outlineElem(input + "/" + output, 'edge');
     };
-    const colorNode = (node, color = NODE_COLOR_HIGHLIGHT) => {
+    const colorNode = (node, color = HIGHLIGHT_NODE_COLOR) => {
       const curElement = document.getElementById(node);
       if (curElement === null) {
         console.log("could not find node " + node);
       } else {
         curElement.setAttribute("material", "color", color);
       }
-      outlineElem(node);
     };
     const outlineElem = (id, type = 'node') => {
       const curElement = document.getElementById(id);
@@ -54,56 +52,122 @@ AFRAME.registerComponent("highlight-sequence", {
         elem.parentElement.removeChild(elem);
       });
     };
-    const cleanupHighlights = () => {
-      const sequenceName = 'all_pathways'; // index into all pathways
+    const cleanupHighlights = (sequenceName = 'all_pathways') => {
       const nodes = View.sequences.nodes[sequenceName];
       const edges = View.pathways[sequenceName];
       if (nodes != undefined) {
         for (let i = 0; i < nodes.length; i++) {
           const metabolite = nodes[i];
           console.log("HIGHLIGHT" + metabolite);
-          colorNode(metabolite, NODE_COLOR);
+          colorNode(metabolite, INITIAL_NODE_COLOR);
           const outputMetabolite = nodes[i + 1];
           if (outputMetabolite !== null) {
-            colorEdge(metabolite, outputMetabolite, EDGE_COLOR);
+            colorEdge(metabolite, outputMetabolite, INITIAL_EDGE_COLOR);
           }
         }
       }
       if (edges != undefined) {
         edges.forEach((edge) => {
-          colorEdge(edge.input, edge.output, EDGE_COLOR);
-          [edge.input, edge.output].forEach((node) => colorNode(node, NODE_COLOR));
+          colorEdge(edge.input, edge.output, INITIAL_EDGE_COLOR);
+          [edge.input, edge.output].forEach((node) => colorNode(node, INITIAL_NODE_COLOR));
         });
       }
     }
-    const cleanup = () => {
-      cleanupOutlines();
-      cleanupHighlights();
+    const updateButtonColor = (clickState, sequenceName) => {
+      const button = document.getElementById(sequenceName + '_button');
+      // button attibutes seem to only take hex codes. 'red', 'purple', etc don't work.
+      console.log("CLICK STATE::::::::::::::::: ", clickState);
+      switch (clickState) {
+        case 0: {
+          // default colors: https://github.com/rdub80/aframe-gui#a-gui-button-component
+          button.setAttribute("border-color", '#d3d3d4');
+          button.setAttribute("background-color", '#22252a');
+          button.setAttribute("font-color", '#d3d3d4');
+
+          return;
+        }
+        case 1: {
+          button.setAttribute("font-color", '#ffffff');
+          button.setAttribute("border-color", '#d3d3d4');
+          button.setAttribute("background-color", '#FF0000');
+
+          return;
+        }
+        case 2: {
+          button.setAttribute("border-color", '#00FFFF');
+
+          return;
+        }
+        default: {
+          return;
+        }
+      }
     }
     this.el.addEventListener('click', () => {
-      cleanup();
       const component = this.el.getAttribute("highlight-sequence");
       const sequenceName = component.sequence;
-      console.log("highlighting " + sequenceName);
-      const nodes = View.sequences.nodes[sequenceName];
-      const edges = View.pathways[sequenceName];
-      if (nodes != undefined) {
-        for (let i = 0; i < nodes.length; i++) {
-          const metabolite = nodes[i];
-          console.log("HIGHLIGHT" + metabolite);
-          colorNode(metabolite);
-          const outputMetabolite = nodes[i + 1];
-          if (outputMetabolite !== null) {
-            colorEdge(metabolite, outputMetabolite);
+      if (component.clickState === 2) {
+        cleanupOutlines();
+      }
+      const clickState = (component.clickState + 1) % 3;
+      updateButtonColor(clickState, sequenceName);
+      // increment clickState attribute
+      this.el.setAttribute('highlight-sequence', 'clickState', clickState);
+      switch (clickState) {
+        case 0:
+          cleanupHighlights(sequenceName);
+          break;
+        // highlight
+        case 1: {
+          console.log("highlighting " + sequenceName);
+          const nodes = View.sequences.nodes[sequenceName];
+          const edges = View.pathways[sequenceName];
+          if (nodes != undefined) {
+            for (let i = 0; i < nodes.length; i++) {
+              const metabolite = nodes[i];
+              console.log("HIGHLIGHT" + metabolite);
+              colorNode(metabolite);
+              const outputMetabolite = nodes[i + 1];
+              if (outputMetabolite !== null) {
+                colorEdge(metabolite, outputMetabolite);
+              }
+            }
           }
+          if (edges != undefined) {
+            edges.forEach((edge) => {
+              colorEdge(edge.input, edge.output);
+              [edge.input, edge.output].forEach((node) => colorNode(node));
+            });
+          }
+          break;
+        };
+        // outline
+        case 2: {
+          cleanupOutlines();
+          const nodes = View.sequences.nodes[sequenceName];
+          const edges = View.pathways[sequenceName];
+          if (nodes != undefined) {
+            for (let i = 0; i < nodes.length; i++) {
+              const metabolite = nodes[i];
+              console.log("HIGHLIGHT" + metabolite);
+              outlineElem(metabolite);
+              const outputMetabolite = nodes[i + 1];
+              if (outputMetabolite !== null) {
+                outlineElem(metabolite + "/" + outputMetabolite, 'edge');
+              }
+            }
+          }
+          if (edges != undefined) {
+            edges.forEach((edge) => {
+              outlineElem(edge.input + "/" + edge.output, 'edge');
+              [edge.input, edge.output].forEach((node) => outlineElem(node));
+            });
+          }
+          break;
         }
-      }
-      if (edges != undefined) {
-        edges.forEach((edge) => {
-          colorEdge(edge.input, edge.output);
-          [edge.input, edge.output].forEach((node) => colorNode(node));
-        });
-      }
+        default:
+          break;
+      };
     });
-  }
-})
+  },
+});
