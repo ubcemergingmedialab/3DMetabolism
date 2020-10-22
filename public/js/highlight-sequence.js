@@ -79,21 +79,23 @@ AFRAME.registerComponent("highlight-sequence", {
       switch (clickState) {
         case 0: {
           // default colors: https://github.com/rdub80/aframe-gui#a-gui-button-component
-          button.setAttribute("border-color", '#d3d3d4');
           button.setAttribute("background-color", '#22252a');
-          button.setAttribute("font-color", '#d3d3d4');
+          // TODO - these don't work..
+          // button.setAttribute("border-color", '#d3d3d4');
+          // button.setAttribute("font-color", '#d3d3d4');
 
           return;
         }
         case 1: {
-          button.setAttribute("font-color", '#ffffff');
-          button.setAttribute("border-color", '#d3d3d4');
           button.setAttribute("background-color", '#FF0000');
+          // TODO - these don't work..
+          // button.setAttribute("font-color", '#ffffff');
+          // button.setAttribute("border-color", '#d3d3d4');
 
           return;
         }
         case 2: {
-          button.setAttribute("border-color", '#00FFFF');
+          button.setAttribute("background-color", '#00FFFF');
 
           return;
         }
