@@ -32,7 +32,7 @@ AFRAME.registerComponent("highlight-sequence", {
         const outlineElement = document.createElement('a-entity');
         const { x: posX, y: posY, z: posZ } = curElement.getAttribute('position');
         if (type === 'edge') {
-          const { height } = curElement.getAttribute('geometry');
+          const height = curElement.getAttribute('geometry')?.height || 0;
           const { x: rotX, y: rotY, z: rotZ } = curElement.getAttribute('rotation');
           outlineElement.setAttribute('geometry','height:' + height);
           outlineElement.setAttribute('rotation', rotX + ' ' + rotY + ' ' + rotZ);
@@ -142,6 +142,8 @@ AFRAME.registerComponent("highlight-sequence", {
           break;
         };
         // outline
+        // needs coloring redundancy to re-color overwritten highlighting
+        // from other instances of this component
         case 2: {
           cleanupOutlines();
           const nodes = View.sequences.nodes[sequenceName];
@@ -150,17 +152,23 @@ AFRAME.registerComponent("highlight-sequence", {
             for (let i = 0; i < nodes.length; i++) {
               const metabolite = nodes[i];
               console.log("HIGHLIGHT" + metabolite);
+              colorNode(metabolite);
               outlineElem(metabolite);
               const outputMetabolite = nodes[i + 1];
               if (outputMetabolite !== null) {
+                colorEdge(metabolite, outputMetabolite);
                 outlineElem(metabolite + "/" + outputMetabolite, 'edge');
               }
             }
           }
           if (edges != undefined) {
             edges.forEach((edge) => {
+              colorEdge(edge.input, edge.output);
               outlineElem(edge.input + "/" + edge.output, 'edge');
-              [edge.input, edge.output].forEach((node) => outlineElem(node));
+              [edge.input, edge.output].forEach((node) => {
+                colorNode(node);
+                outlineElem(node);
+              });
             });
           }
           break;
