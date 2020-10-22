@@ -76,7 +76,6 @@ AFRAME.registerComponent("highlight-sequence", {
     const updateButtonColor = (clickState, sequenceName) => {
       const button = document.getElementById(sequenceName + '_button');
       // button attibutes seem to only take hex codes. 'red', 'purple', etc don't work.
-      console.log("CLICK STATE::::::::::::::::: ", clickState);
       switch (clickState) {
         case 0: {
           // default colors: https://github.com/rdub80/aframe-gui#a-gui-button-component
