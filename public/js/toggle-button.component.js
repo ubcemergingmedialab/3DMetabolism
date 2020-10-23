@@ -16,6 +16,6 @@ AFRAME.registerComponent('toggledropdown', {
                 this.el.getAttribute('gui-icon-button').toggle = false;
               }
           });
-        }
+        } 
     }
 });
