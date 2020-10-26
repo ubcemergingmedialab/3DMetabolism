@@ -5,6 +5,9 @@ AFRAME.registerShader('displace', {
         },
         color: {
             type: 'color', is: 'uniform', default: 'red'
+        },
+        active: {
+            type: 'number', is: 'uniform', default: 0.0
         }
     },
     vertexShader: `
@@ -14,7 +17,7 @@ float calculateOffset(float y) {
 }
 
 void main() {
-    float offset = (calculateOffset(position.y)/30.0) + 0.05;
+    float offset = ((calculateOffset(position.y)/30.0) + 0.05) * active;
     vec3 newPosition = position + normal * offset;
     gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
 }
