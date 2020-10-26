@@ -2,6 +2,9 @@ AFRAME.registerShader('displace', {
     schema: {
         time: {
             type: 'number', is: 'uniform', default: 0.0
+        },
+        color: {
+            type: 'color', is: 'uniform', default: 'red'
         }
     },
     vertexShader: `
@@ -19,10 +22,10 @@ void main() {
     `,
     fragmentShader: `
     
+    uniform vec3 color;
 void main() {
 
-    vec3 color = vec3(0.0, 1.0, 0.0);
-    gl_FragColor = vec4( color.rgb, 0.2 );
+    gl_FragColor = vec4( color, 0.2 );
   
   }
     `
