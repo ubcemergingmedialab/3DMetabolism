@@ -113,6 +113,8 @@ AFRAME.registerComponent('presenter', {
       cameraRigEdge.appendChild(cameraEl);
       this.sceneModel.appendChild(entityEl);
 
+      entityEl.setAttribute("material", "shader:displace;");
+      entityEl.setAttribute("material-displacement", "");
       cameraEl.setAttribute('look-controls', 'enabled', false);
 
       entityEl.setAttribute('geometry', {
@@ -136,9 +138,6 @@ AFRAME.registerComponent('presenter', {
       cameraRigEdge.object3D.applyQuaternion(edgeRotation);
       cameraRigEdge.object3D.rotateZ(Math.PI / 2)
       cameraRigEdge.object3D.position.copy(cameraOffset);
-
-
-      entityEl.setAttribute('material', 'color', 'green');
 
       var cameraRig = document.getElementById("camera-rig");
       console.log(cameraRig.getAttribute("position"));
