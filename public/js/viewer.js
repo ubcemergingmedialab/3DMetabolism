@@ -85,6 +85,14 @@ var View = (function () {
     return new THREE.Vector3(x / n, y / n, z / n);
   }
 
+  const fetchEdge = (input, output) => {
+    return document.getElementById(input + "/" + output) || document.getElementById(output + "/" + input);
+  }
+
+  const fetchNode = (id) => {
+    return document.getElementById(id);
+  }
+
   var existingNodes = {
     glucose: new Node(new THREE.Vector3(0, 8, 0), "glucose", ""),
     glucose_6_phosphate: new Node(new THREE.Vector3(0, 7, 0), "glucose 6-phosphate", true),
@@ -292,7 +300,9 @@ var View = (function () {
     nodes,
     pathways,
     all_edges,
-    sequences
+    sequences,
+    fetchEdge,
+    fetchNode
   };
 })();
 

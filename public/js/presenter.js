@@ -1,7 +1,7 @@
 AFRAME.registerComponent('presenter', {
 
   schema: {
-    activePathway: { type: 'string', default: 'gluconeogenesis' }
+    activePathway: { type: 'string', default: 'all_pathways' }
   },
 
   init: function () {
@@ -20,6 +20,7 @@ AFRAME.registerComponent('presenter', {
         primitive: 'sphere',
         radius: 0.2
       });
+      entityEl.setAttribute("highlight-behavior", "elem: ");
       entityEl.setAttribute("id", node);
       entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
 
@@ -75,7 +76,9 @@ AFRAME.registerComponent('presenter', {
       edge.remove();
     })
     document.querySelectorAll('.edgeCamera').forEach(edge => edge.remove());
-    this.DrawEdges(View.pathways[data.activePathway]);
+    if (!!View.pathways[data.activePathway]) {
+      this.DrawEdges(View.pathways[data.activePathway]);
+    }
   },
 
   DrawEdges: function (currentEdges) {
@@ -90,6 +93,7 @@ AFRAME.registerComponent('presenter', {
         continue;
       }
       let entityEl = document.createElement('a-entity');
+      entityEl.setAttribute("highlight-behavior", "elem: edge");
       entityEl.setAttribute("class", "interactible");
       let cameraEl = document.createElement('a-camera');
       cameraEl.setAttribute("camera", "active", false);
