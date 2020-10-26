@@ -106,5 +106,6 @@ AFRAME.registerComponent("highlight-button-behavior", {
     changeMaterialColor: function (color) {
         this.el.setAttribute("background-color", color);
         this.el.setAttribute("hover-color", color);
+        this.el.setAttribute("active-color", color);
     }
 })
