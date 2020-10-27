@@ -12,6 +12,7 @@ AFRAME.registerShader('displace', {
     },
     vertexShader: `
     uniform float time;
+    uniform float active;
 float calculateOffset(float y) {
     return sin((y + time/200.0) * 3.0);
 }
