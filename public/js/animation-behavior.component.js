@@ -40,7 +40,7 @@ AFRAME.registerComponent("animation-behavior", {
             console.log("calling stopAnimation");
             this.el.setAttribute('material','active',DEFAULT);
         } catch (error) {
-            console.log('could not start animation of edge:' + this.el.getAttribute('id'));
+            console.log('could not stop animation of edge:' + this.el.getAttribute('id'));
         }
     }
 })
