@@ -2,7 +2,9 @@ AFRAME.registerComponent("animation-behavior", {
     init: function () {
         this.states = { ANIMATING: 1, DEFAULT: 0 }
         this.state = 1;
-        this.animationCounter;
+        this.animationCounter = 0;
+        this.animate = this.animate.bind(this);
+        this.stopAnimation = this.stopAnimation.bind(this);
     },
 
     callAnimate: function () {
@@ -17,10 +19,10 @@ AFRAME.registerComponent("animation-behavior", {
 
     update: function () {
         if (this.animationCounter <= 0) {
-            stopAnimation();
+            this.stopAnimation();
             this.animationCounter = 0;
         } else if (this.animationCounter > 0) {
-            animate();
+            this.animate();
         }
     },
 
