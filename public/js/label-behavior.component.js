@@ -10,7 +10,7 @@ AFRAME.registerComponent("label-behavior", {
 
         this.Enable = this.Enable.bind(this);
         this.Disable = this.Disable.bind(this);
-        
+
         this.updateState = this.updateState.bind(this);
         this.update = this.update.bind(this);
         this.appendLabel = this.appendLabel.bind(this);
@@ -69,6 +69,5 @@ AFRAME.registerComponent("label-behavior", {
     changeOpacity: function(visibility) {
         textEl = this.el.querySelector('#label');
         textEl.setAttribute("text", "opacity: " + visibility)
-        console.log(textEl)
     },
 })
