@@ -36,7 +36,6 @@ AFRAME.registerComponent('presenter', {
       entityEl.setAttribute("class", "interactible");
       entityEl.setAttribute('assign-position', '[translate-network]');
       console.log(curNode.name);
-      console.log(curNode)
       this.sceneModel.appendChild(entityEl);
     }
     this.DrawEdges(View.pathways["gluconeogenesis"]);
