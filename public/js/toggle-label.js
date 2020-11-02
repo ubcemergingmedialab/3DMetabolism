@@ -2,7 +2,6 @@ let checked = false;
 
 function toggleLabel() {
   checked = !checked;
-  console.log(View);
   const nodes = View.nodes;
   Object.values(nodes).forEach((node) => {
     const elem = View.fetchNode(node.name);
