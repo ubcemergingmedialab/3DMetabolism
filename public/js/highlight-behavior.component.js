@@ -8,8 +8,8 @@ AFRAME.registerComponent("highlight-behavior", {
         this.highlightCounter = 0;
         this.states = { DEFAULT: 1, HIGHLIGHTED: 2, OUTLINED: 3, DISABLED: 0 };
         this.num_states = Object.keys(this.states).length;
-        this.highlightColor = "red";
-        this.defaultColor = "blue";
+        this.highlightColor = "#13E";
+        this.defaultColor = "#999";
 
         this.removeHighlight = this.removeHighlight.bind(this);
         this.highlight = this.highlight.bind(this);
@@ -56,7 +56,6 @@ AFRAME.registerComponent("highlight-behavior", {
     //public
     RemoveOutline: function () {
         if (this.data.state === this.states.OUTLINED) {
-            console.log('removing outline');
             this.removeOutlineElem();
             this.updateState(this.states.HIGHLIGHTED);
         }
@@ -77,9 +76,7 @@ AFRAME.registerComponent("highlight-behavior", {
     //public
     IncrementHighlightCounter: function () {
         this.highlightCounter++;
-        console.log("increment");
         if (this.data.state === this.states.DEFAULT && this.highlightCounter > 0) {
-            console.log("highlight");
             this.highlight();
         }
     },
@@ -96,15 +93,12 @@ AFRAME.registerComponent("highlight-behavior", {
     update: function () {
         switch (this.data.state) {
             case this.states.DEFAULT:
-                console.log("changing to default");
                 this.changeMaterialColor(this.defaultColor);
                 break;
             case this.states.HIGHLIGHTED:
-                console.log("changing material to highlighted");
                 this.changeMaterialColor(this.highlightColor);
                 break;
             case this.states.DISABLED:
-                console.log("change material to disabled");
             //TODO: add helper functions to switch in transparent material
         }
     },
@@ -123,8 +117,8 @@ AFRAME.registerComponent("highlight-behavior", {
                 outlineElement.setAttribute('geometry', 'height:' + height);
                 outlineElement.setAttribute('rotation', rotX + ' ' + rotY + ' ' + rotZ);
             }
-            outlineElement.setAttribute('geometry', 'primitive:' + (type == 'edge' ? 'cylinder' : 'sphere'));
-            outlineElement.setAttribute('material', 'color', 'orange');
+            outlineElement.setAttribute('geometry', 'openEnded:true; primitive:' + (type == 'edge' ? 'cylinder' : 'sphere'));
+            outlineElement.setAttribute('material', { color: '#f93', shader: 'flat' });
             outlineElement.setAttribute('material', 'side', 'back');
             outlineElement.setAttribute('scale', '0.28 ' + (type === 'edge' ? '1.0' : '0.28') + ' 0.28');
             outlineElement.setAttribute('position', posX + ' ' + posY + ' ' + posZ);
@@ -136,7 +130,6 @@ AFRAME.registerComponent("highlight-behavior", {
 
     removeOutlineElem: function () {
         for (let element of this.el.parentElement.querySelectorAll("[class='" + this.el.getAttribute("id") + "_outline'")) {
-            console.log("removing element " + element.getAttribute("id"));
             element.remove();
         }
     },

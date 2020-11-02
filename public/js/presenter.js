@@ -28,7 +28,7 @@ AFRAME.registerComponent('presenter', {
         entityEl.setAttribute('material', 'visible', 'false');
       }
       else {
-        entityEl.setAttribute('material', 'color', 'blue');
+        entityEl.setAttribute('material', { color: "#999", shader: "displace" });
       }
 
       entityEl.setAttribute("class", "interactible");
@@ -42,7 +42,7 @@ AFRAME.registerComponent('presenter', {
         if (curNode.flippedText) {
           textEl.setAttribute('text', {
             value: curNode.name,
-            color: 'black',
+            color: 'white',
             width: 4,
             anchor: 'align',
             xOffset: -0.2,
@@ -53,7 +53,7 @@ AFRAME.registerComponent('presenter', {
         else {
           textEl.setAttribute('text', {
             value: curNode.name,
-            color: 'black',
+            color: 'white',
             width: 4,
             anchor: 'align',
             xOffset: 0.2,
@@ -62,6 +62,7 @@ AFRAME.registerComponent('presenter', {
           });
         }
       }
+      textEl.setAttribute("scale", "1.5 1.5 1.5");
       this.sceneModel.appendChild(entityEl);
       entityEl.appendChild(textEl)
     }
@@ -147,7 +148,7 @@ AFRAME.registerComponent('presenter', {
         imgEl = document.createElement('a-image');
         imgEl.setAttribute("src", currentEdges[index].imgSrc);
         imgEl.setAttribute("rotation", "0 0 90");
-        imgEl.setAttribute("scale", "0.4 0.4 0.4");
+        imgEl.setAttribute("scale", "0.09 0.09 0.09");
         entityEl.appendChild(imgEl);
       }
     }
@@ -169,7 +170,7 @@ AFRAME.registerComponent('presenter', {
       animationEl.setAttribute("gltf-model", "url(" + srcEl + ")");
     }
     animationEl.setAttribute('position', localPos)
-    animationEl.setAttribute('scale', "0.07 0.07 0.07")
+    animationEl.setAttribute('scale', "0.009 0.009 0.009")
     animationEl.setAttribute('rotation', "0 0 90");
   },
 });

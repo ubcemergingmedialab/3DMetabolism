@@ -20,7 +20,7 @@ AFRAME.registerComponent("pathway_zoom", {
         let edge = this.el;
         console.log('zooming in');
 
-        this.el.setAttribute('material', 'color', 'yellow');
+        //this.el.setAttribute('material', 'color', 'yellow');
         eventPlane = this.CreateEventPlane(edge);
         this.AnimateCameraZoom();
 
@@ -42,7 +42,7 @@ AFRAME.registerComponent("pathway_zoom", {
         document.querySelector("[presenter]").setAttribute("raycaster", "objects:.interactible");
 
         console.log('zooming out');
-        this.el.setAttribute('material', 'color', 'green');
+        //this.el.setAttribute('material', 'color', 'green');
 
         document.getElementById('gyro').components['drag-rotate-component'].OnAddMouseDown();
         document.querySelector('a-scene').components['drag-rotate-component'].OnAddMouseDown();

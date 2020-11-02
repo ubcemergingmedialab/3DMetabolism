@@ -4,7 +4,7 @@ AFRAME.registerShader('displace', {
             type: 'number', is: 'uniform', default: 0.0
         },
         color: {
-            type: 'color', is: 'uniform', default: 'red'
+            type: 'color', is: 'uniform', default: '#AAA'
         },
         active: {
             type: 'number', is: 'uniform', default: 0.0
@@ -29,7 +29,7 @@ void main() {
     uniform vec3 color;
 void main() {
 
-    gl_FragColor = vec4( color, 0.2 );
+    gl_FragColor = vec4( color, 1.0 );
   
   }
     `

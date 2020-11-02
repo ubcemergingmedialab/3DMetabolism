@@ -13,9 +13,9 @@ AFRAME.registerComponent("highlight-button-behavior", {
         this.changeMaterialColor = this.changeMaterialColor.bind(this);
         this.downgrade = this.downgrade.bind(this);
         this.el.addEventListener("click", this.clickListener);
-        this.highlightColor = "red";
-        this.defaultColor = "purple";
-        this.outlineColor = "green";
+        this.highlightColor = "#182BEF";
+        this.defaultColor = "#B1B1B1";
+        this.outlineColor = "#F2994A";
     },
 
     clickListener: function (e) {
@@ -24,48 +24,54 @@ AFRAME.registerComponent("highlight-button-behavior", {
         let edges = this.grabEdges();
         let nodes = this.grabNodesFromEdges(edges);
 
-        //may be able to cache elements on init instead of finding them on click every time
-        switch (this.state) {
-            case this.states.DEFAULT:
-                for (edge of edges) {
-                    const element = View.fetchEdge(edge.input, edge.output);
-                    element.components["highlight-behavior"].RemoveOutline();
-                    element.components["highlight-behavior"].DecrementHighlightCounter();
-                }
-                for (node of nodes) {
-                    const element = View.fetchNode(node);
-                    element.components["highlight-behavior"].RemoveOutline();
-                    element.components["highlight-behavior"].DecrementHighlightCounter();
-                }
-                this.changeMaterialColor(this.defaultColor);
-                break;
-            case this.states.HIGHLIGHTED:
-                for (edge of edges) {
-                    const element = View.fetchEdge(edge.input, edge.output);
-                    element.components["highlight-behavior"].IncrementHighlightCounter();
-                }
-                for (node of nodes) {
-                    const element = View.fetchNode(node);
-                    element.components["highlight-behavior"].IncrementHighlightCounter();
-                }
-                this.changeMaterialColor(this.highlightColor)
-                break;
-            case this.states.OUTLINED:
-                for (button of document.querySelectorAll("[highlight-button-behavior]")) {
-                    if (this.el !== button) {
-                        button.components["highlight-button-behavior"].downgrade();
+        try {
+            //may be able to cache elements on init instead of finding them on click every time
+            switch (this.state) {
+                case this.states.DEFAULT:
+                    for (edge of edges) {
+                        const element = View.fetchEdge(edge.input, edge.output);
+                        console.log('highlighting ' + edge.input + "/" + edge.output)
+                        element.components["highlight-behavior"].RemoveOutline();
+                        element.components["highlight-behavior"].DecrementHighlightCounter();
                     }
-                }
-                for (edge of edges) {
-                    const element = View.fetchEdge(edge.input, edge.output);
-                    element.components["highlight-behavior"].Outline();
-                }
-                for (node of nodes) {
-                    const element = View.fetchNode(node);
-                    element.components["highlight-behavior"].Outline();
-                }
-                this.changeMaterialColor(this.outlineColor);
-                break;
+                    for (node of nodes) {
+                        const element = View.fetchNode(node);
+                        console.log('highlighting ', + node);
+                        element.components["highlight-behavior"].RemoveOutline();
+                        element.components["highlight-behavior"].DecrementHighlightCounter();
+                    }
+                    this.changeMaterialColor(this.defaultColor);
+                    break;
+                case this.states.HIGHLIGHTED:
+                    for (edge of edges) {
+                        const element = View.fetchEdge(edge.input, edge.output);
+                        element.components["highlight-behavior"].IncrementHighlightCounter();
+                    }
+                    for (node of nodes) {
+                        const element = View.fetchNode(node);
+                        element.components["highlight-behavior"].IncrementHighlightCounter();
+                    }
+                    this.changeMaterialColor(this.highlightColor)
+                    break;
+                case this.states.OUTLINED:
+                    for (button of document.querySelectorAll("[highlight-button-behavior]")) {
+                        if (button.getAttribute("highlight-button-behavior").sequence !== this.data.sequence) {
+                            button.components["highlight-button-behavior"].downgrade();
+                        }
+                    }
+                    for (edge of edges) {
+                        const element = View.fetchEdge(edge.input, edge.output);
+                        element.components["highlight-behavior"].Outline();
+                    }
+                    for (node of nodes) {
+                        const element = View.fetchNode(node);
+                        element.components["highlight-behavior"].Outline();
+                    }
+                    this.changeMaterialColor(this.outlineColor);
+                    break;
+            }
+        } catch (e) {
+            console.log(e.message);
         }
     },
 
@@ -104,8 +110,25 @@ AFRAME.registerComponent("highlight-button-behavior", {
     },
 
     changeMaterialColor: function (color) {
-        this.el.setAttribute("background-color", color);
-        this.el.setAttribute("hover-color", color);
-        this.el.setAttribute("active-color", color);
+        this.el.setAttribute("material", { color: color });
+        let elements = this.el.querySelectorAll(".gui-button");
+        for (elem of elements) {
+            elem.setAttribute("material", { color: color });
+        }
+        let text = this.el.querySelector(".gui-text");
+        switch (this.state) {
+            case this.states["DEFAULT"]:
+                text.setAttribute("material", { color: "black", emissive: "#000" });
+                break;
+            case this.states["HIGHLIGHTED"]:
+                console.log('highlight button');
+                text.setAttribute("material", { color: "white", emissive: "#fff" });
+                break;
+            case this.states["OUTLINED"]:
+                text.setAttribute("material", {
+                    color: "black", emissive: "#000"
+                });
+                break;
+        }
     }
 })

@@ -32,9 +32,10 @@ AFRAME.registerComponent("animation-behavior", {
         //here is where we change the animation material's shader parameter
         try {
             console.log("calling animate");
-            this.el.setAttribute('material','active',ANIMATING);
+            this.el.setAttribute('material', 'active', this.states["ANIMATING"]);
         } catch (error) {
             console.log('could not start animation of edge:' + this.el.getAttribute('id'));
+            console.log(error.message);
         }
     },
 
@@ -42,9 +43,10 @@ AFRAME.registerComponent("animation-behavior", {
         //here is where we change the animation material's shader parameter
         try {
             console.log("calling stopAnimation");
-            this.el.setAttribute('material','active',DEFAULT);
+            this.el.setAttribute('material', 'active', this.states["DEFAULT"]);
         } catch (error) {
             console.log('could not stop animation of edge:' + this.el.getAttribute('id'));
+            console.log(error.message);
         }
     }
 })

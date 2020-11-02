@@ -143,7 +143,7 @@ var View = (function () {
   };
 
   var all_pathways = [
-    new Edge("glucose_6_phosphate", "glucose", "/img/pyruvate_carboxylase.png", " /obj/pyruvate.glb", " /obj/oxaloacetate.glb"),
+    new Edge("glucose_6_phosphate", "glucose", "/img/G6P-to-Glucose-v002.png", " /obj/alpha-d-glucose-6-phosphate_v002.glb", " /obj/alpha-d-glucose_v002.glb"),
     new Edge("fructose_6_phosphate", "glucose_6_phosphate"),
     new Edge("glucose_6_phosphate", "glucose_1_phosphate"),
     new Edge("glucose_1_phosphate", "upd_glucose"),
@@ -170,6 +170,7 @@ var View = (function () {
     new Edge("succinate", "fumarate"),
     new Edge("fumarate", "malate_2"),
     new Edge("malate_2", "oxaloacetate_2"),
+    new Edge("pyruvate_2", "acetyl_coA"),
 
     // PLACEHOLDERS
     new Edge("fructose_1_6_bisphosphate", "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder"),
