@@ -2,9 +2,10 @@ let checked = false;
 
 function toggleLabel() {
   checked = !checked;
-  const edges = View.all_edges;
-  Object.values(edges).forEach((edge) => {
-    const elem = document.getElementById(edge.input + '/' + edge.output);
+  console.log(View);
+  const nodes = View.nodes;
+  Object.values(nodes).forEach((node) => {
+    const elem = View.fetchNode(node.name);
     if (elem) {
       const labelBehaviorComponent = elem.components['label-behavior'];
       checked ? labelBehaviorComponent.Disable() : labelBehaviorComponent.Enable();
