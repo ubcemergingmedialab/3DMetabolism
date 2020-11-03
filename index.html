@@ -17,9 +17,11 @@
   <script src="/js/presenter.js"></script>
   <script src="/js/highlight-behavior.component.js"></script>
   <script src="/js/highlight-button-behavior.component.js"></script>
+  <script src="/js/label-behavior.component.js"></script>
   <script src="/js/material-displacement.component.js"></script>
   <script src="/js/displace.shader.js"></script>
   <script src="/js/toggle-button.component.js"></script>
+  <script src="/js/toggle-label.js"></script>
 
 </head>
 
@@ -32,6 +34,19 @@
       <a-entity id='camera-rig' position="1 0 11">
         <a-camera id='main-camera' user-height="0" look-controls="enabled: false">
         </a-camera>
+      </a-entity>
+      <a-entity position="-9 2 0">
+        <a-gui-toggle
+          class="interactible" 
+          width="2.5"
+          height="0.75"
+          onclick="toggleLabel"
+          value="hide labels"
+          font-family="Arial"
+          margin="0 0 0.05 0"
+          id="label-toggle"
+        >
+        </a-gui-toggle>
       </a-entity>
       <a-entity position="-6 0 0">
         <a-gui-button id="oxidative_phosphorylation_button" class="interactible" position="-3 -2.5 0" width="3"
