@@ -1440,7 +1440,8 @@
             },
             play: function play() { },
             update: function update(oldData) {
-                console.log("In button update, toggle: " + this.toggleState);
+                window.drawIcon(this.ctxIcon, this.iconCanvas, this.data.iconFontSize, this.data.icon, this.data.fontColor, 1);
+                console.log("In button update, toggle: " + this.data.toggle + " " + this.data.icon);
             }
         });
 

@@ -29,42 +29,13 @@ AFRAME.registerComponent('presenter', {
       }
       else {
         entityEl.setAttribute('material', { color: "#999", shader: "displace" });
+        entityEl.setAttribute('label-behavior', { text: curNode.name, alignment: curNode.flippedText ? 'right' : 'left' });
       }
 
       entityEl.setAttribute("class", "interactible");
       entityEl.setAttribute('assign-position', '[translate-network]');
       console.log(curNode.name);
-      let textEl = document.createElement('a-entity');
-      textEl.setAttribute('look-at', 'a-camera');
-      console.log(curNode);
-      textEl.setAttribute('look-at', 'a-camera');
-      if (!curNode.isPlaceholder) {
-        if (curNode.flippedText) {
-          textEl.setAttribute('text', {
-            value: curNode.name,
-            color: 'white',
-            width: 4,
-            anchor: 'align',
-            xOffset: -0.2,
-            zOffset: 1,
-            align: 'right'
-          });
-        }
-        else {
-          textEl.setAttribute('text', {
-            value: curNode.name,
-            color: 'white',
-            width: 4,
-            anchor: 'align',
-            xOffset: 0.2,
-            zOffset: 1,
-            align: 'left'
-          });
-        }
-      }
-      textEl.setAttribute("scale", "1.5 1.5 1.5");
       this.sceneModel.appendChild(entityEl);
-      entityEl.appendChild(textEl)
     }
     this.DrawEdges(View.pathways["gluconeogenesis"]);
   },

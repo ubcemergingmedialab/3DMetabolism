@@ -18,119 +18,172 @@
   <script src="/js/presenter.js"></script>
   <script src="/js/highlight-behavior.component.js"></script>
   <script src="/js/highlight-button-behavior.component.js"></script>
+  <script src="/js/label-behavior.component.js"></script>
   <script src="/js/material-displacement.component.js"></script>
   <script src="/js/displace.shader.js"></script>
   <script src="/js/toggle-button.component.js"></script>
   <script src="/js/animation-behavior.component.js"></script>
   <script src="/js/animation-button.component.js"></script>
+  <script src="/js/toggle-label.js"></script>
+  <style type="text/css">
+    @font-face {
+      font-family: "Ionicons";
+
+      src: url("/fonts/ionicons.eot?v=2.0.1");
+      src: url("/fonts/ionicons.eot?v=2.0.1#iefix") format("embedded-opentype"), url("/fonts/ionicons.ttf?v=2.0.1") format("truetype"), url("/fonts/ionicons.woff?v=2.0.1") format("woff"), url("/fonts/ionicons.svg?v=2.0.1#Ionicons") format("svg");
+
+      font-weight: normal;
+      font-style: normal
+    }
+
+    body {
+      font-family: Ionicons;
+    }
+
+    .visuallyhidden {
+      position: absolute;
+      display: block;
+      border: 0;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      width: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
 
 </head>
 
 <body>
   <a-scene drag-rotate-component
-    environment="preset: dream3; groundTexture: none; ground: none; dressing: none; thetaLength: 200">
+    environment="preset: dream3; groundTexture: none; ground: none; dressing: none; thetaLength: 200" gui-env>
     <a-assets>
       <a-asset-item id="mito" src="/obj/mitochondria_v014.glb"></a-asset-item>
+      <a-asset-item id="iconfont" src="/fonts/ionicons.ttf"></a-asset-item>
     </a-assets>
     <a-entity id="gyro" drag-rotate-component>
       <a-entity id='camera-rig' position="1 0 11">
         <a-camera id='main-camera' user-height="0" look-controls="enabled: false">
         </a-camera>
       </a-entity>
-      <a-entity position="-6 0 0">
-        <!--
+      <a-entity position="-12 8 2">
+        <a-gui-flex-container flex-direction="row">
+          <a-gui-flex-container flex-direction="column" visible="true" opacity="0.2" width="4.5" align-items="normal"
+            height="6.5" justify-content="center">
+            <a-gui-flex-container flex-direction="row" align-items="normal" justify-content="center" opacity="0"
+              width="3" height="1">
+              <a-gui-toggle class="interactible" width="2.5" height="0.75" onclick="toggleLabel" value="hide labels"
+                font-family="Arial" margin="0 0 0.05 0" id="label-toggle">
+              </a-gui-toggle>
+            </a-gui-flex-container>
+            <a-gui-flex-container flex-direction="row" height="5" align-items="normal" justify-content="center"
+              opacity="0">
+              <a-gui-flex-container flex-direction="column" justify-content="center" align-items="normal"
+                component-padding="0.1" opacity="0" width="3.5" height="5" rotation="0 0 0">
+                <!--
         <a-gui-button id="oxidative_phosphorylation_button" class="interactible" position="-3 -2.5 0" width="3"
           height="0.5" value="oxidative phosphorylation" font-family="Helvetica" font-size="120px" margin="0 0 0.05 0"
           highlight-button-behavior="sequence:oxidative_phosphorylation" background-color="#B1B1B1" font-color="#000000"
           hover-color="#B1B1B1">
         </a-gui-button>-->
-        <a-gui-button id="glycogenolysis_button" class="interactible" position="-3 -2 0" width="3" height="0.5"
-          value="glycogenolysis" font-family="Helvetica" margin="0 0 0.05 0"
-          highlight-button-behavior="sequence:glycogenolysis" background-color="#B1B1B1" hover-color="#B1B1B1"
-          font-color="#000000">
-        </a-gui-button>
-        <a-gui-button id="glycogenesis_button" class="interactible" position="-3 -1.5 0" width="3" height="0.5"
-          value="glycogenesis" font-family="Helvetica" margin="0 0 0.05 0"
-          highlight-button-behavior="sequence:glycogenesis" background-color="#B1B1B1" hover-color="#B1B1B1"
-          font-color="#000000">
-        </a-gui-button>
-        <a-gui-button id="citric_acid_cycle_button" class="interactible" position="-3 -1 0" width="3" height="0.5"
-          value="citric acid cycle" font-family="Helvetica" margin="0 0 0.05 0"
-          highlight-button-behavior="sequence:citric_acid_cycle" font-color="#000000" background-color="#B1B1B1"
-          hover-color="#B1B1B1">
-        </a-gui-button>
-        <a-gui-button id="pyruvate_dehydrogenase_button" class="interactible" position="-3 -0.5 0" width="3"
-          height="0.5" value="pyruvate dehydrogenase complex" font-family="Helvetica" font-size="95px"
-          margin="0 0 0.05 0" highlight-button-behavior="sequence:pyruvate_dehydrogenase" font-color="#000000"
-          background-color="#B1B1B1" hover-color="#B1B1B1">
-        </a-gui-button>
-        <a-gui-button id="gluconeogenesis_button" class="interactible" position="-3 0 0" width="3" height="0.5"
-          value="gluconeogenesis" font-family="Helvetica" margin="0 0 0.05 0"
-          highlight-button-behavior="sequence:gluconeogenesis" font-color="#000000" background-color="#B1B1B1"
-          hover-color="#B1B1B1">
-        </a-gui-button>
+                <a-gui-button id="glycogenolysis_button" class="interactible" width="3" height="0.5"
+                  value="glycogenolysis" font-family="Helvetica" margin="0 0 0.05 0"
+                  highlight-button-behavior="sequence:glycogenolysis" background-color="#B1B1B1" hover-color="#B1B1B1"
+                  font-color="#000000">
+                </a-gui-button>
+                <a-gui-button id="glycogenesis_button" class="interactible" width="3" height="0.5" value="glycogenesis"
+                  font-family="Helvetica" margin="0 0 0.05 0" highlight-button-behavior="sequence:glycogenesis"
+                  background-color="#B1B1B1" hover-color="#B1B1B1" font-color="#000000">
+                </a-gui-button>
+                <a-gui-button id="citric_acid_cycle_button" class="interactible" width="3" height="0.5"
+                  value="citric acid cycle" font-family="Helvetica" margin="0 0 0.05 0"
+                  highlight-button-behavior="sequence:citric_acid_cycle" font-color="#000000" background-color="#B1B1B1"
+                  hover-color="#B1B1B1">
+                </a-gui-button>
+                <a-gui-button id="pyruvate_dehydrogenase_button" class="interactible" width="3" height="0.5"
+                  value="pyruvate dehydrogenase complex" font-family="Helvetica" font-size="95px" margin="0 0 0.05 0"
+                  highlight-button-behavior="sequence:pyruvate_dehydrogenase" font-color="#000000"
+                  background-color="#B1B1B1" hover-color="#B1B1B1">
+                </a-gui-button>
+                <a-gui-button id="gluconeogenesis_button" class="interactible" width="3" height="0.5"
+                  value="gluconeogenesis" font-family="Helvetica" margin="0 0 0.05 0"
+                  highlight-button-behavior="sequence:gluconeogenesis" font-color="#000000" background-color="#B1B1B1"
+                  hover-color="#B1B1B1">
+                </a-gui-button>
+                <a-gui-button id="glycolysis_button" class="interactible" position="-3 0.5 0" width="3" height="0.5"
+                  value="glycolysis" font-family="Helvetica" margin="0 0 0.05 0"
+                  highlight-button-behavior="sequence: glycolysis" background-color="#B1B1B1" font-color="#000000"
+                  hover-color="#B1B1B1">
+                </a-gui-button>
+                <a-gui-button id="all_pathways_button" class="interactible" position="-3 1 0" width="3" height="0.5"
+                  value="All pathways" font-family="Helvetica" margin="0 0 0.05 0"
+                  highlight-button-behavior="sequence:all_pathways" font-color="#000000" background-color="#B1B1B1"
+                  hover-color="#B1B1B1">
+                </a-gui-button>
 
-        <a-entity id="dropdown-gluconeogenesis">
-          <a-gui-icon-button gui-icon-label-button position="-1.25 0 0" id="toggleDropDown" class="interactible"
-            width="0.5" height="0.5" icon="android-menu" toggledropdown="target:#container-gluconeogenesis"
-            visible="true" toggle="true">
-          </a-gui-icon-button>
-
-          <a-gui-flex-container id="container-gluconeogenesis" flex-direction="column" justify-content="flexStart"
-            align-items="normal" component-padding="0.1" opacity="1" width="0.75" height="0.75" position="0.5 0 0"
-            visible="false" icon="android-menu"
-            animation__drop2="property:visible; startEvents:opendropdown; dur:100; to: true;"
-            animation__back2="property:visible; startEvents:closedropdown; dur: 1000; to:false">
-            <a-gui-button id="gluconeogenesis-animation-1" class="interactible" value="Glycerol to Glucose" width="3"
-              height="0.5" font-family="Helvetica" margin="0 0 0.05 0" animation-button-behavior="sequence:1">
-            </a-gui-button>
-            <a-gui-button id="gluconeogenesis-animation-2" class="interactible" value="Lactate to Glucose" width="3"
-              height="0.5" font-family="Helvetica" margin="0 0 0.05 0" toggle-structure="target: .caudate"
-              animation-button-behavior="sequence:2">
-            </a-gui-button>
+              </a-gui-flex-container>
+              <a-gui-flex-container id="container-animations" flex-direction="column" justify-content="center"
+                align-items="normal" component-padding="0.1" opacity="0" width="0.75" height="5" position="0.5 0 0"
+                visible="true">
+                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" height="0.5"
+                  margin="0 0 0.05 0" active-color="#d1d1d1" hover-color="#d1d1d1" icon="chevron-right" visible="true"
+                  toggle="true" background-color="#d1d1d1">
+                </a-gui-icon-label-button>
+                <a-gui-icon-label-button id=" toggleDropDown" class="interactible" width="0.5" active-color="#d1d1d1"
+                  background-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0"
+                  icon="chevron-right" visible="true" toggle="true">
+                </a-gui-icon-label-button>
+                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" active-color="#d1d1d1"
+                  background-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0"
+                  icon="chevron-right" visible="true" toggle="true">
+                </a-gui-icon-label-button>
+                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" active-color="#d1d1d1"
+                  background-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0"
+                  icon="chevron-right" visible="true" toggle="true">
+                </a-gui-icon-label-button>
+                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" height="0.5"
+                  background-color="#808080" margin="0 0 0.05 0" hover-color="#d1d1d1" icon="chevron-right"
+                  toggledropdown="target:#container-gluconeogenesis" visible="true" toggle="true">
+                </a-gui-icon-label-button>
+                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" background-color="#d1d1d1"
+                  active-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0" icon="chevron-right"
+                  visible="true" toggle="true">
+                </a-gui-icon-label-button>
+                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" background-color="#d1d1d1"
+                  active-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0" icon="chevron-right"
+                  visible="true" toggle="true">
+                </a-gui-icon-label-button>
+              </a-gui-flex-container>
+            </a-gui-flex-container>
           </a-gui-flex-container>
-        </a-entity>
-        <a-gui-icon-button gui-icon-label-button position="-1.25 -0.5 0" id="toggleDropDown" class="interactible"
-          width="0.5" height="0.5" icon="android-menu" visible="true" toggle="true">
-        </a-gui-icon-button>
-        <a-gui-icon-button gui-icon-label-button position="-1.25 -1 0" id="toggleDropDown" class="interactible"
-          width="0.5" height="0.5" icon="android-menu" visible="true" toggle="true">
-        </a-gui-icon-button>
-        <a-gui-icon-button gui-icon-label-button position="-1.25 0.5 0" id="toggleDropDown" class="interactible"
-          width="0.5" height="0.5" icon="android-menu" visible="true" toggle="true">
-        </a-gui-icon-button>
-        <a-gui-icon-button gui-icon-label-button position="-1.25 1.0 0" id="toggleDropDown" class="interactible"
-          width="0.5" height="0.5" icon="android-menu" visible="true" toggle="true">
-        </a-gui-icon-button>
-        <a-gui-icon-button gui-icon-label-button position="-1.25 -1.5 0" id="toggleDropDown" class="interactible"
-          width="0.5" height="0.5" icon="android-menu" visible="true" toggle="true">
-        </a-gui-icon-button>
-        <a-gui-icon-button gui-icon-label-button position="-1.25 -2 0" id="toggleDropDown" class="interactible"
-          width="0.5" height="0.5" icon="android-menu" visible="true" toggle="true">
-        </a-gui-icon-button>
-        <a-gui-icon-button gui-icon-label-button position="-1.25 -2.5 0" id="toggleDropDown" class="interactible"
-          width="0.5" height="0.5" icon="android-menu" visible="true" toggle="true">
-        </a-gui-icon-button>
-
-        <a-gui-button id="glycolysis_button" class="interactible" position="-3 0.5 0" width="3" height="0.5"
-          value="glycolysis" font-family="Helvetica" margin="0 0 0.05 0"
-          highlight-button-behavior="sequence: glycolysis" background-color="#B1B1B1" font-color="#000000"
-          hover-color="#B1B1B1">
-        </a-gui-button>
-        <a-gui-button id="all_pathways_button" class="interactible" position="-3 1 0" width="3" height="0.5"
-          value="All pathways" font-family="Helvetica" margin="0 0 0.05 0"
-          highlight-button-behavior="sequence:all_pathways" font-color="#000000" background-color="#B1B1B1"
-          hover-color="#B1B1B1">
-        </a-gui-button>
+          <a-gui-flex-container flex-direction="column" width="4" height="7.65" visible="true" opacity="0"
+            align-items="normal" justify-content="center">
+            <a-gui-flex-container id="container-gluconeogenesis" flex-direction="column" justify-content="flexStart"
+              align-items="flextStart" component-padding="0.1" opacity="0" width="0.75" height="0.75" visible="false"
+              icon="android-menu" animation__drop2="property:visible; startEvents:opendropdown; dur:100; to: true;"
+              animation__back2="property:visible; startEvents:closedropdown; dur: 1000; to:false">
+              <a-gui-button id="gluconeogenesis-animation-1" class="interactible" value="Glycerol to Glucose" width="3"
+                height="0.5" font-family="Helvetica" margin="0 0 0.05 0" animation-button-behavior="sequence:1">
+              </a-gui-button>
+              <a-gui-button id="gluconeogenesis-animation-2" class="interactible" value="Lactate to Glucose" width="3"
+                height="0.5" font-family="Helvetica" margin="0 0 0.05 0" animation-button-behavior="sequence:2">
+              </a-gui-button>
+            </a-gui-flex-container>
+          </a-gui-flex-container>
+        </a-gui-flex-container>
       </a-entity>
+    </a-entity>
+
+    </a-entity>
+    </a-entity>
+    <a-entity translate-network presenter cursor="rayOrigin: mouse" raycaster="objects: .interactible">
     </a-entity>
     <a-entity id="mitochondrion" gltf-model="#mito" position="0 -0.4 0" varying-transparency="0.4">
     </a-entity>
-    <a-entity translate-network presenter cursor="rayOrigin: mouse" raycaster="objects: .interactible"></a-entity>
     <a-light type="ambient" color="#fff" intensity="1"></a-light>
     <a-light type="directional" color="#fff" intensity="1"></a-light>
     <a-sky color="#c0c8cc"></a-sky>
-    </a-entity>
   </a-scene>
   <script>
     this.scene = document.querySelector('a-scene');
