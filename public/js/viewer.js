@@ -148,6 +148,7 @@ var View = (function () {
     new Edge("glucose_6_phosphate", "glucose_1_phosphate"),
     new Edge("glucose_1_phosphate", "upd_glucose"),
     new Edge("upd_glucose", "glycogen"),
+    new Edge("glucose_1_phosphate", "glycogen"),
     new Edge("fructose_1_6_bisphosphate", "fructose_6_phosphate"),
     new Edge("glycerol_3_phosphate", "dihydroxyacetone_phosphate"),
     new Edge("glycerol", "glycerol_3_phosphate"),
