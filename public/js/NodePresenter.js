@@ -1,6 +1,6 @@
 class NodePresenter {
     constructor(){
-        this.scene = document.getElementById('sceneModel');
+        this.sceneModel = document.getElementById('sceneModel');
         this.present = this.present.bind(this);
         this.setBehavior = this.setBehavior.bind(this);
     };
@@ -11,9 +11,9 @@ class NodePresenter {
         for(const node in this.nodes) {
             const curNode = this.nodes[node]
             const elem = document.createElement('a-entity');
-            this.scene.appendChild(elem);
+            this.sceneModel.appendChild(elem);
             this.setBehavior(curNode, elem);
-            elem.setAttribute("id", node);
+            elem.setAttribute('id', node);
         }
     }
 
@@ -21,7 +21,7 @@ class NodePresenter {
     setBehavior(node, elem) {
         elem.object3D.position.copy(node.position)
         elem.setAttribute('class','interactible');
-        elem.setAttribute("highlight-behavior", "elem: ");
+        elem.setAttribute('highlight-behavior', 'elem: ');
         elem.setAttribute('assign-position', '[translate-network]');
         elem.setAttribute('geometry', {
             primitive: 'sphere',
