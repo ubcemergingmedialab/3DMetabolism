@@ -29,13 +29,13 @@ AFRAME.registerComponent("highlight-button-behavior", {
             switch (this.state) {
                 case this.states.DEFAULT:
                     for (edge of edges) {
-                        const element = View.fetchEdge(edge.input, edge.output);
+                        const element = Model.fetchEdge(edge.input, edge.output);
                         console.log('highlighting ' + edge.input + "/" + edge.output)
                         element.components["highlight-behavior"].RemoveOutline();
                         element.components["highlight-behavior"].DecrementHighlightCounter();
                     }
                     for (node of nodes) {
-                        const element = View.fetchNode(node);
+                        const element = Model.fetchNode(node);
                         console.log('highlighting ', + node);
                         element.components["highlight-behavior"].RemoveOutline();
                         element.components["highlight-behavior"].DecrementHighlightCounter();
@@ -44,11 +44,11 @@ AFRAME.registerComponent("highlight-button-behavior", {
                     break;
                 case this.states.HIGHLIGHTED:
                     for (edge of edges) {
-                        const element = View.fetchEdge(edge.input, edge.output);
+                        const element = Model.fetchEdge(edge.input, edge.output);
                         element.components["highlight-behavior"].IncrementHighlightCounter();
                     }
                     for (node of nodes) {
-                        const element = View.fetchNode(node);
+                        const element = Model.fetchNode(node);
                         element.components["highlight-behavior"].IncrementHighlightCounter();
                     }
                     this.changeMaterialColor(this.highlightColor)
@@ -60,11 +60,11 @@ AFRAME.registerComponent("highlight-button-behavior", {
                         }
                     }
                     for (edge of edges) {
-                        const element = View.fetchEdge(edge.input, edge.output);
+                        const element = Model.fetchEdge(edge.input, edge.output);
                         element.components["highlight-behavior"].Outline();
                     }
                     for (node of nodes) {
-                        const element = View.fetchNode(node);
+                        const element = Model.fetchNode(node);
                         element.components["highlight-behavior"].Outline();
                     }
                     this.changeMaterialColor(this.outlineColor);
@@ -81,11 +81,11 @@ AFRAME.registerComponent("highlight-button-behavior", {
         if (this.state === this.states.OUTLINED) {
             this.state = this.states.HIGHLIGHTED;
             for (edge of edges) {
-                element = View.fetchEdge(edge.input, edge.output);
+                element = Model.fetchEdge(edge.input, edge.output);
                 element.components["highlight-behavior"].RemoveOutline();
             }
             for (node of nodes) {
-                element = View.fetchNode(node);
+                element = Model.fetchNode(node);
                 element.components["highlight-behavior"].RemoveOutline();
             }
             this.changeMaterialColor(this.highlightColor);
@@ -93,7 +93,7 @@ AFRAME.registerComponent("highlight-button-behavior", {
     },
 
     grabEdges() {
-        return View.pathways[this.data.sequence];
+        return Model.pathways[this.data.sequence];
     },
 
     grabNodesFromEdges(edges) {
