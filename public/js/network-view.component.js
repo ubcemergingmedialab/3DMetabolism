@@ -1,4 +1,4 @@
-AFRAME.registerComponent('presenter', {
+AFRAME.registerComponent('network-view', {
 
   schema: {
     activePathway: { type: 'string', default: 'all_pathways' }
@@ -13,9 +13,12 @@ AFRAME.registerComponent('presenter', {
     this.sceneModel.flushToDOM();
     this.sceneModel.setAttribute('id', 'sceneModel');
 
-    for (let node in View.nodes) {
+    //NodePresenter.present(Model.nodes)
+    //EdgePresenter.present(Mode.pathways[data.activePathway])
+
+    for (let node in Model.nodes) {
       let entityEl = document.createElement('a-entity');
-      let curNode = View.nodes[node];
+      let curNode = Model.nodes[node];
       entityEl.setAttribute('geometry', {
         primitive: 'sphere',
         radius: 0.2
@@ -37,7 +40,7 @@ AFRAME.registerComponent('presenter', {
       console.log(curNode.name);
       this.sceneModel.appendChild(entityEl);
     }
-    this.DrawEdges(View.pathways["gluconeogenesis"]);
+    this.DrawEdges(Model.pathways["gluconeogenesis"]);
   },
 
   update: function () {
@@ -48,8 +51,8 @@ AFRAME.registerComponent('presenter', {
       edge.remove();
     })
     document.querySelectorAll('.edgeCamera').forEach(edge => edge.remove());
-    if (!!View.pathways[data.activePathway]) {
-      this.DrawEdges(View.pathways[data.activePathway]);
+    if (!!Model.pathways[data.activePathway]) {
+      this.DrawEdges(Model.pathways[data.activePathway]);
     }
   },
 
@@ -61,7 +64,7 @@ AFRAME.registerComponent('presenter', {
         targetAngles = currentEdges[index].GetRotation();
         height = currentEdges[index].GetHeight();
       } catch (e) {
-        console.log("Error while reading view: " + e.message);
+        console.log("Error while reading Model: " + e.message);
         continue;
       }
       let entityEl = document.createElement('a-entity');
