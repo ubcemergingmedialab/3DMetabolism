@@ -13,6 +13,8 @@ AFRAME.registerComponent('network-view', {
     this.sceneModel.flushToDOM();
     this.sceneModel.setAttribute('id', 'sceneModel');
 
+    UIPresenter(Model.pathways, Model.sequences)
+
     //NodePresenter.present(Model.nodes)
     //EdgePresenter.present(Mode.pathways[data.activePathway])
 
