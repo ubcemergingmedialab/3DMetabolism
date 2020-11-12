@@ -20,8 +20,8 @@ var EdgePresenter = (function () {
     animationEl.setAttribute("rotation", "0 0 90");
   };
 
-  _grabEdges = function () {
-    return Model.pathways[this.data.sequence];
+  _grabEdges = function (sequence) {
+    return Model.pathways[sequence];
   };
 
   present = function (currentEdges) {
@@ -117,8 +117,37 @@ var EdgePresenter = (function () {
     }
   };
 
+  removeOutlines = function (sequence) {
+    const edges = _grabEdges(sequence);
+    for (edge of edges) {
+      const element = Model.fetchEdge(edge.input, edge.output);
+      console.log("highlighting " + edge.input + "/" + edge.output);
+      element.components["highlight-behavior"].RemoveOutline();
+      element.components["highlight-behavior"].DecrementHighlightCounter();
+    }
+  };
+
+  highlight = function (sequence) {
+    const edges = _grabEdges(sequence);
+    for (edge of edges) {
+      const element = Model.fetchEdge(edge.input, edge.output);
+      element.components["highlight-behavior"].IncrementHighlightCounter();
+    }
+  };
+
+  outline = function (sequence) {
+    const edges = _grabEdges(sequence);
+    for (edge of edges) {
+      const element = Model.fetchEdge(edge.input, edge.output);
+      element.components["highlight-behavior"].Outline();
+    }
+  };
+
   return {
     present,
     setEdgeAnimation,
+    removeOutlines,
+    highlight,
+    outline,
   };
 })();
