@@ -1,120 +1,124 @@
 var EdgePresenter = (function () {
-	_initAnimationEl = function (srcEl, parentEl, colorStr, localPos) {
-		let animationEl = document.createElement("a-entity");
-		parentEl.appendChild(animationEl);
+  _initAnimationEl = function (srcEl, parentEl, colorStr, localPos) {
+    let animationEl = document.createElement("a-entity");
+    parentEl.appendChild(animationEl);
 
-		if (srcEl == undefined) {
-			animationEl.setAttribute("geometry", {
-				primitive: "box",
-				width: 0.2,
-				height: 0.2,
-				depth: 0.2,
-			});
-			animationEl.setAttribute("material", "color", colorStr);
-		} else {
-			console.log("adding model");
-			animationEl.setAttribute("gltf-model", "url(" + srcEl + ")");
-		}
-		animationEl.setAttribute("position", localPos);
-		animationEl.setAttribute("scale", "0.009 0.009 0.009");
-		animationEl.setAttribute("rotation", "0 0 90");
-	};
+    if (srcEl == undefined) {
+      animationEl.setAttribute("geometry", {
+        primitive: "box",
+        width: 0.2,
+        height: 0.2,
+        depth: 0.2,
+      });
+      animationEl.setAttribute("material", "color", colorStr);
+    } else {
+      console.log("adding model");
+      animationEl.setAttribute("gltf-model", "url(" + srcEl + ")");
+    }
+    animationEl.setAttribute("position", localPos);
+    animationEl.setAttribute("scale", "0.009 0.009 0.009");
+    animationEl.setAttribute("rotation", "0 0 90");
+  };
 
-	present = function (currentEdges) {
-		for (var index = 0; index < currentEdges.length; index++) {
-			let height, targetPosition, targetAngles;
-			try {
-				targetPosition = currentEdges[index].GetPosition();
-				targetAngles = currentEdges[index].GetRotation();
-				height = currentEdges[index].GetHeight();
-			} catch (e) {
-				console.log("Error while reading Model: " + e.message);
-				continue;
-			}
-			let entityEl = document.createElement("a-entity");
-			entityEl.setAttribute("highlight-behavior", "elem: edge");
-			entityEl.setAttribute("class", "interactible");
-			let cameraEl = document.createElement("a-camera");
-			cameraEl.setAttribute("camera", "active", false);
-			let cameraRigEdge = document.createElement("a-entity");
+  _grabEdges = function () {
+    return Model.pathways[this.data.sequence];
+  };
 
-			_initAnimationEl(currentEdges[index].leftElSrc, entityEl, "orange", new THREE.Vector3(0, 0.1, 0));
-			_initAnimationEl(currentEdges[index].rightElSrc, entityEl, "brown", new THREE.Vector3(0, -0.1, 0));
+  present = function (currentEdges) {
+    for (var index = 0; index < currentEdges.length; index++) {
+      let height, targetPosition, targetAngles;
+      try {
+        targetPosition = currentEdges[index].GetPosition();
+        targetAngles = currentEdges[index].GetRotation();
+        height = currentEdges[index].GetHeight();
+      } catch (e) {
+        console.log("Error while reading Model: " + e.message);
+        continue;
+      }
+      let entityEl = document.createElement("a-entity");
+      entityEl.setAttribute("highlight-behavior", "elem: edge");
+      entityEl.setAttribute("class", "interactible");
+      let cameraEl = document.createElement("a-camera");
+      cameraEl.setAttribute("camera", "active", false);
+      let cameraRigEdge = document.createElement("a-entity");
 
-			let edgeName = currentEdges[index].input + "/" + currentEdges[index].output;
-			cameraRigEdge.setAttribute("id", edgeName + "_rig");
-			cameraRigEdge.setAttribute("class", "edgeCamera");
-			cameraEl.setAttribute("id", edgeName + "-camera");
-			cameraEl.setAttribute("id", "edgeCamera");
-			entityEl.setAttribute("id", edgeName);
+      _initAnimationEl(currentEdges[index].leftElSrc, entityEl, "orange", new THREE.Vector3(0, 0.1, 0));
+      _initAnimationEl(currentEdges[index].rightElSrc, entityEl, "brown", new THREE.Vector3(0, -0.1, 0));
 
-			const sceneModel = document.getElementById("sceneModel");
+      let edgeName = currentEdges[index].input + "/" + currentEdges[index].output;
+      cameraRigEdge.setAttribute("id", edgeName + "_rig");
+      cameraRigEdge.setAttribute("class", "edgeCamera");
+      cameraEl.setAttribute("id", edgeName + "-camera");
+      cameraEl.setAttribute("id", "edgeCamera");
+      entityEl.setAttribute("id", edgeName);
 
-			sceneModel.appendChild(cameraRigEdge);
-			cameraRigEdge.appendChild(cameraEl);
-			sceneModel.appendChild(entityEl);
+      const sceneModel = document.getElementById("sceneModel");
 
-			entityEl.setAttribute("material", "shader:displace;");
-			entityEl.setAttribute("material-displacement", "");
-			cameraEl.setAttribute("look-controls", "enabled", false);
+      sceneModel.appendChild(cameraRigEdge);
+      cameraRigEdge.appendChild(cameraEl);
+      sceneModel.appendChild(entityEl);
 
-			entityEl.setAttribute("geometry", {
-				primitive: "cylinder",
-				height: height,
-				radius: 0.1,
-			});
+      entityEl.setAttribute("material", "shader:displace;");
+      entityEl.setAttribute("material-displacement", "");
+      cameraEl.setAttribute("look-controls", "enabled", false);
 
-			entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
-			entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
+      entityEl.setAttribute("geometry", {
+        primitive: "cylinder",
+        height: height,
+        radius: 0.1,
+      });
 
-			let cameraOffset = new THREE.Vector3();
-			entityEl.object3D.getWorldPosition(cameraOffset);
+      entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
+      entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);
 
-			cameraOffset.add(new THREE.Vector3(0, 0, 0.1));
+      let cameraOffset = new THREE.Vector3();
+      entityEl.object3D.getWorldPosition(cameraOffset);
 
-			let edgeRotation = new THREE.Quaternion();
-			entityEl.object3D.getWorldQuaternion(edgeRotation);
+      cameraOffset.add(new THREE.Vector3(0, 0, 0.1));
 
-			cameraRigEdge.object3D.applyQuaternion(edgeRotation);
-			cameraRigEdge.object3D.rotateZ(Math.PI / 2);
-			cameraRigEdge.object3D.position.copy(cameraOffset);
+      let edgeRotation = new THREE.Quaternion();
+      entityEl.object3D.getWorldQuaternion(edgeRotation);
 
-			var cameraRig = document.getElementById("camera-rig");
-			console.log(cameraRig.getAttribute("position"));
-			entityEl.setAttribute("pathway_zoom", { edgeName: edgeName });
+      cameraRigEdge.object3D.applyQuaternion(edgeRotation);
+      cameraRigEdge.object3D.rotateZ(Math.PI / 2);
+      cameraRigEdge.object3D.position.copy(cameraOffset);
 
-			if (currentEdges[index].imgSrc != undefined) {
-				imgEl = document.createElement("a-image");
-				imgEl.setAttribute("src", currentEdges[index].imgSrc);
-				imgEl.setAttribute("rotation", "0 0 90");
-				imgEl.setAttribute("scale", "0.09 0.09 0.09");
-				entityEl.appendChild(imgEl);
-			}
-		}
-	};
+      var cameraRig = document.getElementById("camera-rig");
+      console.log(cameraRig.getAttribute("position"));
+      entityEl.setAttribute("pathway_zoom", { edgeName: edgeName });
 
-	setEdgeAnimation = function (sequenceNum, isActive, changeColorMaterialFcn) {
-		const nodes = Model.sequences.nodes[sequenceNum];
-		for (let idx = 1; idx < nodes.length; idx++) {
-			const edge = Model.fetchEdge(nodes[idx - 1], nodes[idx]);
-			if (edge) {
-				if (!edge.components["animation-behavior"]) {
-					edge.setAttribute("animation-behavior", "");
-				}
-				const animationBehaviorComponent = edge.components["animation-behavior"];
-				if (isActive) {
-					animationBehaviorComponent.callAnimate();
-					changeColorMaterialFcn("orange");
-				} else {
-					animationBehaviorComponent.callStopAnimation();
-					changeColorMaterialFcn("#22252a");
-				}
-			}
-		}
-	};
+      if (currentEdges[index].imgSrc != undefined) {
+        imgEl = document.createElement("a-image");
+        imgEl.setAttribute("src", currentEdges[index].imgSrc);
+        imgEl.setAttribute("rotation", "0 0 90");
+        imgEl.setAttribute("scale", "0.09 0.09 0.09");
+        entityEl.appendChild(imgEl);
+      }
+    }
+  };
 
-	return {
-		present,
-		setEdgeAnimation,
-	};
+  setEdgeAnimation = function (sequenceNum, isActive, changeColorMaterialFcn) {
+    const nodes = Model.sequences.nodes[sequenceNum];
+    for (let idx = 1; idx < nodes.length; idx++) {
+      const edge = Model.fetchEdge(nodes[idx - 1], nodes[idx]);
+      if (edge) {
+        if (!edge.components["animation-behavior"]) {
+          edge.setAttribute("animation-behavior", "");
+        }
+        const animationBehaviorComponent = edge.components["animation-behavior"];
+        if (isActive) {
+          animationBehaviorComponent.callAnimate();
+          changeColorMaterialFcn("orange");
+        } else {
+          animationBehaviorComponent.callStopAnimation();
+          changeColorMaterialFcn("#22252a");
+        }
+      }
+    }
+  };
+
+  return {
+    present,
+    setEdgeAnimation,
+  };
 })();
