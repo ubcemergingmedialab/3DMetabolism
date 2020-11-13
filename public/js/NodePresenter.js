@@ -1,24 +1,20 @@
-class NodePresenter {
-    constructor(){
-        this.sceneModel = document.getElementById('sceneModel');
-        this.present = this.present.bind(this);
-        this.setBehavior = this.setBehavior.bind(this);
-    };
+var NodePresenter = (function () {
 
     //Public
-    present(nodes) {
+    present = function(nodes) {
+        const sceneModel = document.getElementById('sceneModel');
         this.nodes = nodes   
         for(const node in this.nodes) {
             const curNode = this.nodes[node]
             const elem = document.createElement('a-entity');
-            this.sceneModel.appendChild(elem);
-            this.setBehavior(curNode, elem);
+            sceneModel.appendChild(elem);
+            setBehavior(curNode, elem);
             elem.setAttribute('id', node);
         }
-    }
+    };
 
     //private
-    setBehavior(node, elem) {
+    setBehavior = function(node, elem) {
         elem.object3D.position.copy(node.position)
         elem.setAttribute('class','interactible');
         elem.setAttribute('highlight-behavior', 'elem: ');
@@ -37,5 +33,9 @@ class NodePresenter {
         else {
             elem.setAttribute('material','visible','false');
         }
+    };
+    
+    return {
+        present
     }
-}
+})();

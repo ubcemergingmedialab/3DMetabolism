@@ -13,8 +13,7 @@ AFRAME.registerComponent('network-view', {
     this.sceneModel.flushToDOM();
     this.sceneModel.setAttribute('id', 'sceneModel');
 
-    const nodePresenter = new NodePresenter()
-    nodePresenter.present(Model.nodes)
+    NodePresenter.present(Model.nodes)
     //EdgePresenter.present(Mode.pathways[data.activePathway])
     
     this.DrawEdges(Model.pathways["gluconeogenesis"]);
