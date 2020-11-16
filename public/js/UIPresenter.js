@@ -2,14 +2,15 @@ UIPresenter = function(pathway, sequence) {
     this.scene = document.getElementById('gyro');
     this.pathway = pathway;
     this.sequence = sequence;
+    const STRING_LEN_MAX = 19
 
     //private
     function initMenu() {
         this.entity = document.createElement('a-entity');
         this.entity.setAttribute('opacity','1')
         this.entity.setAttribute('position', '-6 8 2');
-        const flexContainer = createFlexContainers();
-        this.entity.appendChild(flexContainer);
+        const parentFlexContainer = createFlexContainers();
+        this.entity.appendChild(parentFlexContainer);
         this.scene.appendChild(this.entity)
     }
 
@@ -17,11 +18,11 @@ UIPresenter = function(pathway, sequence) {
     //private
     function createFlexContainers() {
         const parentFlexContainter = document.createElement('a-gui-flex-container');
+        const parentColumnContainer = document.createElement('a-gui-flex-container');
         const childHighlightFlexContainer = document.createElement('a-gui-flex-container');
         const childAnimationsFlexContainer = document.createElement('a-gui-flex-container');
         const childToggleLabelFlexContainer = document.createElement('a-gui-flex-container');
 
-        const parentColumnContainer = document.createElement('a-gui-flex-container');
         parentColumnContainer.setAttribute('opacity','0.5')
         parentColumnContainer.setAttribute('flex-direction','row')
 
@@ -29,10 +30,7 @@ UIPresenter = function(pathway, sequence) {
         parentColumnContainer.appendChild(childHighlightFlexContainer);
         parentColumnContainer.appendChild(childAnimationsFlexContainer)
         childHighlightFlexContainer.appendChild(childToggleLabelFlexContainer)
-        // parentFlexContainter.appendChild(childToggleLabelFlexContainer);
-        // parentFlexContainter.appendChild(childAnimationsFlexContainer);
         childAnimationsFlexContainer.append(createAnimationButton())
-        // parentFlexContainter.setAttribute('flex-direction','row');
         childToggleLabelFlexContainer.appendChild(createLabelToggleButton())
 
         parentFlexContainter.setAttribute('flex-direction','row')
@@ -74,7 +72,9 @@ UIPresenter = function(pathway, sequence) {
 
     //private
     function attachButtons(flexContainer, buttonType) {
-        for(var key in this.pathway) {
+        for(const key in this.pathway) {
+            if(key === undefined) {continue}
+            if(key === "oxidative_phosphorylation") {continue}
             const button = buttonType(key)
             flexContainer.appendChild(button)
         }
@@ -94,8 +94,9 @@ UIPresenter = function(pathway, sequence) {
         return button
     }
 
+
     function createAnimationButton(pathway, sequence) {
-        const button = document.createElement('a-gui-button');
+        const button = document.createElement('a-gui-icon-label-button');
         button.setAttribute('height','0.5')
         button.setAttribute('width','0.5')
         button.setAttribute('class','interactible')
@@ -106,6 +107,7 @@ UIPresenter = function(pathway, sequence) {
         button.setAttribute('icon','chevron-right')
         button.setAttribute('visible','true')
         button.setAttribute('toggle','true')
+        button.setAttribute('id',pathway + "_animation_button")
         return button
 
     }
@@ -122,7 +124,10 @@ UIPresenter = function(pathway, sequence) {
         button.setAttribute('font-color','#000000')
         button.setAttribute('highlight-button-behavior','sequence:' + pathway)
         button.setAttribute('value',pathway.replaceAll("_"," "))
-        button.setAttribute('id',pathway + "_button")
+        button.setAttribute('id',pathway + "highlight_button")
+        if(pathway.length > STRING_LEN_MAX) {
+            button.setAttribute('font-size','120px')
+        }
         return button
     }
 
