@@ -84,7 +84,6 @@ var EdgePresenter = (function () {
       cameraRigEdge.object3D.position.copy(cameraOffset);
 
       var cameraRig = document.getElementById("camera-rig");
-      console.log(cameraRig.getAttribute("position"));
       entityEl.setAttribute("pathway_zoom", { edgeName: edgeName });
 
       if (currentEdges[index].imgSrc != undefined) {
@@ -117,11 +116,10 @@ var EdgePresenter = (function () {
     }
   };
 
-  removeOutlines = function (sequence) {
+  removeOutline = function (sequence) {
     const edges = _grabEdges(sequence);
     for (edge of edges) {
       const element = Model.fetchEdge(edge.input, edge.output);
-      console.log("highlighting " + edge.input + "/" + edge.output);
       element.components["highlight-behavior"].RemoveOutline();
       element.components["highlight-behavior"].DecrementHighlightCounter();
     }
@@ -146,7 +144,7 @@ var EdgePresenter = (function () {
   return {
     present,
     setEdgeAnimation,
-    removeOutlines,
+    removeOutline,
     highlight,
     outline,
   };

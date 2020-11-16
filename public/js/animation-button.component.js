@@ -31,7 +31,6 @@ AFRAME.registerComponent("animation-button-behavior", {
         text.setAttribute("material", { color: "#ffffff", emissive: "#000" });
         break;
       case this.states["ACTIVE"]:
-        console.log('highlight button');
         text.setAttribute("material", { color: "#000000", emissive: "#fff" });
         break;
     }
