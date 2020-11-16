@@ -10,34 +10,8 @@ AFRAME.registerComponent('network-view', {
     sceneEl.appendChild(this.sceneModel);
     this.sceneModel.flushToDOM();
     this.sceneModel.setAttribute('id', 'sceneModel');
-
-    for (let node in Model.nodes) {
-      let entityEl = document.createElement('a-entity');
-      let curNode = Model.nodes[node];
-      entityEl.setAttribute('geometry', {
-        primitive: 'sphere',
-        radius: 0.2
-      });
-      entityEl.setAttribute("highlight-behavior", "elem: ");
-      entityEl.setAttribute("id", node);
-      entityEl.object3D.position.set(curNode.position.x, curNode.position.y, curNode.position.z);
-
-      if (curNode.isPlaceholder) {
-        entityEl.setAttribute('material', 'visible', 'false');
-      }
-      else {
-        entityEl.setAttribute('material', { color: "#999", shader: "displace" });
-        entityEl.setAttribute('label-behavior', { text: curNode.name, alignment: curNode.flippedText ? 'right' : 'left' });
-      }
-
-      entityEl.setAttribute("class", "interactible");
-      entityEl.setAttribute('assign-position', '[translate-network]');
-      console.log(curNode.name);
-      this.sceneModel.appendChild(entityEl);
-    }
-
-    //NodePresenter.present(Model.nodes)
     EdgePresenter.present(Model.pathways["gluconeogenesis"]);
+    NodePresenter.present(Model.nodes)
   },
 
   update: function () {
