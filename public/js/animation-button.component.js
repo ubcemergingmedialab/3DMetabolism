@@ -16,7 +16,8 @@ AFRAME.registerComponent("animation-button-behavior", {
     const sequenceNum = component.sequence;
     this.state = this.state === this.states.DEFAULT ? this.states.ACTIVE : this.states.DEFAULT;
     const isActive = this.state === this.states.ACTIVE;
-    EdgePresenter.setEdgeAnimation(sequenceNum, isActive, this.changeColorMaterial);
+    document.querySelector("[sequence-animation]").components["sequence-animation"].triggerAnimation(sequenceNum);
+    //EdgePresenter.setEdgeAnimation(sequenceNum, isActive, this.changeColorMaterial);
   },
 
   changeColorMaterial: function (color) {
@@ -31,7 +32,6 @@ AFRAME.registerComponent("animation-button-behavior", {
         text.setAttribute("material", { color: "#ffffff", emissive: "#000" });
         break;
       case this.states["ACTIVE"]:
-        console.log('highlight button');
         text.setAttribute("material", { color: "#000000", emissive: "#fff" });
         break;
     }

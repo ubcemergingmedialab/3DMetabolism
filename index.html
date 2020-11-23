@@ -25,6 +25,7 @@
   <script src="/js/toggle-button.component.js"></script>
   <script src="/js/animation-behavior.component.js"></script>
   <script src="/js/animation-button.component.js"></script>
+  <script src="/js/sequence-animation.component.js"></script>
   <script src="/js/toggle-label.js"></script>
   <script src="/js/NodePresenter.js"></script>
   <style type="text/css">
@@ -186,7 +187,8 @@
 
     </a-entity>
     </a-entity>
-    <a-entity translate-network network-view cursor="rayOrigin: mouse" raycaster="objects: .interactible">
+    <a-entity sequence-animation translate-network network-view cursor="rayOrigin: mouse"
+      raycaster="objects: .interactible">
     </a-entity>
     <a-entity id="mitochondrion" gltf-model="#mito" position="0 -0.4 0" varying-transparency="0.4">
     </a-entity>

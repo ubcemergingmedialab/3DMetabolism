@@ -253,10 +253,9 @@ var Model = (function () {
         "glycerol",
         "glycerol_3_phosphate",
         "dihydroxyacetone_phosphate",
-        "glyceraldehyde_3_phosphate",
-        "fructose_1_6_bisphosphate", //misspelled?
-        "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder", // handle T-shaped reaction
-        "fructose_1_6_bisphosphate",
+        // "glyceraldehyde_3_phosphate",
+        "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder",
+        "fructose_1_6_bisphosphate", //misspelled?, // handle T-shaped reaction
         "fructose_6_phosphate",
         "glucose_6_phosphate",
         "glucose",
@@ -273,9 +272,8 @@ var Model = (function () {
         "_1_3_bisphosphoglycerate",
         "glyceraldehyde_3_phosphate",
         "dihydroxyacetone_phosphate",
-        "fructose_1_6_bisphosphate",
-        "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder", // handle T-shaped reaction
-        "fructose_1_6_bisphosphate",
+        "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder",
+        "fructose_1_6_bisphosphate", // handle T-shaped reaction
         "fructose_6_phosphate",
         "glucose_6_phosphate",
         "glucose",
