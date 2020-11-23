@@ -1,6 +1,6 @@
 UIPresenter = function(pathway, sequence) {
     this.scene = document.getElementById('gyro');
-    this.pathway = pathway;
+    this.pathway = pathway
     this.sequence = sequence;
     const STRING_LEN_MAX = 19
 
@@ -14,7 +14,6 @@ UIPresenter = function(pathway, sequence) {
         this.scene.appendChild(this.entity)
     }
 
-
     //private
     function createFlexContainers() {
         const parentFlexContainter = document.createElement('a-gui-flex-container');
@@ -22,7 +21,6 @@ UIPresenter = function(pathway, sequence) {
         const childHighlightFlexContainer = document.createElement('a-gui-flex-container');
         const childAnimationsFlexContainer = document.createElement('a-gui-flex-container');
         const childToggleLabelFlexContainer = document.createElement('a-gui-flex-container');
-
         parentFlexContainter.appendChild(parentColumnContainer);
         parentColumnContainer.appendChild(childHighlightFlexContainer);
         parentColumnContainer.appendChild(childAnimationsFlexContainer)
@@ -38,8 +36,8 @@ UIPresenter = function(pathway, sequence) {
         parentColumnContainer.setAttribute('flex-direction','row')
 
         childToggleLabelFlexContainer.setAttribute('flex-direction','column')
-        childToggleLabelFlexContainer.setAttribute('align-items','normal')
         childToggleLabelFlexContainer.setAttribute('justify-content','center')
+        childToggleLabelFlexContainer.setAttribute('align-items','normal')
         childToggleLabelFlexContainer.setAttribute('opacity','0')
         childToggleLabelFlexContainer.setAttribute('width','3')
         childToggleLabelFlexContainer.setAttribute('height','1')
@@ -57,17 +55,15 @@ UIPresenter = function(pathway, sequence) {
         attachButtons(childAnimationsFlexContainer, createAnimationButton)
 
         childHighlightFlexContainer.setAttribute('flex-direction','column');
-        childHighlightFlexContainer.setAttribute('visible','true');
+        childHighlightFlexContainer.setAttribute('justify-content','center')
+        childHighlightFlexContainer.setAttribute('align-items','normal')
         childHighlightFlexContainer.setAttribute('opacity','0.2');
         childHighlightFlexContainer.setAttribute('width','4.5');
         childHighlightFlexContainer.setAttribute('height', '6.5');
-        childHighlightFlexContainer.setAttribute('justify-content','center')
-        childHighlightFlexContainer.setAttribute('align-items','normal')
+        childHighlightFlexContainer.setAttribute('visible','true');
         attachButtons(childHighlightFlexContainer, createHighlightButton)
-
         return parentFlexContainter;
     }
-
 
     //private
     function attachButtons(flexContainer, buttonType) {
@@ -79,6 +75,7 @@ UIPresenter = function(pathway, sequence) {
         }
     }
 
+    //private
     function createLabelToggleButton() {
         const button = document.createElement('a-gui-toggle');
         button.setAttribute('position','0 0 0')
@@ -93,12 +90,12 @@ UIPresenter = function(pathway, sequence) {
         return button
     }
 
-
+    //private
     function createAnimationButton(pathway, sequence) {
         const button = document.createElement('a-gui-icon-label-button');
-        button.setAttribute('height','0.5')
-        button.setAttribute('width','0.5')
         button.setAttribute('class','interactible')
+        button.setAttribute('width','0.5')
+        button.setAttribute('height','0.5')
         button.setAttribute('active-color','#d1d1d1')
         button.setAttribute('background-color','#d1d1d1')
         button.setAttribute('hover-color','#d1d1d1')
@@ -107,36 +104,32 @@ UIPresenter = function(pathway, sequence) {
         button.setAttribute('visible','true')
         button.setAttribute('toggle','true')
         button.setAttribute('id',pathway + "_animation_button")
-        button.setAttribute('toggledropdown','target:#container-'+pathway)
+        button.setAttribute('toggledropdown','target:#container-'+pathway+"-dynamic-menu")
         return button
-
     }
 
     //private
     function createHighlightButton(pathway) {
         const button = document.createElement('a-gui-button');
         button.setAttribute('class','interactible')
-        button.setAttribute('font-family','Helvetica')
         button.setAttribute('width','3')
         button.setAttribute('height','0.5')
         button.setAttribute('margin','0 0 0.05 0')
         button.setAttribute('hover-color','#B1B1B1')
         button.setAttribute('background-color','#B1B1B1')
         button.setAttribute('font-color','#000000')
+        button.setAttribute('font-family','Helvetica')
         button.setAttribute('highlight-button-behavior','sequence:' + pathway)
         button.setAttribute('value',pathway.replaceAll("_"," "))
         button.setAttribute('id',pathway + "highlight_button")
-        if(pathway.length > STRING_LEN_MAX) {
-            button.setAttribute('font-size','120px')
-        }
+        if(pathway.length > STRING_LEN_MAX) { button.setAttribute('font-size','120px') }
         return button
     }
 
+    //for now it is currently creating just one secondary menu for gluconeogenesis
     function createSecondaryMenu() {
-
         const parentFlexContainer = document.createElement('a-gui-flex-container')
         const containerGluco = document.createElement('a-gui-flex-container')
-
         parentFlexContainer.appendChild(containerGluco)
 
         parentFlexContainer.setAttribute('flex-direction','column')
@@ -147,7 +140,7 @@ UIPresenter = function(pathway, sequence) {
         parentFlexContainer.setAttribute('align-items','normal')
         parentFlexContainer.setAttribute('justify-content','center')
 
-        containerGluco.setAttribute('id','container-gluconeogenesis')
+        containerGluco.setAttribute('id','container-gluconeogenesis-dynamic-menu')
         containerGluco.setAttribute('flex-direction','column')
         containerGluco.setAttribute('justify-content','flexStart')
         containerGluco.setAttribute('align-items','flexStart')
@@ -171,6 +164,9 @@ UIPresenter = function(pathway, sequence) {
 
         const glucoAnimationButton1 = document.createElement('a-gui-button')
         const glucoAnimationButton2 = document.createElement('a-gui-button')
+        containerGluco.appendChild(glucoAnimationButton1)
+        containerGluco.appendChild(glucoAnimationButton2)
+
         glucoAnimationButton1.setAttribute('id','gluconeogenesis-animation-1')
         glucoAnimationButton1.setAttribute('class','interactible')
         glucoAnimationButton1.setAttribute('value','Glycerol to Glucose')
@@ -179,7 +175,6 @@ UIPresenter = function(pathway, sequence) {
         glucoAnimationButton1.setAttribute('font-family','Helvetica')
         glucoAnimationButton1.setAttribute('margin','0 0 0.05 0')
         glucoAnimationButton1.setAttribute('animation-button-behavior','sequence:1')
-
         glucoAnimationButton2.setAttribute('id','gluconeogenesis-animation-2')
         glucoAnimationButton2.setAttribute('class','interactible')
         glucoAnimationButton2.setAttribute('value','Lactate to Glucose')
@@ -188,9 +183,6 @@ UIPresenter = function(pathway, sequence) {
         glucoAnimationButton2.setAttribute('font-family','Helvectica')
         glucoAnimationButton2.setAttribute('margin','0 0 0.05 0')
         glucoAnimationButton2.setAttribute('animation-button-behavior','sequence:2')
-
-        containerGluco.appendChild(glucoAnimationButton1)
-        containerGluco.appendChild(glucoAnimationButton2)
         return parentFlexContainer
     }
 
