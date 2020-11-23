@@ -21,6 +21,8 @@ AFRAME.registerComponent("highlight-button-behavior", {
     clickListener: function (e) {
         this.state = (this.state + 1) % this.num_states;
 
+        // TODO - remove these helper functions and refactor outlining to Node Presenter
+        // and update the different cases below similar to the EdgePresenter
         let edges = this.grabEdges();
         let nodes = this.grabNodesFromEdges(edges);
 
@@ -28,14 +30,9 @@ AFRAME.registerComponent("highlight-button-behavior", {
             //may be able to cache elements on init instead of finding them on click every time
             switch (this.state) {
                 case this.states.DEFAULT:
-                    for (edge of edges) {
-                        const element = View.fetchEdge(edge.input, edge.output);
-                        console.log('highlighting ' + edge.input + "/" + edge.output)
-                        element.components["highlight-behavior"].RemoveOutline();
-                        element.components["highlight-behavior"].DecrementHighlightCounter();
-                    }
+                    EdgePresenter.removeOutlines(this.data.sequence);
                     for (node of nodes) {
-                        const element = View.fetchNode(node);
+                        const element = Model.fetchNode(node);
                         console.log('highlighting ', + node);
                         element.components["highlight-behavior"].RemoveOutline();
                         element.components["highlight-behavior"].DecrementHighlightCounter();
@@ -43,12 +40,9 @@ AFRAME.registerComponent("highlight-button-behavior", {
                     this.changeMaterialColor(this.defaultColor);
                     break;
                 case this.states.HIGHLIGHTED:
-                    for (edge of edges) {
-                        const element = View.fetchEdge(edge.input, edge.output);
-                        element.components["highlight-behavior"].IncrementHighlightCounter();
-                    }
+                    EdgePresenter.highlight(this.data.sequence);
                     for (node of nodes) {
-                        const element = View.fetchNode(node);
+                        const element = Model.fetchNode(node);
                         element.components["highlight-behavior"].IncrementHighlightCounter();
                     }
                     this.changeMaterialColor(this.highlightColor)
@@ -59,19 +53,16 @@ AFRAME.registerComponent("highlight-button-behavior", {
                             button.components["highlight-button-behavior"].downgrade();
                         }
                     }
-                    for (edge of edges) {
-                        const element = View.fetchEdge(edge.input, edge.output);
-                        element.components["highlight-behavior"].Outline();
-                    }
+                    EdgePresenter.outline(this.data.sequence);
                     for (node of nodes) {
-                        const element = View.fetchNode(node);
+                        const element = Model.fetchNode(node);
                         element.components["highlight-behavior"].Outline();
                     }
                     this.changeMaterialColor(this.outlineColor);
                     break;
             }
         } catch (e) {
-            console.log(e.message);
+            console.log(e);
         }
     },
 
@@ -81,21 +72,23 @@ AFRAME.registerComponent("highlight-button-behavior", {
         if (this.state === this.states.OUTLINED) {
             this.state = this.states.HIGHLIGHTED;
             for (edge of edges) {
-                element = View.fetchEdge(edge.input, edge.output);
+                element = Model.fetchEdge(edge.input, edge.output);
                 element.components["highlight-behavior"].RemoveOutline();
             }
             for (node of nodes) {
-                element = View.fetchNode(node);
+                element = Model.fetchNode(node);
                 element.components["highlight-behavior"].RemoveOutline();
             }
             this.changeMaterialColor(this.highlightColor);
         }
     },
 
+    // TODO: Remove once node presenter refactored
     grabEdges() {
-        return View.pathways[this.data.sequence];
+        return Model.pathways[this.data.sequence];
     },
 
+    // TODO: Remove once node presenter refactored (just take a sequence in presenter)
     grabNodesFromEdges(edges) {
         nodes = {};
         for (edge of edges) {

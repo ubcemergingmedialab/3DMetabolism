@@ -24,7 +24,7 @@ AFRAME.registerComponent("pathway_zoom", {
         eventPlane = this.CreateEventPlane(edge);
         this.AnimateCameraZoom();
 
-        document.querySelector("[presenter]").setAttribute("raycaster", "objects:.eventPlane");
+        document.querySelector("[network-view]").setAttribute("raycaster", "objects:.eventPlane");
 
         document.getElementById('gyro').components['drag-rotate-component'].OnRemoveMouseDown();
         document.querySelector('a-scene').components['drag-rotate-component'].OnRemoveMouseDown();
@@ -39,7 +39,7 @@ AFRAME.registerComponent("pathway_zoom", {
         let edgeCamera = document.getElementById(this.data.edgeName + "_rig").querySelector("[camera]");
         edgeCamera.setAttribute('camera', 'active', false);
 
-        document.querySelector("[presenter]").setAttribute("raycaster", "objects:.interactible");
+        document.querySelector("[network-view]").setAttribute("raycaster", "objects:.interactible");
 
         console.log('zooming out');
         //this.el.setAttribute('material', 'color', 'green');
@@ -80,7 +80,7 @@ AFRAME.registerComponent("pathway_zoom", {
     AnimateCameraZoom: function () {
         let cameraGyro = document.getElementById("gyro");
         let cameraMainRig = document.getElementById('camera-rig');
-        document.querySelector("[presenter]").setAttribute("raycaster", "objects:.eventPlane");
+        document.querySelector("[network-view]").setAttribute("raycaster", "objects:.eventPlane");
         let targetVector = (new THREE.Vector3())
         this.el.object3D.getWorldPosition(targetVector)
         cameraGyro.object3D.worldToLocal(targetVector);
@@ -104,7 +104,7 @@ AFRAME.registerComponent("pathway_zoom", {
                 to: this.data.initPos,
                 easing: 'easeOutCubic'
             });
-            document.querySelector("[presenter]").setAttribute("raycaster", "objects:.interactible");
+            document.querySelector("[network-view]").setAttribute("raycaster", "objects:.interactible");
         });
     },
 

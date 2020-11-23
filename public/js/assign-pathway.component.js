@@ -1,19 +1,19 @@
 AFRAME.registerComponent("assign-pathway", {
     schema: {
-        pathway: {type: 'string', default: ""},
-        target: {type: 'string', default: "[presenter]"}
+        pathway: { type: 'string', default: "" },
+        target: { type: 'string', default: "network-view" }
     },
-    init: function() {
+    init: function () {
         this.el.addEventListener('click', () => {
             let component = this.el.getAttribute("assign-pathway");
             let pathway = component.pathway;
-            if(!pathway) {
+            if (!pathway) {
                 console.log("pathway not set on assign-pathway component");
                 return;
             }
             console.log("setting pathway to: " + pathway);
             let target = document.querySelector(component.target);
-            target.setAttribute("presenter", "activePathway:" + pathway);
+            target.setAttribute("network-view", "activePathway:" + pathway);
         });
     }
 })
