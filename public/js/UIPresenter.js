@@ -15,6 +15,7 @@ UIPresenter = function(pathway, sequence) {
     }
 
     //private
+    //flex containers need to be readjusted
     function createFlexContainers() {
         const parentFlexContainter = document.createElement('a-gui-flex-container');
         const parentColumnContainer = document.createElement('a-gui-flex-container');
