@@ -4,7 +4,6 @@ AFRAME.registerComponent('network-view', {
     activePathway: { type: 'string', default: 'all_pathways' },
     defaultCameraRotation: {type: 'string', default:'0 0 0'},
     defaultSceneModelPosition: {type: 'string', default:'0 0 0'},
-    defaultMitochondrionPosition: {type: 'string', default:'0 -0.4 0'}
   },
 
   init: function () {
@@ -33,37 +32,31 @@ AFRAME.registerComponent('network-view', {
   ResetCameraRotation: function () {
     const gyro = document.getElementById('gyro');
     const scene = document.querySelector('a-scene');
-    const animationName= 'animation__resetRotate'
+    const animationName= 'animation__resetRotation'
     const animationProperties = {
       property: 'rotation',
       dir: 'to',
-      dur: 1000,
+      dur: 1500,
       to: this.data.defaultCameraRotation,
       easing: 'linear'
     }
-    console.log("resetting camera's rotation")
+    console.log("resetting gyro's rotation")
     if(gyro.hasAttribute(animationName)) { gyro.removeAttribute(animationName) }
     if(scene.hasAttribute(animationName)) { scene.removeAttribute(animationName) }
-    scene.setAttribute(animationName, animationProperties);
-    gyro.setAttribute(animationName, animationProperties);
+    try{
+      scene.setAttribute(animationName, animationProperties);
+      gyro.setAttribute(animationName, animationProperties);
+    } catch (e) {
+      console.log("Failed to reset gyro's rotation")
+    }
   },
 
   ResetSceneModelPosition: function () {
-    const sceneModel = document.getElementById('sceneModel');
-    const mitochondrion = document.getElementById('mitochondrion')
-    const animationName= 'animation__resetPosition'
-    const animationProperties = {
-      property: 'position',
-      dir: 'to',
-      dur: 1000,
-      easing: 'linear'
+    console.log("Resetting sceneModel's position")
+    try {
+      this.el.setAttribute('translate-network',{position: this.data.defaultSceneModelPosition})
+    } catch (e) {
+      console.log("Failed to reset sceneModel's position")
     }
-    console.log("resetting scene-model's position")
-    if(sceneModel.hasAttribute(animationName)) { sceneModel.removeAttribute(animationName) }
-    if(mitochondrion.hasAttribute(animationName)) { mitochondrion.removeAttribute(animationName) }
-    sceneModel.setAttribute(animationName, animationProperties);
-    sceneModel.setAttribute(animationName, { to: this.data.defaultSceneModelPosition })
-    mitochondrion.setAttribute(animationName, animationProperties);
-    mitochondrion.setAttribute(animationName, { to: this.data.defaultMitochondrionPosition })
   }
 });

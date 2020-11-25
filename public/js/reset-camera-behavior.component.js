@@ -6,7 +6,7 @@ AFRAME.registerComponent('reset-camera', {
     },
 
     resetCamera: function() {
-        const networkView = document.querySelector('[network-view]').components['network-view']
+        const networkView = document.getElementById('parent-model').components['network-view']
         networkView.ResetCameraRotation();
         networkView.ResetSceneModelPosition();
     } 
