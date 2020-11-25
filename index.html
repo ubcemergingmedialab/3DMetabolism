@@ -28,6 +28,7 @@
   <script src="/js/sequence-animation.component.js"></script>
   <script src="/js/toggle-label.js"></script>
   <script src="/js/NodePresenter.js"></script>
+  <script src="/js/reset-camera-behavior.component.js"></script>
   <style type="text/css">
     @font-face {
       font-family: "Ionicons";
@@ -124,7 +125,6 @@
                   highlight-button-behavior="sequence:all_pathways" font-color="#000000" background-color="#B1B1B1"
                   hover-color="#B1B1B1">
                 </a-gui-button>
-
               </a-gui-flex-container>
               <a-gui-flex-container id="container-animations" flex-direction="column" justify-content="center"
                 align-items="normal" component-padding="0.1" opacity="0" width="0.75" height="5" position="0.5 0 0"
@@ -159,6 +159,7 @@
                 </a-gui-icon-label-button>
               </a-gui-flex-container>
             </a-gui-flex-container>
+            <a-gui-button reset-camera class='interactible' value="reset camera"  width = "2" height = "0.75">
           </a-gui-flex-container>
           <a-gui-flex-container flex-direction="column" width="4" height="7.65" visible="true" opacity="0"
             align-items="normal" justify-content="center">
@@ -174,13 +175,14 @@
               </a-gui-button>
             </a-gui-flex-container>
           </a-gui-flex-container>
+          </a-gui-button>
         </a-gui-flex-container>
       </a-entity>
     </a-entity>
 
     </a-entity>
     </a-entity>
-    <a-entity sequence-animation translate-network network-view cursor="rayOrigin: mouse"
+    <a-entity id='parent-entity'sequence-animation translate-network network-view cursor="rayOrigin: mouse"
       raycaster="objects: .interactible">
     </a-entity>
     <a-entity id="mitochondrion" gltf-model="#mito" position="0 -0.4 0" varying-transparency="0.4">
