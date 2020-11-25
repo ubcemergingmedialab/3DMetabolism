@@ -54,7 +54,7 @@ AFRAME.registerComponent('network-view', {
   ResetSceneModelPosition: function () {
     console.log("Resetting sceneModel's position")
     try {
-      this.el.setAttribute('translate-network',{position: this.data.defaultSceneModelPosition})
+      this.el.setAttribute('translate-network', { position: this.data.defaultSceneModelPosition })
     } catch (e) {
       console.log("Failed to reset sceneModel's position")
     }
