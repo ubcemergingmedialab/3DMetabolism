@@ -12,6 +12,7 @@ AFRAME.registerComponent('network-view', {
     this.sceneModel.setAttribute('id', 'sceneModel');
     EdgePresenter.present(Model.pathways["gluconeogenesis"]);
     NodePresenter.present(Model.nodes)
+    UIPresenter(Model.pathways, Model.sequences)
   },
 
   update: function () {
