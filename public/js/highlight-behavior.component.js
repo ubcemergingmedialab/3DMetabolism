@@ -94,9 +94,11 @@ AFRAME.registerComponent("highlight-behavior", {
     switch (this.data.state) {
       case this.states.DEFAULT:
         this.changeMaterialColor(this.defaultColor);
+        this.el.removeAttribute("highlighted");
         break;
       case this.states.HIGHLIGHTED:
         this.changeMaterialColor(this.highlightColor);
+        this.el.setAttribute("highlighted", true);
         break;
       case this.states.DISABLED:
       //TODO: add helper functions to switch in transparent material
@@ -136,6 +138,5 @@ AFRAME.registerComponent("highlight-behavior", {
 
   changeMaterialColor: function (color) {
     this.el.setAttribute("material", "color: " + color);
-    this.el.setAttribute("highlighted", true);
   }
 })
