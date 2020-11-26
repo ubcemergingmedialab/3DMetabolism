@@ -136,5 +136,6 @@ AFRAME.registerComponent("highlight-behavior", {
 
   changeMaterialColor: function (color) {
     this.el.setAttribute("material", "color: " + color);
+    this.el.setAttribute("highlighted", true);
   }
 })
