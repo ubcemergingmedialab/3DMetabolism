@@ -98,8 +98,7 @@ AFRAME.registerComponent("highlight-behavior", {
         break;
       case this.states.HIGHLIGHTED:
         this.el.setAttribute("highlighted", true);
-        this.changeMaterialColor(this.highlightColor);
-        toggleLabel(false, 'highlighted');
+        toggleLabel(false, "highlighted");
         break;
       case this.states.DISABLED:
       //TODO: add helper functions to switch in transparent material
