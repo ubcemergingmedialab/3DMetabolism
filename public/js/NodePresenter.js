@@ -45,6 +45,7 @@ var NodePresenter = (function () {
     elem.object3D.position.copy(node.position)
     elem.setAttribute('class', 'interactible');
     elem.setAttribute('highlight-behavior', 'elem: ');
+    elem.setAttribute('node-animation', 'elem: ');
     elem.setAttribute('assign-position', '[translate-network]');
     elem.setAttribute('geometry', {
       primitive: 'sphere',
