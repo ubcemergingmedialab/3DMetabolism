@@ -11,8 +11,6 @@ AFRAME.registerComponent("node-animation", {
     this.AnimateFromDefaultColor = this.AnimateFromDefaultColor.bind(this);
     this.MakeDefaultColor = this.MakeDefaultColor.bind(this);
     this.ResetColor = this.ResetColor.bind(this);
-
-    this.AnimateFromDefaultColor(1000);
   },
 
   _animateColor: function(time, color, sequence) {
