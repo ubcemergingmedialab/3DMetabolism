@@ -15,7 +15,7 @@ AFRAME.registerComponent("sequence-animation", {
     let firstMolecule = this.getFirstMolecule(sequence);
     if (firstMolecule == null) {
       console.log("could not find molecule in sequence " + sequence);
-      break;
+      return;
     }
     this.activateNextAnimation(firstMolecule, this.findNextMolecule(firstMolecule, sequence), 1000, sequence);
   },
