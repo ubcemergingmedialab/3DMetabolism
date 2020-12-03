@@ -97,6 +97,7 @@ AFRAME.registerComponent("highlight-behavior", {
         this.el.removeAttribute("highlighted");
         break;
       case this.states.HIGHLIGHTED:
+        this.changeMaterialColor(this.highlightColor);
         this.el.setAttribute("highlighted", true);
         toggleLabel(false, "highlighted");
         break;
