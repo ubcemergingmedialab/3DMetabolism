@@ -2,8 +2,8 @@ AFRAME.registerComponent('network-view', {
 
   schema: {
     activePathway: { type: 'string', default: 'all_pathways' },
-    defaultCameraRotation: {type: 'string', default:'0 0 0'},
-    defaultSceneModelPosition: {type: 'string', default:'0 0 0'},
+    defaultCameraRotation: { type: 'string', default: '0 0 0' },
+    defaultSceneModelPosition: { type: 'string', default: '0 0 0' },
   },
 
   init: function () {
@@ -14,7 +14,7 @@ AFRAME.registerComponent('network-view', {
     this.sceneModel.setAttribute('id', 'sceneModel');
     EdgePresenter.present(Model.pathways["gluconeogenesis"]);
     NodePresenter.present(Model.nodes)
-    UIPresenter(Model.pathways, Model.sequences)
+    //UIPresenter(Model.pathways, Model.sequences)
   },
 
   update: function () {
@@ -33,7 +33,7 @@ AFRAME.registerComponent('network-view', {
   ResetCameraRotation: function () {
     const gyro = document.getElementById('gyro');
     const scene = document.querySelector('a-scene');
-    const animationName= 'animation__resetRotation'
+    const animationName = 'animation__resetRotation'
     const animationProperties = {
       property: 'rotation',
       dir: 'to',
@@ -42,9 +42,9 @@ AFRAME.registerComponent('network-view', {
       easing: 'linear'
     }
     console.log("resetting gyro's rotation")
-    if(gyro.hasAttribute(animationName)) { gyro.removeAttribute(animationName) }
-    if(scene.hasAttribute(animationName)) { scene.removeAttribute(animationName) }
-    try{
+    if (gyro.hasAttribute(animationName)) { gyro.removeAttribute(animationName) }
+    if (scene.hasAttribute(animationName)) { scene.removeAttribute(animationName) }
+    try {
       scene.setAttribute(animationName, animationProperties);
       gyro.setAttribute(animationName, animationProperties);
     } catch (e) {
