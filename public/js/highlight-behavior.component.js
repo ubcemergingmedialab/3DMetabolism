@@ -1,7 +1,8 @@
 AFRAME.registerComponent("highlight-behavior", {
   schema: {
     state: { type: 'number', default: 1 },
-    elem: { type: 'string', default: 'node' }
+    elem: { type: 'string', default: 'node' },
+    activeColor: { type: 'string', default: '#999' },
   },
 
   init: function () {
@@ -139,5 +140,6 @@ AFRAME.registerComponent("highlight-behavior", {
 
   changeMaterialColor: function (color) {
     this.el.setAttribute("material", "color: " + color);
+    this.activeColor = color;
   }
 })
