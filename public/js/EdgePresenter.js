@@ -38,6 +38,10 @@ var EdgePresenter = (function () {
       let entityEl = document.createElement("a-entity");
       entityEl.setAttribute("highlight-behavior", "elem: edge");
       entityEl.setAttribute("class", "interactible");
+      entityEl.setAttribute('arrow-head', {
+        input: currentEdges[index].input,
+        output: currentEdges[index].output
+      });
       let cameraEl = document.createElement("a-camera");
       cameraEl.setAttribute("camera", "active", false);
       let cameraRigEdge = document.createElement("a-entity");
