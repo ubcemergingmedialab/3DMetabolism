@@ -1,4 +1,5 @@
 //Used for testing arrow-head.component. Delete before PR
+// TODO DELETE
 AFRAME.registerComponent('increment1', {
     schema: {
         target: { type: 'selector', default: '' }
