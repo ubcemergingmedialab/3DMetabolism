@@ -38,7 +38,7 @@ var EdgePresenter = (function () {
       let entityEl = document.createElement("a-entity");
       entityEl.setAttribute("highlight-behavior", "elem: edge");
       entityEl.setAttribute("class", "interactible");
-      entityEl.setAttribute('arrow-head', {
+      entityEl.setAttribute('arrow-edge', {
         input: currentEdges[index].input,
         output: currentEdges[index].output
       });
