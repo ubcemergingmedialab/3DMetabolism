@@ -33,7 +33,8 @@ AFRAME.registerComponent("arrow-edge", {
    */
   SetDirection: function (tail, head, isVisible) {
     const edge = Model.fetchEdge(tail, head);
-    const isReverse = this.el.getAttribute("id").substring(0, head.length) === head;
+    const isReverse =
+      this.el.getAttribute("id").substring(0, head.length) === head;
     isVisible
       ? this.createStructure(edge, tail, head, isReverse)
       : this.removeStructure(head, tail);
@@ -54,7 +55,7 @@ AFRAME.registerComponent("arrow-edge", {
   createStructure: function (edge, tail, head, isReverse) {
     // only create cylinder if no existing cylinder
     if (!this.cylinderExists(this.el.getAttribute("id"))) {
-    this.createCylinder(edge, tail, head);
+      this.createCylinder(edge, tail, head);
     }
     // only create arrow if no existing arrow
     if (!this.arrowExists(this.el.getAttribute("id"), head)) {
@@ -81,11 +82,11 @@ AFRAME.registerComponent("arrow-edge", {
       opacity: 1,
     });
     arrow.setAttribute("position", posX + " " + posY + " " + posZ);
-    arrow.setAttribute("rotation", rotX  + " " + rotY + " " + rotZ);
+    arrow.setAttribute("rotation", rotX + " " + rotY + " " + rotZ);
     // TODO - figure out how to reflect object properly..
     if (isReverse) {
       const obj = new THREE.Object3D(arrow.object3D);
-      obj.matrix.makeRotationZ(Math.PI/2);
+      obj.matrix.makeRotationZ(Math.PI / 2);
       arrow.setObject3D("Group", obj);
     }
     edge.parentElement.appendChild(arrow);
@@ -114,12 +115,19 @@ AFRAME.registerComponent("arrow-edge", {
 
   removeStructure: function (arrowToRemoveId, otherArrowId) {
     if (this.arrowExists(this.el.getAttribute("id"), arrowToRemoveId)) {
-      for (let element of this.el.parentElement.querySelectorAll("[class='" + this.el.getAttribute("id") + this.ARROW_ID + arrowToRemoveId)) {
+      for (let element of this.el.parentElement.querySelectorAll(
+        "[class='" +
+          this.el.getAttribute("id") +
+          this.ARROW_ID +
+          arrowToRemoveId
+      )) {
         element.remove();
       }
     }
     if (!this.arrowExists(this.el.getAttribute("id"), otherArrowId)) {
-      for (let element of this.el.parentElement.querySelectorAll("[class='" + this.el.getAttribute("id") + this.CYLINDER_ID_SUFFIX)) {
+      for (let element of this.el.parentElement.querySelectorAll(
+        "[class='" + this.el.getAttribute("id") + this.CYLINDER_ID_SUFFIX
+      )) {
         element.remove();
       }
     }
