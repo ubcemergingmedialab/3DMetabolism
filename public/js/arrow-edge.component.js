@@ -59,14 +59,16 @@ AFRAME.registerComponent("arrow-edge", {
     }
     // only create arrow if no existing arrow
     if (!this.arrowExists(this.el.getAttribute("id"), head)) {
-      this.createArrow(edge, head, isReverse);
+      this.createArrow(edge, head, tail, isReverse);
     }
   },
 
-  createArrow: function (edge, head, isReverse) {
+  createArrow: function (edge, head, tail, isReverse) {
     const headNode = Model.fetchNode(head);
-    const arrow = document.createElement("a-entity");
+    const tailNode = Model.fetchNode(tail);
+    const arrow = document.createElement('a-entity');
     const { x: posX, y: posY, z: posZ } = headNode.getAttribute("position");
+    const {x: reversePosX, y: reversePosY, z: reversePosZ} = tailNode.getAttribute("position");
     const { x: rotX, y: rotY, z: rotZ } = edge.getAttribute("rotation");
     arrow.setAttribute(
       "class",
@@ -81,18 +83,17 @@ AFRAME.registerComponent("arrow-edge", {
       color: this.COLOR,
       opacity: 1,
     });
-    arrow.setAttribute("position", posX + " " + posY + " " + posZ);
-    arrow.setAttribute("rotation", rotX + " " + rotY + " " + rotZ);
-    // TODO - figure out how to reflect object properly..
     if (isReverse) {
-      const obj = new THREE.Object3D(arrow.object3D);
-      obj.matrix.makeRotationZ(Math.PI / 2);
-      arrow.setObject3D("Group", obj);
+      arrow.setAttribute("position", reversePosX + " " + reversePosY + " " + reversePosZ);
+      arrow.setAttribute("rotation", rotX + " " + rotY + " " + (rotZ + 180));
+    } else {
+      arrow.setAttribute("position", posX + " " + posY + " " + posZ);
+      arrow.setAttribute("rotation", rotX + " " + rotY + " " + rotZ);
     }
     edge.parentElement.appendChild(arrow);
   },
 
-  createCylinder: function (edge, tail, head) {
+  createCylinder: function (edge) {
     const cylinder = document.createElement("a-entity");
     const { x: posX, y: posY, z: posZ } = edge.getAttribute("position");
     const height = edge.getAttribute("geometry")?.height || 0;

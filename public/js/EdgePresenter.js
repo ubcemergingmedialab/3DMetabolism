@@ -38,10 +38,6 @@ var EdgePresenter = (function () {
       let entityEl = document.createElement("a-entity");
       entityEl.setAttribute("highlight-behavior", "elem: edge");
       entityEl.setAttribute("class", "interactible");
-      entityEl.setAttribute('arrow-edge', {
-        input: currentEdges[index].input,
-        output: currentEdges[index].output
-      });
       let cameraEl = document.createElement("a-camera");
       cameraEl.setAttribute("camera", "active", false);
       let cameraRigEdge = document.createElement("a-entity");
@@ -70,6 +66,11 @@ var EdgePresenter = (function () {
         primitive: "cylinder",
         height: height,
         radius: 0.1,
+      });
+      
+      entityEl.setAttribute('arrow-edge', {
+        input: currentEdges[index].input,
+        output: currentEdges[index].output
       });
 
       entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
