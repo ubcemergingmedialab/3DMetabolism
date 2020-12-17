@@ -17,6 +17,11 @@ AFRAME.registerComponent("arrow-edge", {
     this.ARROW_ID = "_arrow_";
 
     this.COLOR = "yellow";
+      // TODO - REMOVE THESE TESTS
+      this.SetDirection(this.data.input, this.data.output, true);
+      this.SetDirection(this.data.output, this.data.input, true);
+      this.SetDirection(this.data.output, this.data.input, false);
+      // this.SetDirection(this.data.input, this.data.output, false);
   },
 
   /**
@@ -59,11 +64,14 @@ AFRAME.registerComponent("arrow-edge", {
 
   createArrow: function (edge, head, tail, isReverse) {
     const headNode = Model.fetchNode(head);
-    const tailNode = Model.fetchNode(tail);
+    const tailNode = Model.fetchNode(tail)
     const arrow = document.createElement('a-entity');
     const { x: posX, y: posY, z: posZ } = headNode.getAttribute("position");
-    const {x: reversePosX, y: reversePosY, z: reversePosZ} = tailNode.getAttribute("position");
     const { x: rotX, y: rotY, z: rotZ } = edge.getAttribute("rotation");
+    const headPos = (new THREE.Vector3()).copy(headNode.object3D.position)
+    const tailPos = (new THREE.Vector3()).copy(tailNode.object3D.position)
+    const pos = new THREE.Vector3(posX, posY, posZ)
+    const edgeAxis = (headPos.add(tailPos.negate())).normalize()
     arrow.setAttribute(
       "class",
       this.el.getAttribute("id") + this.ARROW_ID + head
@@ -71,20 +79,32 @@ AFRAME.registerComponent("arrow-edge", {
     arrow.setAttribute("geometry", {
       primitive: "cone",
       height: 0.4,
-      radiusBottom: 0.2,
+      radiusBottom: 0.29,
     });
     arrow.setAttribute("material", {
       color: this.COLOR,
       opacity: 1,
     });
+    arrow.object3D.position.copy(pos)
     if (isReverse) {
-      arrow.setAttribute("position", reversePosX + " " + reversePosY + " " + reversePosZ);
       arrow.setAttribute("rotation", rotX + " " + rotY + " " + (rotZ + 180));
+      arrow.object3D.translateOnAxis(edgeAxis, -0.3)
     } else {
-      arrow.setAttribute("position", posX + " " + posY + " " + posZ);
       arrow.setAttribute("rotation", rotX + " " + rotY + " " + rotZ);
     }
     edge.parentElement.appendChild(arrow);
+  },
+
+  calculateArrowOffset: function(edge) {
+    let offset = new THREE.Vector3()
+    const head = Model.fetchEdge(this.data.input)
+    const tail = Model.fetchEdge(this.data.output)
+    const headPos = (new THREE.Vector3()).copy(head.object3D.position)
+    const tailPos = (new THREE.Vector3()).copY(tail.object3D.position)
+    
+    vect = headPos.add(tailPos.negate())
+    const { x: posX, y: posY, z: posZ } = edge.getAttribute("position");
+    pos = new THREE.Vector3(posX, posY, posZ)
   },
 
   createCylinder: function (edge) {
