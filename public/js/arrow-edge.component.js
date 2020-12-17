@@ -17,11 +17,6 @@ AFRAME.registerComponent("arrow-edge", {
     this.ARROW_ID = "_arrow_";
 
     this.COLOR = "yellow";
-      // TODO - REMOVE THESE TESTS
-      this.SetDirection(this.data.input, this.data.output, true);
-      this.SetDirection(this.data.output, this.data.input, true);
-      this.SetDirection(this.data.output, this.data.input, false);
-      // this.SetDirection(this.data.input, this.data.output, false);
   },
 
   /**
