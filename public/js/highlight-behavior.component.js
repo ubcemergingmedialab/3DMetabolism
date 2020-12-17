@@ -140,6 +140,10 @@ AFRAME.registerComponent("highlight-behavior", {
 
   changeMaterialColor: function (color) {
     this.el.setAttribute("material", "color: " + color);
+    const nodeAnimationComponent = this.el.components['node-animation']
+    if(nodeAnimationComponent) {
+      nodeAnimationComponent.activeHighlightColor = color
+    }
     this.activeColor = color;
   }
 })
