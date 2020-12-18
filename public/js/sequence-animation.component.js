@@ -12,89 +12,113 @@ AFRAME.registerComponent("sequence-animation", {
   },
 
   triggerAnimation(sequence) {
-    let firstMolecule = this.getFirstMolecule(sequence);
-    if (firstMolecule == null) {
-      console.log("could not find molecule in sequence " + sequence);
-      return;
-    } else {
-      this.activateNextAnimation(firstMolecule, this.findNextMolecule(firstMolecule, sequence), 1000, sequence);
-    }
+    const sequences = Model.sequences.nodes[sequence]
+    sequences.forEach((nodeList, index) => {
+      let animationStarted = false;
+      nodeList.forEach((node, nodeIndex) => {
+        if (animationStarted) {
+          return
+        }
+        if (nodeIndex >= nodeList.length) {
+          return
+        }
+        const firstMolecule = this.getFirstMolecule(sequence, index)
+        const nextMolecule = this.findNextMolecule(node, sequence, index)
+        if (firstMolecule === undefined || nextMolecule === undefined) {
+          return;
+        } else {
+          console.log('starting animation at ' + node)
+          this.activateNextAnimation(firstMolecule, nextMolecule, 1000, sequence, index)
+          animationStarted = true
+          return;
+        }
+      })
+    })
   },
 
-  //@param1: element on which animatio will start
-  //@param2: element on which this animation will end
+  //@param1: id of element on which animatio will start
+  //@param2: id of element on which this animation will end
   //@param3: how long the animation will go for
   //@param4: the sequence this animation is a part of (if null, decide randomly)
-  activateNextAnimation: function (start, end, time, sequence) {
-    let startObject = start.object3D;
-    let endObject = end.object3D;
-    let edge = Model.fetchEdge(start.getAttribute("id"), end.getAttribute("id"));
-    if (edge) {
-      if (!edge.components["animation-behavior"]) {
-        edge.setAttribute("animation-behavior", "");
+  activateNextAnimation: function (start, end, time, sequence, index) {
+    const startMolecule = document.getElementById(start.split("-")[0])
+    const endMolecule = document.getElementById(end.split("-")[0])
+    if (startMolecule === null || endMolecule === null) {
+    } else {
+      const edge = Model.fetchEdge(start.split("-")[0], end.split("-")[0]);
+      if (edge) {
+        if (!edge.components["animation-behavior"]) {
+          edge.setAttribute("animation-behavior", "");
+        }
+        edge.components['animation-behavior'].callAnimate();
       }
-      edge.components['animation-behavior'].callAnimate();
+      const startAnimationComponent = startMolecule.components['node-animation']
+      const endAnimationComponent = endMolecule.components['node-animation']
+      if (!startAnimationComponent || !endAnimationComponent) {
+      } else {
+        startAnimationComponent.ResetColor()
+        startAnimationComponent.AnimateToDefaultColor(time, sequence)
+        endAnimationComponent.AnimateFromDefaultColor(time, sequence)
+      }
     }
 
-    let startColor, endColor;
-    startColor = start.getAttribute("material").color;
-    start.setAttribute("material", { color: "#fff" });
-    endColor = end.getAttribute("material").color;
-    let startAnimationName = "animation__" + sequence;
-    start.setAttribute(startAnimationName, {
-      property: 'material.color',
-      dur: 1000,
-      to: startColor
-    })
-
-    end.setAttribute("animation__" + sequence, {
-      property: 'material.color',
-      dur: 1000,
-      to: "#fff"
-    })
-
     setTimeout(() => {
+      console.log(time)
       let curStart = end;
-      let curEnd = this.findNextMolecule(end, sequence);
-      if (curEnd != null) {
-        this.activateNextAnimation(curStart, curEnd, time, sequence);
+      let curEnd = this.findNextMolecule(end, sequence, index);
+      if (curEnd === undefined) {
+        const edge = Model.fetchEdge(start.split("-")[0], end.split("-")[0])
+        if (edge !== undefined) {
+          edge.components['animation-behavior'].callStopAnimation();
+        } else {
+          console.log('could not find edge to stop animation ' + curEnd + ' ' + curStart)
+        }
       } else {
-        console.log("animation ended")
+        this.activateNextAnimation(curStart, curEnd, time, sequence, index);
+        const edge = Model.fetchEdge(start.split("-")[0], end.split("-")[0])
+        if (edge !== null) {
+          edge.components['animation-behavior'].callStopAnimation();
+        }
       }
-      if (edge) {
-        edge.components['animation-behavior'].callStopAnimation();
+      if (startMolecule !== null) {
+        const lastStartAnimationComponent = startMolecule.components['node-animation']
+        if (!lastStartAnimationComponent) {
+        } else {
+          lastStartAnimationComponent.AnimateToDefaultColor(time, sequence)
+        }
       }
-
-      end.setAttribute("animation__" + sequence, {
-        property: 'material.color',
-        dur: 1000,
-        to: endColor
-      });
-      start.removeAttribute(startAnimationName);
-      //markerEl.remove();
+      if (endMolecule !== null) {
+        const lastEndAnimationComponent = endMolecule.components['node-animation']
+        if (!lastEndAnimationComponent) {
+          console.log('node missing animation component')
+        } else {
+          lastEndAnimationComponent.AnimateToDefaultColor(time, sequence)
+        }
+      }
     }, time);
   },
 
   //@param1 the name of the active sequence to get first molecule from
-  getFirstMolecule(sequence) {
-    return document.getElementById(Model.sequences.nodes[sequence][0]);
+  getFirstMolecule(sequence, index) {
+    return Model.sequences.nodes[sequence][index][0];
   },
 
   //@param1 element for which we want to find the next molecule
   //@param2 sequence within which to search for next molecule
-  findNextMolecule(current, sequence) {
-    let currentSequence = Model.sequences.nodes[sequence];
-    let currentName = current.getAttribute("id");
+  findNextMolecule(current, sequence, index) {
+    let currentSequence = Model.sequences.nodes[sequence][index];
     let foundElement = false;
     for (let element of currentSequence) {
       if (foundElement == true) {
-        return document.getElementById(element);
+        console.log("found element " + element + " " + index)
+        return element;
       }
-      if (element == currentName) {
+      if (element == current) {
         foundElement = true;
       }
     }
-    return null;
+    console.log("couldnt find element " + current + " " + sequence)
+    return undefined;
   },
 
   findNextMoleculeRandom: function (current) {
