@@ -67,6 +67,11 @@ var EdgePresenter = (function () {
         height: height,
         radius: 0.1,
       });
+      
+      entityEl.setAttribute('arrow-edge', {
+        input: currentEdges[index].input,
+        output: currentEdges[index].output
+      });
 
       entityEl.object3D.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
       entityEl.object3D.rotation.set(targetAngles.x, targetAngles.y, targetAngles.z);

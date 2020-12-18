@@ -1,7 +1,8 @@
 AFRAME.registerComponent("highlight-behavior", {
   schema: {
     state: { type: 'number', default: 1 },
-    elem: { type: 'string', default: 'node' }
+    elem: { type: 'string', default: 'node' },
+    activeColor: { type: 'string', default: '#999' },
   },
 
   init: function () {
@@ -99,6 +100,7 @@ AFRAME.registerComponent("highlight-behavior", {
       case this.states.HIGHLIGHTED:
         this.changeMaterialColor(this.highlightColor);
         this.el.setAttribute("highlighted", true);
+        toggleLabel(false, "highlighted");
         break;
       case this.states.DISABLED:
       //TODO: add helper functions to switch in transparent material
@@ -138,5 +140,10 @@ AFRAME.registerComponent("highlight-behavior", {
 
   changeMaterialColor: function (color) {
     this.el.setAttribute("material", "color: " + color);
+    const nodeAnimationComponent = this.el.components['node-animation']
+    if(nodeAnimationComponent) {
+      nodeAnimationComponent.activeHighlightColor = color
+    }
+    this.activeColor = color;
   }
 })
