@@ -2,8 +2,8 @@ AFRAME.registerComponent("node-animation", {
   schema: {},
 
   init: function () {
-    this.defaultColor = "#fff"; // white
-    this.activeHighlightColor = this.el.components["highlight-behavior"].activeColor;
+    this.activeHighlightColor = "#fff"; // white
+    this.defaultColor = this.el.components["highlight-behavior"].activeColor;
 
     this._animateColor = this._animateColor.bind(this);
     this._changeMaterialColor = this._changeMaterialColor.bind(this);
@@ -14,10 +14,11 @@ AFRAME.registerComponent("node-animation", {
   },
 
   _animateColor: function(time, color, sequence) {
-    const startAnimationName = "animation__" + sequence;
-    this.el.setAttribute(startAnimationName, {
+    this.el.setAttribute('animation', {
       property: 'material.color',
+      type: 'color',
       dur: time,
+      from: this.el.getAttribute('material').color,
       to: color,
     });
   },
