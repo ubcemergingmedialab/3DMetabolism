@@ -65,7 +65,7 @@
 </head>
 
 <body>
-  <a-scene drag-rotate-component pathway-focus
+  <a-scene drag-rotate-component
     environment="preset: dream3; groundTexture: none; ground: none; dressing: none; thetaLength: 200" gui-env>
     <a-assets>
       <a-asset-item id="mito" src="/obj/mitochondria_v014.glb"></a-asset-item>
@@ -77,14 +77,10 @@
         </a-camera>
       </a-entity>
       <a-entity position="-2 -2 2">
-        <a-gui-button class="interactible" width="3.25" height="0.5"  id="TEST" onclick="testZoom()"
+        <a-gui-button pathway-focus class="interactible" width="3.25" height="0.5"  id="TEST" 
         value="TEST" font-family="Helvetica" margin="0 0 0.05 0" background-color="#B1B1B1" hover-color="#B1B1B1"
         font-color="#000000">
       </a-entity>
-      <a-entity  position="-2 -4 2">
-        <a-gui-button class="interactible" width="3.25" height="0.5"  id="TESTOUT" onclick="testZoomOut()"
-        value="TESTOUT" font-family="Helvetica" margin="0 0 0.05 0" background-color="#B1B1B1" hover-color="#B1B1B1"
-        font-color="#000000">
       </a-entity>
       <a-entity position="-12 8 2">
         <a-gui-flex-container flex-direction="row">

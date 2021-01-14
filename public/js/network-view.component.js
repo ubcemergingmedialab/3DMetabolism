@@ -14,7 +14,7 @@ AFRAME.registerComponent('network-view', {
     this.sceneModel.setAttribute('id', 'sceneModel');
     EdgePresenter.present(Model.pathways["gluconeogenesis"]);
     NodePresenter.present(Model.nodes)
-    //UIPresenter(Model.pathways, Model.sequences)
+    UIPresenter(Model.pathways, Model.sequences)
 
   },
 
@@ -62,7 +62,7 @@ AFRAME.registerComponent('network-view', {
     }
   },
 
-  var : pathways_camera_pos = {
+  var : pathways_focus_pos = {
     "all_pathways": new THREE.Vector3(1,0,11),
     "glycolysis": new THREE.Vector3(0, 3, 7),
     "gluconeogenesis": new THREE.Vector3(0,1.5,9),

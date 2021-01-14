@@ -121,6 +121,7 @@ UIPresenter = function(pathway, sequence) {
         button.setAttribute('font-color','#000000')
         button.setAttribute('font-family','Helvetica')
         button.setAttribute('highlight-button-behavior','sequence:' + pathway)
+        button.setAttribute("pathway-focus","");
         button.setAttribute('value',pathway.replaceAll("_"," "))
         button.setAttribute('id',pathway + "highlight_button")
         if(pathway.length > STRING_LEN_MAX) { button.setAttribute('font-size','120px') }
