@@ -8,6 +8,7 @@ AFRAME.registerComponent("pathway-focus", {
     init : function() {
         this.ZoomIn = this.ZoomIn.bind(this);
         this.ZoomOut = this.ZoomOut.bind(this);
+        this.zoom = this.zoom.bind(this)
     },
 
    /**
@@ -15,41 +16,32 @@ AFRAME.registerComponent("pathway-focus", {
    * @param pathwayPos - the position of the pathway
    */
     ZoomIn: function(pathwayPos) {
-        const camera = document.getElementById('main-camera');
-        const cameraRig = document.getElementById('camera-rig');
-        const networkView = document.getElementById('parent-model').components['network-view']
-        networkView.ResetCameraRotation()
-        networkView.ResetSceneModelPosition()
-        cameraRig.setAttribute('animation__zoomIn', {
-            property: 'position',
-            dur: this.data.animationDur,
-            to: pathwayPos.x + " " + pathwayPos.y + " " + pathwayPos.z,
-            easing: 'easeInCubic' 
-        });
-        window.setTimeout(e => {
-            cameraRig.removeAttribute('animation__zoomIn')
-            camera.getObject3D('camera').quaternion.copy(this.data.defaultQuat)
-        }, this.data.animationDur)
+        const pos = pathwayPos.x + " " + pathwayPos.y + " " + pathwayPos.z;
+        this.zoom(pos, '__zoomIn');
     },
 
     /**
      * animates the camera rig towards initial position before zooming in
      */
     ZoomOut: function() {
+        this.zoom(this.data.initialPos, '__zoomOut');
+    },
+
+    zoom: function(pos, eventTag) {
         const camera = document.getElementById('main-camera');
         const cameraRig = document.getElementById('camera-rig');
         const networkView = document.getElementById('parent-model').components['network-view']
         networkView.ResetCameraRotation()
         networkView.ResetSceneModelPosition()
-        cameraRig.setAttribute('animation__zoomOut', {
+        cameraRig.setAttribute('animation' + eventTag, {
             property: 'position',
             dur: this.data.animationDur,
-            to: this.data.initialPos,
+            to: pos,
             easing: 'easeInCubic' 
         });
         window.setTimeout(e => {
-            cameraRig.removeAttribute('animation__zoomOut')
+            cameraRig.removeAttribute('animation' + eventTag)
             camera.getObject3D('camera').quaternion.copy(this.data.defaultQuat)
         }, this.data.animationDur)
-    },
+    }
 });
