@@ -1,8 +1,8 @@
 AFRAME.registerComponent("pathway-focus", {
     schema: {
         animationDur: {type: "number", default: 1200},
-        initialPos: {type: "string", default: '1 0 11'},
-        targetPos: {type:"vec3", default: new THREE.Vector3(0, -3.5, 7)},
+        initialPos: {type: "vec3", default: "1 0 11"},
+        targetPos: {type: "vec3", default: "1 0 11"},
         defaultQuat: {default: new THREE.Quaternion(0,0,0,1)}
     },
 
@@ -16,9 +16,13 @@ AFRAME.registerComponent("pathway-focus", {
     },
 
     clickListener: function (e) {
+        const initVector = (new THREE.Vector3()).copy(this.data.initialPos)
+        const targetVector = (new THREE.Vector3()).copy(this.data.targetPos)
         try {
-            this.createZoomOutButton();
-            this.zoomIn();
+            if (!initVector.equals(targetVector)) {
+                this.createZoomOutButton();
+                this.zoomIn(); 
+            }
         }catch(e) {
             console.log(e)
         }
@@ -36,7 +40,9 @@ AFRAME.registerComponent("pathway-focus", {
      * animates the camera rig towards initial position prior zooming in
      */
     zoomOut: function() {
-        this.zoom(this.data.initialPos, "__zoomOut");
+        const pos = this.data.initialPos;
+        const posStr = pos.x + " " + pos.y + " " + pos.z
+        this.zoom(posStr, "__zoomOut");
     },
 
     zoom: function(pos, eventTag) {
@@ -76,4 +82,3 @@ AFRAME.registerComponent("pathway-focus", {
             flexContainer.object3D.position.copy(new THREE.Vector3(-7, -2.5, -5))}, this.data.animationDur)
     }
 });
-
