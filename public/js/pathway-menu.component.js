@@ -29,9 +29,7 @@ AFRAME.registerComponent("pathway-menu", {
     parentContainer.setAttribute("flex-direction", "column");
     parentContainer.setAttribute("class", "interactible");
     parentContainer.setAttribute("opacity", "0.5");
-    parentContainer.addEventListener("click", () => {
-      parentContainer.remove();
-    });
+    parentContainer.setAttribute("class", "pathwayMenu")
     
     contentContainer.setAttribute("flex-direction", "column");
 

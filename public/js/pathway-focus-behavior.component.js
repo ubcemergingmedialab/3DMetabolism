@@ -83,6 +83,9 @@ AFRAME.registerComponent("pathway-focus", {
         this.zoomOut();
         button.remove();
         flexContainer.remove();
+        document.querySelectorAll(".pathwayMenu").forEach((element) => {
+          element.remove();
+        });
       });
       flexContainer.appendChild(button);
       cameraRig.appendChild(flexContainer);
