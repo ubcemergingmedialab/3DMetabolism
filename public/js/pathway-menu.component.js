@@ -16,28 +16,40 @@ AFRAME.registerComponent("pathway-menu", {
   },
 
   createPathwayMenu: function () {
-    const parentFlexContainer = this.createFlexContainers();
+    const parentContainer = this.createFlexContainers();
     const cameraRig = document.getElementById("camera-rig");
-    cameraRig.appendChild(parentFlexContainer);
+    cameraRig.appendChild(parentContainer);
   },
 
   createFlexContainers: function () {
-    const parentFlexContainer = document.createElement("a-gui-flex-container");
-    const titleFlexContainer = document.createElement("a-gui-flex-container");
+    const parentContainer = document.createElement("a-gui-flex-container");
+    const contentContainer = document.createElement("a-gui-flex-container");
 
-    const titleElem = document.createElement('a-entity');
-    titleElem.setAttribute('text', {
-        value: this.data.pathwayName,
-        color: 'white',
+    parentContainer.setAttribute("position", "0.5, -0.1, -1");
+    parentContainer.setAttribute("flex-direction", "column");
+    parentContainer.setAttribute("class", "interactible");
+    parentContainer.setAttribute("opacity", "0.5");
+    parentContainer.addEventListener("click", () => {
+      parentContainer.remove();
     });
-    titleFlexContainer.appendChild(titleElem);
-    parentFlexContainer.appendChild(titleFlexContainer);
+    
+    contentContainer.setAttribute("flex-direction", "column");
 
-    parentFlexContainer.setAttribute("position", "0.5, -0.1, -1");
-    parentFlexContainer.setAttribute("flex-direction", "column");
-    parentFlexContainer.setAttribute("class", "interactible");
-    parentFlexContainer.setAttribute("opacity", "0.5");
+    const titleElem = document.createElement('a-gui-label');
+    titleElem.setAttribute('value', this.data.pathwayName);
+    titleElem.setAttribute('height', 0.1);
+    titleElem.setAttribute('font-size', '42px');
+    titleElem.setAttribute('opacity', 0.9);
 
-    return parentFlexContainer;
+    const descriptionElem = document.createElement('a-gui-label');
+    descriptionElem.setAttribute('value', 'a description about the pathway');
+    descriptionElem.setAttribute('font-size', '30px');
+    descriptionElem.setAttribute('opacity', 0.9);
+
+    contentContainer.appendChild(titleElem);
+    contentContainer.appendChild(descriptionElem);
+    parentContainer.appendChild(contentContainer);
+
+    return parentContainer;
   },
 });
