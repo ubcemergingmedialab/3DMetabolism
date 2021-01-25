@@ -252,7 +252,7 @@ var Model = (function () {
   var sequences = {
     nodes: {
       "Gluconeogenesis" : {
-        "1": [[
+        "Glycerol to Glucose": [[
           "glycerol",
           "glycerol_3_phosphate",
           "dihydroxyacetone_phosphate",
@@ -275,7 +275,7 @@ var Model = (function () {
           "glucose_6_phosphate",
           "glucose"
         ]],
-        "2": [[
+        "Lactate to Glucose": [[
           "lactate",
           "pyruvate_1",
           "pyruvate_2",

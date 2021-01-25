@@ -1,6 +1,7 @@
 AFRAME.registerComponent("animation-button-behavior", {
   schema: {
-    sequence: { type: 'string', default: '1' },
+    pathway: { type: 'string', default: 'Gluconeogenesis'},
+    sequence: { type: 'string', default: 'Glycerol to Glucose' },
   },
 
   init: function () {
