@@ -1,6 +1,6 @@
 AFRAME.registerComponent("sequence-animation", {
   schema: {
-    activeSequence: { type: "string", default: "1" }
+    activeSequence: { type: "string", default: "Glycerol to Glucose" }
   },
 
   init: function () {
@@ -11,8 +11,9 @@ AFRAME.registerComponent("sequence-animation", {
     this.triggerAnimation = this.triggerAnimation.bind(this);
   },
 
-  triggerAnimation(sequence) {
-    const sequences = Model.sequences.nodes[sequence]
+  triggerAnimation(sequence, pathwayName) {
+    console.log('triggering animation for ' + pathwayName)
+    const sequences = Model.sequences.nodes[pathwayName][sequence]
     sequences.forEach((nodeList, index) => {
       let animationStarted = false;
       nodeList.forEach((node, nodeIndex) => {
@@ -22,13 +23,13 @@ AFRAME.registerComponent("sequence-animation", {
         if (nodeIndex >= nodeList.length) {
           return
         }
-        const firstMolecule = this.getFirstMolecule(sequence, index)
-        const nextMolecule = this.findNextMolecule(node, sequence, index)
+        const firstMolecule = this.getFirstMolecule(sequence, index, pathwayName)
+        const nextMolecule = this.findNextMolecule(node, sequence, index, pathwayName)
         if (firstMolecule === undefined || nextMolecule === undefined) {
           return;
         } else {
           console.log('starting animation at ' + node)
-          this.activateNextAnimation(firstMolecule, nextMolecule, 1000, sequence, index)
+          this.activateNextAnimation(firstMolecule, nextMolecule, 1000, sequence, index, pathwayName)
           animationStarted = true
           return;
         }
@@ -40,7 +41,7 @@ AFRAME.registerComponent("sequence-animation", {
   //@param2: id of element on which this animation will end
   //@param3: how long the animation will go for
   //@param4: the sequence this animation is a part of (if null, decide randomly)
-  activateNextAnimation: function (start, end, time, sequence, index) {
+  activateNextAnimation: function (start, end, time, sequence, index, pathwayName) {
     const startMolecule = document.getElementById(start.split("-")[0])
     const endMolecule = document.getElementById(end.split("-")[0])
     if (startMolecule === null || endMolecule === null) {
@@ -65,7 +66,7 @@ AFRAME.registerComponent("sequence-animation", {
     setTimeout(() => {
       console.log(time)
       let curStart = end;
-      let curEnd = this.findNextMolecule(end, sequence, index);
+      let curEnd = this.findNextMolecule(end, sequence, index, pathwayName);
       if (curEnd === undefined) {
         const edge = Model.fetchEdge(start.split("-")[0], end.split("-")[0])
         if (edge !== undefined) {
@@ -99,14 +100,14 @@ AFRAME.registerComponent("sequence-animation", {
   },
 
   //@param1 the name of the active sequence to get first molecule from
-  getFirstMolecule(sequence, index) {
-    return Model.sequences.nodes[sequence][index][0];
+  getFirstMolecule(sequence, index, pathwayName) {
+    return Model.sequences.nodes[pathwayName][sequence][index][0];
   },
 
   //@param1 element for which we want to find the next molecule
   //@param2 sequence within which to search for next molecule
-  findNextMolecule(current, sequence, index) {
-    let currentSequence = Model.sequences.nodes[sequence][index];
+  findNextMolecule(current, sequence, index, pathwayName) {
+    let currentSequence = Model.sequences.nodes[pathwayName][sequence][index];
     let foundElement = false;
     for (let element of currentSequence) {
       if (foundElement == true) {
