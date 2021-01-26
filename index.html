@@ -32,6 +32,8 @@
   <script src="/js/NodePresenter.js"></script>
   <script src="/js/reset-camera-behavior.component.js"></script>
   <script src="/js/node-animation.component.js"></script>
+  <script src="/js/pathway-focus-behavior.component.js"></script>
+  <script src="/js/pathway-menu.component.js"></script>
   <style type="text/css">
     @font-face {
       font-family: "Ionicons";
@@ -80,21 +82,21 @@
             height="8.5" justify-content="center">
             <a-gui-flex-container flex-direction="row" align-items="normal" justify-content="center" opacity="0"
               width="3" height="0.75">
-              <a-gui-button class="interactible" width="3.25" height="0.5" onclick="toggleLabel(true)"
-                value="Hide All Labels" font-family="Helvetica" margin="0 0 0.05 0" background-color="#B1B1B1"
-                hover-color="#B1B1B1" font-color="#000000">
+              <a-gui-button class="interactible" width="3.25" height="0.5" onclick="toggleLabel(true)" 
+                value="Hide All Labels" font-family="Helvetica" margin="0 0 0.05 0" background-color="#B1B1B1" hover-color="#B1B1B1"
+                font-color="#000000">
             </a-gui-flex-container>
             <a-gui-flex-container flex-direction="row" align-items="normal" justify-content="center" opacity="0"
               width="3" height="0.75">
-              <a-gui-button class="interactible" width="3.25" height="0.5" onclick="toggleLabel(false)"
-                value="Show All Labels" font-family="Helvetica" margin="0 0 0.05 0" background-color="#B1B1B1"
-                hover-color="#B1B1B1" font-color="#000000">
+              <a-gui-button class="interactible" width="3.25" height="0.5" onclick="toggleLabel(false)" 
+                value="Show All Labels" font-family="Helvetica" margin="0 0 0.05 0" background-color="#B1B1B1" hover-color="#B1B1B1"
+                font-color="#000000">
             </a-gui-flex-container>
             <a-gui-flex-container flex-direction="row" align-items="normal" justify-content="center" opacity="0"
               width="3" height="0.75">
-              <a-gui-button class="interactible" width="3.25" height="0.5" onclick="toggleLabel(false, 'highlighted')"
-                value="Show Highlighted Labels" font-family="Helvetica" margin="0 0 0.05 0" background-color="#B1B1B1"
-                hover-color="#B1B1B1" font-color="#000000">
+              <a-gui-button class="interactible" width="3.25" height="0.5" onclick="toggleLabel(false, 'highlighted')" 
+                value="Show Highlighted Labels" font-family="Helvetica" margin="0 0 0.05 0" background-color="#B1B1B1" hover-color="#B1B1B1"
+                font-color="#000000">
             </a-gui-flex-container>
             <a-gui-flex-container flex-direction="row" height="5" align-items="normal" justify-content="center"
               opacity="0">
@@ -106,15 +108,6 @@
           highlight-button-behavior="sequence:oxidative_phosphorylation" background-color="#B1B1B1" font-color="#000000"
           hover-color="#B1B1B1">
         </a-gui-button>-->
-                <a-gui-label width="2.5" height="0.5" value="Pathways" font-family="Arial" margin="0 0 0.05 0"
-                  font-color="#ffffff" font-weight="bold" opacity="0">
-                </a-gui-label>
-
-                <a-gui-button id="all_pathways_button" class="interactible" position="-3 1 0" width="3" height="0.5"
-                  value="All pathways" font-family="Helvetica" margin="0 0 0.05 0"
-                  highlight-button-behavior="sequence:all_pathways" font-color="#000000" background-color="#B1B1B1"
-                  hover-color="#B1B1B1">
-                </a-gui-button>
                 <a-gui-button id="glycogenolysis_button" class="interactible" width="3" height="0.5"
                   value="glycogenolysis" font-family="Helvetica" margin="0 0 0.05 0"
                   highlight-button-behavior="sequence:glycogenolysis" background-color="#B1B1B1" hover-color="#B1B1B1"
@@ -151,44 +144,41 @@
                 </a-gui-button>
               </a-gui-flex-container>
               <a-gui-flex-container id="container-animations" flex-direction="column" justify-content="center"
-                align-items="normal" component-padding="0.1" opacity="0" width="0.75" height="5" visible="true">
-                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" active-color="#d1d1d1"
-                  background-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0" opacity="0"
-                  icon="chevron-right" visible="false" toggle="true">
-                </a-gui-icon-label-button>
-                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" height="0.5"
+                align-items="normal" component-padding="0.1" opacity="0" width="0.75" height="5" position="0.5 0 0"
+                visible="true">
+                <a-gui-icon-label-button pathway-focus="targetPos: 2 4 7" pathway-menu="pathwayName: Glycogenolysis" id="toggleDropDown-glycogenolyis" class="interactible" width="0.5" height="0.5"
                   margin="0 0 0.05 0" active-color="#d1d1d1" hover-color="#d1d1d1" icon="chevron-right" visible="true"
                   toggle="true" background-color="#d1d1d1">
                 </a-gui-icon-label-button>
-                <a-gui-icon-label-button id=" toggleDropDown" class="interactible" width="0.5" active-color="#d1d1d1"
+                <a-gui-icon-label-button pathway-focus="targetPos: 2 4 7" pathway-menu="pathwayName: Glycogenesis" id=" toggleDropDown-glycogenesis" class="interactible" width="0.5" active-color="#d1d1d1"
                   background-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0"
                   icon="chevron-right" visible="true" toggle="true">
                 </a-gui-icon-label-button>
-                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" active-color="#d1d1d1"
+                <a-gui-icon-label-button pathway-focus="targetPos: 0 -3.5 7" pathway-menu="pathwayName: Citric Acid Cycle" id="toggleDropDown-citric_acid_cycle" class="interactible" width="0.5" active-color="#d1d1d1"
                   background-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0"
                   icon="chevron-right" visible="true" toggle="true">
                 </a-gui-icon-label-button>
-                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" active-color="#d1d1d1"
+                <a-gui-icon-label-button pathway-focus="targetPos: 0 -3.5 7" pathway-menu="pathwayName: Pyruvate" id="toggleDropDown-pyruvate" class="interactible" width="0.5" active-color="#d1d1d1"
                   background-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0"
                   icon="chevron-right" visible="true" toggle="true">
                 </a-gui-icon-label-button>
-                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" background-color="#d1d1d1"
-                  active-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0" icon="chevron-right"
-                  visible="true" toggle="true">
-                </a-gui-icon-label-button>
-                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" height="0.5"
+                <a-gui-icon-label-button pathway-focus="targetPos: 0 1.5 9" pathway-menu="pathwayName: Gluconeogenesis" id="toggleDropDown-gluconeogenesis" class="interactible" width="0.5" height="0.5"
                   background-color="#808080" margin="0 0 0.05 0" hover-color="#d1d1d1" icon="chevron-right"
                   toggledropdown="target:#container-gluconeogenesis" visible="true" toggle="true">
                 </a-gui-icon-label-button>
-                <a-gui-icon-label-button id="toggleDropDown" class="interactible" width="0.5" background-color="#d1d1d1"
+                <a-gui-icon-label-button pathway-focus="targetPos: 0 3 7" pathway-menu="pathwayName: Glycolysis" id="toggleDropDown-glycolysis" class="interactible" width="0.5" background-color="#d1d1d1"
+                  active-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0" icon="chevron-right"
+                  visible="true" toggle="true">
+                </a-gui-icon-label-button>
+                <a-gui-icon-label-button pathway-focus="targetPos: 1 0 11" pathway-menu="pathwayName: All Pathways" id="toggleDropDown-all_pathways" class="interactible" width="0.5" background-color="#d1d1d1"
                   active-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0" icon="chevron-right"
                   visible="true" toggle="true">
                 </a-gui-icon-label-button>
               </a-gui-flex-container>
             </a-gui-flex-container>
-            <a-gui-button reset-camera class='interactible' value="reset camera" width="2" height="0.75">
+            <a-gui-button reset-camera class='interactible' value="reset camera"  width = "2" height = "0.75">
           </a-gui-flex-container>
-          <a-gui-flex-container flex-direction="column" width="4" height="8.5" visible="true" opacity="0"
+          <a-gui-flex-container flex-direction="column" width="4" height="7.65" visible="true" opacity="0"
             align-items="normal" justify-content="center">
             <a-gui-flex-container id="container-gluconeogenesis" flex-direction="column" justify-content="flexStart"
               align-items="flextStart" component-padding="0.1" opacity="0" width="0.75" height="0.75" visible="false"
