@@ -25,7 +25,7 @@ AFRAME.registerComponent("pathway-menu", {
     const parentContainer = document.createElement("a-gui-flex-container");
     const contentContainer = document.createElement("a-gui-flex-container");
 
-    parentContainer.setAttribute("position", "0.5, -0.1, -1");
+    parentContainer.setAttribute("position", "1, -0.1, -1");
     parentContainer.setAttribute("flex-direction", "column");
     parentContainer.setAttribute("class", "interactible");
     parentContainer.setAttribute("opacity", "0.5");
@@ -34,7 +34,8 @@ AFRAME.registerComponent("pathway-menu", {
     contentContainer.setAttribute("flex-direction", "column");
 
     const titleElem = document.createElement("a-gui-label");
-    titleElem.setAttribute("value", this.data.pathwayName);
+    const capitalTitle = this.data.pathwayName.replace(/\b\w/g, function(l){ return l.toUpperCase() })
+    titleElem.setAttribute("value", capitalTitle);
     titleElem.setAttribute("height", 0.1);
     titleElem.setAttribute("font-size", "42px");
     titleElem.setAttribute("opacity", 0.9);
@@ -58,7 +59,9 @@ AFRAME.registerComponent("pathway-menu", {
         buttonElem.setAttribute("animation-button-behavior", `sequence:${sequence}`);
         buttonElem.setAttribute("height", "0.1");
         buttonElem.setAttribute("class", "interactible");
-        buttonElem.setAttribute("value", sequence);
+        const text = sequence.replaceAll("_", " ");
+        const capital = text.replace(/\b\w/g, function(l){ return l.toUpperCase() })
+        buttonElem.setAttribute("value", capital);
         contentContainer.appendChild(buttonElem);
       });
     }
