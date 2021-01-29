@@ -1,6 +1,6 @@
 AFRAME.registerComponent("sequence-animation", {
   schema: {
-    activeSequence: { type: "string", default: "Glycerol to Glucose" }
+    activeSequence: { type: "string", default: "gluconeogenesis" }
   },
 
   init: function () {
@@ -11,9 +11,8 @@ AFRAME.registerComponent("sequence-animation", {
     this.triggerAnimation = this.triggerAnimation.bind(this);
   },
 
-  triggerAnimation(sequence, pathwayName) {
-    console.log('triggering animation for ' + pathwayName)
-    const sequences = Model.sequences.nodes[pathwayName][sequence]
+  triggerAnimation(sequence, pathway) {
+    const sequences = Model.sequences.nodes[pathway][sequence]
     sequences.forEach((nodeList, index) => {
       let animationStarted = false;
       nodeList.forEach((node, nodeIndex) => {
@@ -23,13 +22,13 @@ AFRAME.registerComponent("sequence-animation", {
         if (nodeIndex >= nodeList.length) {
           return
         }
-        const firstMolecule = this.getFirstMolecule(sequence, index, pathwayName)
-        const nextMolecule = this.findNextMolecule(node, sequence, index, pathwayName)
+        const firstMolecule = this.getFirstMolecule(sequence, index, pathway)
+        const nextMolecule = this.findNextMolecule(node, sequence, index, pathway)
         if (firstMolecule === undefined || nextMolecule === undefined) {
           return;
         } else {
           console.log('starting animation at ' + node)
-          this.activateNextAnimation(firstMolecule, nextMolecule, 1000, sequence, index, pathwayName)
+          this.activateNextAnimation(firstMolecule, nextMolecule, 1000, sequence, index, pathway)
           animationStarted = true
           return;
         }
@@ -41,7 +40,7 @@ AFRAME.registerComponent("sequence-animation", {
   //@param2: id of element on which this animation will end
   //@param3: how long the animation will go for
   //@param4: the sequence this animation is a part of (if null, decide randomly)
-  activateNextAnimation: function (start, end, time, sequence, index, pathwayName) {
+  activateNextAnimation: function (start, end, time, sequence, index, pathway) {
     const startMolecule = document.getElementById(start.split("-")[0])
     const endMolecule = document.getElementById(end.split("-")[0])
     if (startMolecule === null || endMolecule === null) {
@@ -66,7 +65,7 @@ AFRAME.registerComponent("sequence-animation", {
     setTimeout(() => {
       console.log(time)
       let curStart = end;
-      let curEnd = this.findNextMolecule(end, sequence, index, pathwayName);
+      let curEnd = this.findNextMolecule(end, sequence, index, pathway);
       if (curEnd === undefined) {
         const edge = Model.fetchEdge(start.split("-")[0], end.split("-")[0])
         if (edge !== undefined) {
@@ -75,7 +74,7 @@ AFRAME.registerComponent("sequence-animation", {
           console.log('could not find edge to stop animation ' + curEnd + ' ' + curStart)
         }
       } else {
-        this.activateNextAnimation(curStart, curEnd, time, sequence, index);
+        this.activateNextAnimation(curStart, curEnd, time, sequence, index, pathway);
         const edge = Model.fetchEdge(start.split("-")[0], end.split("-")[0])
         if (edge !== null) {
           edge.components['animation-behavior'].callStopAnimation();
@@ -100,14 +99,14 @@ AFRAME.registerComponent("sequence-animation", {
   },
 
   //@param1 the name of the active sequence to get first molecule from
-  getFirstMolecule(sequence, index, pathwayName) {
-    return Model.sequences.nodes[pathwayName][sequence][index][0];
+  getFirstMolecule(sequence, index, pathway) {
+    return Model.sequences.nodes[pathway][sequence][index][0];
   },
 
   //@param1 element for which we want to find the next molecule
   //@param2 sequence within which to search for next molecule
-  findNextMolecule(current, sequence, index, pathwayName) {
-    let currentSequence = Model.sequences.nodes[pathwayName][sequence][index];
+  findNextMolecule(current, sequence, index, pathway) {
+    let currentSequence = Model.sequences.nodes[pathway][sequence][index];
     let foundElement = false;
     for (let element of currentSequence) {
       if (foundElement == true) {
