@@ -1,6 +1,7 @@
 AFRAME.registerComponent("animation-button-behavior", {
   schema: {
     sequence: { type: 'string', default: '1' },
+    pathway: {type: 'string', default: 'gluconeogenesis'}
   },
 
   init: function () {
@@ -14,9 +15,10 @@ AFRAME.registerComponent("animation-button-behavior", {
   clickListener: function () {
     const component = this.el.getAttribute("animation-button-behavior");
     const sequenceNum = component.sequence;
+    const pathway = component.pathway;
     this.state = this.state === this.states.DEFAULT ? this.states.ACTIVE : this.states.DEFAULT;
     const isActive = this.state === this.states.ACTIVE;
-    document.querySelector("[sequence-animation]").components["sequence-animation"].triggerAnimation(sequenceNum);
+    document.querySelector("[sequence-animation]").components["sequence-animation"].triggerAnimation(sequenceNum, pathway);
     //EdgePresenter.setEdgeAnimation(sequenceNum, isActive, this.changeColorMaterial);
   },
 
