@@ -251,51 +251,53 @@ var Model = (function () {
 
   var sequences = {
     nodes: {
-      "1": [[
-        "glycerol",
-        "glycerol_3_phosphate",
-        "dihydroxyacetone_phosphate",
-        "glyceraldehyde_3_phosphate-1",
-        "none3",
-        "none4",
-        "glyceraldehyde_3_phosphate-2",
-        "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder"
-      ],[
-        "none2",
-        "none3",
-        "none4",
-        "none5",
-        "glycerol",
-        "glycerol_3_phosphate",
-        "dihydroxyacetone_phosphate",
-        "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder",
-        "fructose_1_6_bisphosphate",
-        "fructose_6_phosphate",
-        "glucose_6_phosphate",
-        "glucose"
-      ]],
-      "2": [[
-        "lactate",
-        "pyruvate_1",
-        "pyruvate_2",
-        "oxaloacetate_2",
-        "phosphoenolpyruvate_2",
-        "phosphoenolpyruvate_1",
-        "_2_phosphoglycerate",
-        "_3_phosphoglycerate",
-        "_1_3_bisphosphoglycerate",
-        "glyceraldehyde_3_phosphate",
-        "dihydroxyacetone_phosphate",
-        "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder",
-        "fructose_1_6_bisphosphate", // handle T-shaped reaction
-        "fructose_6_phosphate",
-        "glucose_6_phosphate",
-        "glucose",
-      ],[
-        "none1",
-        "none2",
-        "none3",
-      ]],
+      gluconeogenesis: {
+        "glycerol_to_glucose": [[
+          "glycerol",
+          "glycerol_3_phosphate",
+          "dihydroxyacetone_phosphate",
+          "glyceraldehyde_3_phosphate-1",
+          "none3",
+          "none4",
+          "glyceraldehyde_3_phosphate-2",
+          "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder"
+        ], [
+          "none2",
+          "none3",
+          "none4",
+          "none5",
+          "glycerol",
+          "glycerol_3_phosphate",
+          "dihydroxyacetone_phosphate",
+          "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder",
+          "fructose_1_6_bisphosphate",
+          "fructose_6_phosphate",
+          "glucose_6_phosphate",
+          "glucose"
+        ]],
+        "lactate_to_glucose": [[
+          "lactate",
+          "pyruvate_1",
+          "pyruvate_2",
+          "oxaloacetate_2",
+          "phosphoenolpyruvate_2",
+          "phosphoenolpyruvate_1",
+          "_2_phosphoglycerate",
+          "_3_phosphoglycerate",
+          "_1_3_bisphosphoglycerate",
+          "glyceraldehyde_3_phosphate",
+          "dihydroxyacetone_phosphate",
+          "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder",
+          "fructose_1_6_bisphosphate", // handle T-shaped reaction
+          "fructose_6_phosphate",
+          "glucose_6_phosphate",
+          "glucose",
+        ], [
+          "none1",
+          "none2",
+          "none3",
+        ]],
+      }
     },
     edges: {
       "1": [

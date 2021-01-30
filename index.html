@@ -162,7 +162,7 @@
                   background-color="#d1d1d1" hover-color="#d1d1d1" height=" 0.5" margin="0 0 0.05 0"
                   icon="chevron-right" visible="true" toggle="true">
                 </a-gui-icon-label-button>
-                <a-gui-icon-label-button pathway-focus="targetPos: 0 1.5 9" pathway-menu="pathwayName: Gluconeogenesis" id="toggleDropDown-gluconeogenesis" class="interactible" width="0.5" height="0.5"
+                <a-gui-icon-label-button pathway-focus="targetPos: 0 1.5 9" pathway-menu="pathwayName:gluconeogenesis" id="toggleDropDown-gluconeogenesis" class="interactible" width="0.5" height="0.5"
                   background-color="#808080" margin="0 0 0.05 0" hover-color="#d1d1d1" icon="chevron-right"
                   toggledropdown="target:#container-gluconeogenesis" visible="true" toggle="true">
                 </a-gui-icon-label-button>
@@ -178,20 +178,7 @@
             </a-gui-flex-container>
             <a-gui-button reset-camera class='interactible' value="reset camera"  width = "2" height = "0.75">
           </a-gui-flex-container>
-          <a-gui-flex-container flex-direction="column" width="4" height="7.65" visible="true" opacity="0"
-            align-items="normal" justify-content="center">
-            <a-gui-flex-container id="container-gluconeogenesis" flex-direction="column" justify-content="flexStart"
-              align-items="flextStart" component-padding="0.1" opacity="0" width="0.75" height="0.75" visible="false"
-              icon="android-menu" animation__drop2="property:visible; startEvents:opendropdown; dur:100; to: true;"
-              animation__back2="property:visible; startEvents:closedropdown; dur: 1000; to:false">
-              <a-gui-button id="gluconeogenesis-animation-1" class="interactible" value="Glycerol to Glucose" width="3"
-                height="0.5" font-family="Helvetica" margin="0 0 0.05 0" animation-button-behavior="sequence:1">
-              </a-gui-button>
-              <a-gui-button id="gluconeogenesis-animation-2" class="interactible" value="Lactate to Glucose" width="3"
-                height="0.5" font-family="Helvetica" margin="0 0 0.05 0" animation-button-behavior="sequence:2">
-              </a-gui-button>
-            </a-gui-flex-container>
-          </a-gui-flex-container>
+          
           </a-gui-button>
         </a-gui-flex-container>
       </a-entity>
