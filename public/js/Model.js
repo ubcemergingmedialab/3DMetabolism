@@ -207,13 +207,11 @@ var Model = (function () {
     new Edge("aspartate_fumarate_placeholder", "fumarate"),
     new Edge("glutamate_oxaloacetate_2_placeholder", "aspartate_fumarate_placeholder"),
 
-    
     new Edge("glutamate_2", "glutamate_2_oxaloacetate_1_placeholder"),
     new Edge("glutamate_2_oxaloacetate_1_placeholder", "oxaloacetate_1"),
     new Edge("a_ketoglutarate_2", "a_ketoglutarate_2_aspartate_2_placeholder"),
     new Edge("a_ketoglutarate_2_aspartate_2_placeholder", "aspartate_2"),
     new Edge("glutamate_2_oxaloacetate_1_placeholder", "a_ketoglutarate_2_aspartate_2_placeholder"),
-    
   ];
   var gluconeogenesis = [
     new Edge("glucose_6_phosphate", "glucose", "/img/pyruvate_carboxylase.png", "/obj/pyruvate.glb", "/obj/oxaloacetate.glb"),
