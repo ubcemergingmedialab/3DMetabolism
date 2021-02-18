@@ -124,11 +124,11 @@ var Model = (function () {
     succinate: new Node(new THREE.Vector3(-1, -8, 0), "succinate", true),
     fumarate: new Node(new THREE.Vector3(-2, -7, 0), "fumarate", true),
     malate_2: new Node(new THREE.Vector3(-2, -6, 0), "malate", true),
-    glutamate: new Node(new THREE.Vector3(-1, -5, -4), "glutamate", true),
-    aspartate:  new Node(new THREE.Vector3(-2, -7, -4), "aspartate", true),
+    glutamate: new Node(new THREE.Vector3(-1, -5, 3), "glutamate", true),
+    aspartate:  new Node(new THREE.Vector3(-2, -7, 3), "aspartate", true),
     glutamate_2: new Node(new THREE.Vector3(-3, 1, 0), "glutamate", true),
-    a_ketoglutarate_2: new Node(new THREE.Vector3(-3, 1, -4), "a-ketoglutarate", true),
-    aspartate_2: new Node(new THREE.Vector3(-3, -1, -4), "aspartate", true),
+    a_ketoglutarate_2: new Node(new THREE.Vector3(-3, 1, 3), "a-ketoglutarate", true),
+    aspartate_2: new Node(new THREE.Vector3(-3, -1, 3), "aspartate", true),
   };
 
   var placeholderNodes = {
