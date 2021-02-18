@@ -124,6 +124,11 @@ var Model = (function () {
     succinate: new Node(new THREE.Vector3(-1, -8, 0), "succinate", true),
     fumarate: new Node(new THREE.Vector3(-2, -7, 0), "fumarate", true),
     malate_2: new Node(new THREE.Vector3(-2, -6, 0), "malate", true),
+    glutamate: new Node(new THREE.Vector3(-1, -5, 3), "glutamate", true),
+    aspartate:  new Node(new THREE.Vector3(-2, -7, 3), "aspartate", true),
+    glutamate_2: new Node(new THREE.Vector3(-3, 1, 0), "glutamate", true),
+    a_ketoglutarate_2: new Node(new THREE.Vector3(-3, 1, 3), "a-ketoglutarate", true),
+    aspartate_2: new Node(new THREE.Vector3(-3, -1, 3), "aspartate", true),
   };
 
   var placeholderNodes = {
@@ -134,6 +139,22 @@ var Model = (function () {
     oxaloacetate_2_citrate_placeholder: new Node(midPointVector([
       existingNodes.oxaloacetate_2,
       existingNodes.citrate,
+    ]), "placeholder", false, true),
+    glutamate_oxaloacetate_2_placeholder: new Node(midPointVector([
+      existingNodes.glutamate,
+      existingNodes.oxaloacetate_2,
+    ]), "placeholder", false, true),
+    aspartate_fumarate_placeholder: new Node(midPointVector([
+      existingNodes.aspartate,
+      existingNodes.fumarate,
+    ]), "placeholder", false, true),
+    glutamate_2_oxaloacetate_1_placeholder: new Node(midPointVector([
+      existingNodes.glutamate_2,
+      existingNodes.oxaloacetate_1,
+    ]), "placeholder", false, true),
+    a_ketoglutarate_2_aspartate_2_placeholder: new Node(midPointVector([
+      existingNodes.a_ketoglutarate_2,
+      existingNodes.aspartate_2,
     ]), "placeholder", false, true),
   };
 
@@ -177,7 +198,20 @@ var Model = (function () {
     new Edge("fructose_1_6_bisphosphate", "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder"),
     new Edge("dihydroxyacetone_phosphate", "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder"),
     new Edge("glyceraldehyde_3_phosphate", "dihydroxyacetone_phosphate_glyceraldehyde_3_phosphate_placeholder"),
-    new Edge("acetyl_coA", "oxaloacetate_2_citrate_placeholder")
+    new Edge("acetyl_coA", "oxaloacetate_2_citrate_placeholder"),
+
+    // pathways in z-plane
+    new Edge("glutamate", "glutamate_oxaloacetate_2_placeholder"),
+    new Edge("glutamate_oxaloacetate_2_placeholder", "oxaloacetate_2"),
+    new Edge("aspartate", "aspartate_fumarate_placeholder"),
+    new Edge("aspartate_fumarate_placeholder", "fumarate"),
+    new Edge("glutamate_oxaloacetate_2_placeholder", "aspartate_fumarate_placeholder"),
+
+    new Edge("glutamate_2", "glutamate_2_oxaloacetate_1_placeholder"),
+    new Edge("glutamate_2_oxaloacetate_1_placeholder", "oxaloacetate_1"),
+    new Edge("a_ketoglutarate_2", "a_ketoglutarate_2_aspartate_2_placeholder"),
+    new Edge("a_ketoglutarate_2_aspartate_2_placeholder", "aspartate_2"),
+    new Edge("glutamate_2_oxaloacetate_1_placeholder", "a_ketoglutarate_2_aspartate_2_placeholder"),
   ];
   var gluconeogenesis = [
     new Edge("glucose_6_phosphate", "glucose", "/img/pyruvate_carboxylase.png", "/obj/pyruvate.glb", "/obj/oxaloacetate.glb"),
